@@ -32,8 +32,6 @@ const catSchema = new mongoose.Schema({
 const Cat = mongoose.model('Cat', catSchema);
 
 
-
-
 const getCats = async (input) => {
     return await Cat.find();
 }
