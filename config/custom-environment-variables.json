@@ -1,0 +1,4 @@
+{
+  "_comment": "// U Can set this jwtPrivateKey From Command Line by Using  this command (set jwtPrivateKey=mySecureKey) Or $env:jwtPrivateKey=mr-mgr-project",
+  "jwtPrivateKey": "mr-mgr-project_jwtPrivateKey"
+}

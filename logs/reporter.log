@@ -1,0 +1,1082 @@
+2019-05-28T11:50:14.595Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T11:50:14.598Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T11:50:14.608Z - info: Extensions location cache not found, crawling directories
+2019-05-28T11:50:43.689Z - info: Found 31 extensions
+2019-05-28T11:50:43.952Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T11:50:43.954Z - debug: Discovered 31 extensions
+2019-05-28T11:50:44.065Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T11:50:44.111Z - info: Using extension import-export@1.3.0
+2019-05-28T11:50:48.585Z - info: Using extension tags@2.2.0
+2019-05-28T11:50:48.597Z - info: Using extension templates@2.2.0
+2019-05-28T11:50:48.609Z - info: Using extension jsrender@2.0.0
+2019-05-28T11:50:48.612Z - info: Using extension authentication@2.2.3
+2019-05-28T11:50:49.757Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T11:50:49.760Z - info: Using extension handlebars@2.0.2
+2019-05-28T11:50:49.782Z - info: Using extension cli@2.0.7
+2019-05-28T11:50:49.785Z - info: Using extension freeze@2.0.0
+2019-05-28T11:50:49.798Z - info: Using extension debug@2.0.2
+2019-05-28T11:50:49.863Z - info: Using extension express@2.4.0
+2019-05-28T11:50:53.274Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T11:50:57.994Z - info: Using extension data@2.1.0
+2019-05-28T11:50:58.010Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T11:51:00.744Z - debug: Chrome strategy is dedicated-process
+2019-05-28T11:51:00.746Z - info: Using extension child-templates@1.2.0
+2019-05-28T11:51:01.902Z - info: Using extension browser-client@2.1.1
+2019-05-28T11:51:01.957Z - info: Using extension licensing@2.1.0
+2019-05-28T11:51:02.915Z - info: Using extension authorization@2.2.4
+2019-05-28T11:51:03.003Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T11:51:03.004Z - info: Using extension version-control@1.2.3
+2019-05-28T11:51:05.771Z - info: Using extension reports@2.2.0
+2019-05-28T11:51:05.820Z - info: Using extension text@2.0.0
+2019-05-28T11:51:05.835Z - info: Using extension base@2.0.2
+2019-05-28T11:51:05.850Z - info: Using extension studio@2.5.1
+2019-05-28T11:51:06.905Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T11:51:06.907Z - info: Using extension fs-store@2.4.1
+2019-05-28T11:51:11.284Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T11:51:11.314Z - info: Using extension scheduling@2.0.7
+2019-05-28T11:51:11.499Z - info: Using extension scripts@2.1.0
+2019-05-28T11:51:12.303Z - info: Using extension assets@1.1.3
+2019-05-28T11:51:13.087Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T11:51:15.041Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T11:51:15.041Z - info: Using extension xlsx@2.0.10
+2019-05-28T11:51:17.811Z - info: Using extension sample-template@2.3.0
+2019-05-28T11:51:17.833Z - info: Using extension resources@2.0.3
+2019-05-28T11:51:17.850Z - info: Using extension public-templates@2.0.1
+2019-05-28T11:51:17.855Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T11:51:17.856Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T11:51:18.073Z - info: Creating default express app.
+2019-05-28T11:51:18.709Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T11:51:18.711Z - info: Verifying license key free
+2019-05-28T11:51:18.713Z - info: Using free license
+2019-05-28T11:51:18.718Z - debug: Creating samples is disabled
+2019-05-28T11:51:18.721Z - info: reporter initialized
+2019-05-28T11:55:58.679Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T11:55:58.682Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T11:55:58.719Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T11:55:59.194Z - info: Found 31 extensions
+2019-05-28T11:55:59.256Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T11:55:59.259Z - debug: Discovered 31 extensions
+2019-05-28T11:55:59.382Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T11:55:59.391Z - info: Using extension import-export@1.3.0
+2019-05-28T11:55:59.830Z - info: Using extension tags@2.2.0
+2019-05-28T11:55:59.842Z - info: Using extension templates@2.2.0
+2019-05-28T11:55:59.849Z - info: Using extension jsrender@2.0.0
+2019-05-28T11:55:59.857Z - info: Using extension authentication@2.2.3
+2019-05-28T11:55:59.963Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T11:55:59.964Z - info: Using extension handlebars@2.0.2
+2019-05-28T11:55:59.970Z - info: Using extension cli@2.0.7
+2019-05-28T11:55:59.973Z - info: Using extension freeze@2.0.0
+2019-05-28T11:55:59.977Z - info: Using extension debug@2.0.2
+2019-05-28T11:55:59.982Z - info: Using extension express@2.4.0
+2019-05-28T11:56:00.469Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T11:56:01.073Z - info: Using extension data@2.1.0
+2019-05-28T11:56:01.077Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T11:56:01.230Z - debug: Chrome strategy is dedicated-process
+2019-05-28T11:56:01.231Z - info: Using extension child-templates@1.2.0
+2019-05-28T11:56:01.314Z - info: Using extension browser-client@2.1.1
+2019-05-28T11:56:01.319Z - info: Using extension licensing@2.1.0
+2019-05-28T11:56:01.399Z - info: Using extension authorization@2.2.4
+2019-05-28T11:56:01.407Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T11:56:01.408Z - info: Using extension version-control@1.2.3
+2019-05-28T11:56:01.646Z - info: Using extension reports@2.2.0
+2019-05-28T11:56:01.655Z - info: Using extension text@2.0.0
+2019-05-28T11:56:01.658Z - info: Using extension base@2.0.2
+2019-05-28T11:56:01.663Z - info: Using extension studio@2.5.1
+2019-05-28T11:56:01.826Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T11:56:01.827Z - info: Using extension fs-store@2.4.1
+2019-05-28T11:56:02.298Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T11:56:02.299Z - info: Using extension scheduling@2.0.7
+2019-05-28T11:56:02.323Z - info: Using extension scripts@2.1.0
+2019-05-28T11:56:02.408Z - info: Using extension assets@1.1.3
+2019-05-28T11:56:02.528Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T11:56:02.760Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T11:56:02.760Z - info: Using extension xlsx@2.0.10
+2019-05-28T11:56:03.040Z - info: Using extension sample-template@2.3.0
+2019-05-28T11:56:03.045Z - info: Using extension resources@2.0.3
+2019-05-28T11:56:03.047Z - info: Using extension public-templates@2.0.1
+2019-05-28T11:56:03.050Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T11:56:03.051Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T11:56:03.172Z - info: Creating default express app.
+2019-05-28T11:56:03.199Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T11:56:03.200Z - info: Verifying license key free
+2019-05-28T11:56:03.202Z - info: Using free license
+2019-05-28T11:56:03.209Z - debug: Creating samples is disabled
+2019-05-28T11:56:03.211Z - info: reporter initialized
+2019-05-28T11:59:37.951Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T11:59:37.955Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T11:59:37.979Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T11:59:38.278Z - info: Found 31 extensions
+2019-05-28T11:59:38.319Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T11:59:38.322Z - debug: Discovered 31 extensions
+2019-05-28T11:59:38.416Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T11:59:38.426Z - info: Using extension import-export@1.3.0
+2019-05-28T11:59:38.752Z - info: Using extension tags@2.2.0
+2019-05-28T11:59:38.757Z - info: Using extension templates@2.2.0
+2019-05-28T11:59:38.761Z - info: Using extension jsrender@2.0.0
+2019-05-28T11:59:38.763Z - info: Using extension authentication@2.2.3
+2019-05-28T11:59:38.852Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T11:59:38.853Z - info: Using extension handlebars@2.0.2
+2019-05-28T11:59:38.858Z - info: Using extension cli@2.0.7
+2019-05-28T11:59:38.862Z - info: Using extension freeze@2.0.0
+2019-05-28T11:59:38.866Z - info: Using extension debug@2.0.2
+2019-05-28T11:59:38.876Z - info: Using extension express@2.4.0
+2019-05-28T11:59:39.182Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T11:59:39.533Z - info: Using extension data@2.1.0
+2019-05-28T11:59:39.535Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T11:59:39.674Z - debug: Chrome strategy is dedicated-process
+2019-05-28T11:59:39.675Z - info: Using extension child-templates@1.2.0
+2019-05-28T11:59:39.757Z - info: Using extension browser-client@2.1.1
+2019-05-28T11:59:39.762Z - info: Using extension licensing@2.1.0
+2019-05-28T11:59:39.841Z - info: Using extension authorization@2.2.4
+2019-05-28T11:59:39.848Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T11:59:39.849Z - info: Using extension version-control@1.2.3
+2019-05-28T11:59:40.078Z - info: Using extension reports@2.2.0
+2019-05-28T11:59:40.086Z - info: Using extension text@2.0.0
+2019-05-28T11:59:40.088Z - info: Using extension base@2.0.2
+2019-05-28T11:59:40.091Z - info: Using extension studio@2.5.1
+2019-05-28T11:59:40.216Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T11:59:40.218Z - info: Using extension fs-store@2.4.1
+2019-05-28T11:59:40.662Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T11:59:40.663Z - info: Using extension scheduling@2.0.7
+2019-05-28T11:59:40.695Z - info: Using extension scripts@2.1.0
+2019-05-28T11:59:40.788Z - info: Using extension assets@1.1.3
+2019-05-28T11:59:41.016Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T11:59:41.294Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T11:59:41.294Z - info: Using extension xlsx@2.0.10
+2019-05-28T11:59:41.582Z - info: Using extension sample-template@2.3.0
+2019-05-28T11:59:41.587Z - info: Using extension resources@2.0.3
+2019-05-28T11:59:41.590Z - info: Using extension public-templates@2.0.1
+2019-05-28T11:59:41.594Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T11:59:41.595Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T11:59:41.662Z - info: Creating default express app.
+2019-05-28T11:59:41.692Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T11:59:41.693Z - info: Verifying license key free
+2019-05-28T11:59:41.698Z - info: Using free license
+2019-05-28T11:59:41.709Z - debug: Creating samples is disabled
+2019-05-28T11:59:41.712Z - info: reporter initialized
+2019-05-28T11:59:41.736Z - info: Starting rendering request 1 (user: null)
+2019-05-28T11:59:41.737Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T11:59:41.739Z - debug: Inline data specified.
+2019-05-28T11:59:41.740Z - debug: Resources not defined for this template.
+2019-05-28T11:59:41.755Z - error: Error when processing render request Asset Invoice styles.css not found Error: Asset Invoice styles.css not found
+    at readAsset (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-assets\lib\assets.js:226:15)
+    at <anonymous>
+2019-05-28T12:01:43.348Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:01:43.354Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:01:43.382Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:01:43.746Z - info: Found 31 extensions
+2019-05-28T12:01:43.784Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:01:43.786Z - debug: Discovered 31 extensions
+2019-05-28T12:01:43.888Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:01:43.901Z - info: Using extension import-export@1.3.0
+2019-05-28T12:01:44.227Z - info: Using extension tags@2.2.0
+2019-05-28T12:01:44.232Z - info: Using extension templates@2.2.0
+2019-05-28T12:01:44.239Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:01:44.242Z - info: Using extension authentication@2.2.3
+2019-05-28T12:01:44.318Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:01:44.318Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:01:44.323Z - info: Using extension cli@2.0.7
+2019-05-28T12:01:44.326Z - info: Using extension freeze@2.0.0
+2019-05-28T12:01:44.331Z - info: Using extension debug@2.0.2
+2019-05-28T12:01:44.335Z - info: Using extension express@2.4.0
+2019-05-28T12:01:44.595Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:01:44.966Z - info: Using extension data@2.1.0
+2019-05-28T12:01:44.968Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:01:45.105Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:01:45.107Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:01:45.188Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:01:45.193Z - info: Using extension licensing@2.1.0
+2019-05-28T12:01:45.272Z - info: Using extension authorization@2.2.4
+2019-05-28T12:01:45.279Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:01:45.279Z - info: Using extension version-control@1.2.3
+2019-05-28T12:01:45.473Z - info: Using extension reports@2.2.0
+2019-05-28T12:01:45.481Z - info: Using extension text@2.0.0
+2019-05-28T12:01:45.483Z - info: Using extension base@2.0.2
+2019-05-28T12:01:45.486Z - info: Using extension studio@2.5.1
+2019-05-28T12:01:45.630Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:01:45.631Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:01:46.168Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:01:46.168Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:01:46.190Z - info: Using extension scripts@2.1.0
+2019-05-28T12:01:46.269Z - info: Using extension assets@1.1.3
+2019-05-28T12:01:46.382Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:01:46.629Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:01:46.630Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:01:46.907Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:01:46.912Z - info: Using extension resources@2.0.3
+2019-05-28T12:01:46.915Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:01:46.950Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:01:46.952Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:01:47.062Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:01:47.064Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:01:47.109Z - info: Creating default express app.
+2019-05-28T12:01:47.159Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:01:47.164Z - info: Verifying license key free
+2019-05-28T12:01:47.178Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:01:47.429Z - info: Found 31 extensions
+2019-05-28T12:01:47.431Z - info: Using free license
+2019-05-28T12:01:47.439Z - debug: Creating samples is disabled
+2019-05-28T12:01:47.442Z - info: reporter initialized
+2019-05-28T12:01:47.458Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:01:47.460Z - debug: Discovered 31 extensions
+2019-05-28T12:01:47.538Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:01:47.540Z - info: Using extension import-export@1.3.0
+2019-05-28T12:01:47.543Z - info: Using extension tags@2.2.0
+2019-05-28T12:01:47.546Z - info: Using extension templates@2.2.0
+2019-05-28T12:01:47.548Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:01:47.550Z - info: Using extension authentication@2.2.3
+2019-05-28T12:01:47.559Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:01:47.560Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:01:47.560Z - info: Using extension cli@2.0.7
+2019-05-28T12:01:47.561Z - info: Using extension freeze@2.0.0
+2019-05-28T12:01:47.563Z - info: Using extension debug@2.0.2
+2019-05-28T12:01:47.565Z - info: Using extension express@2.4.0
+2019-05-28T12:01:47.571Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:01:47.572Z - info: Using extension data@2.1.0
+2019-05-28T12:01:47.573Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:01:47.577Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:01:47.578Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:01:47.580Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:01:47.582Z - info: Using extension licensing@2.1.0
+2019-05-28T12:01:47.583Z - info: Using extension authorization@2.2.4
+2019-05-28T12:01:47.584Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:01:47.585Z - info: Using extension version-control@1.2.3
+2019-05-28T12:01:47.587Z - info: Using extension reports@2.2.0
+2019-05-28T12:01:47.590Z - info: Using extension text@2.0.0
+2019-05-28T12:01:47.591Z - info: Using extension base@2.0.2
+2019-05-28T12:01:47.593Z - info: Using extension studio@2.5.1
+2019-05-28T12:01:47.597Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:01:47.598Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:01:47.602Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:01:47.603Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:01:47.611Z - info: Using extension scripts@2.1.0
+2019-05-28T12:01:47.615Z - info: Using extension assets@1.1.3
+2019-05-28T12:01:47.617Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:01:47.622Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:01:47.623Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:01:47.626Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:01:47.629Z - info: Using extension resources@2.0.3
+2019-05-28T12:01:47.630Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:01:47.631Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:01:47.632Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:01:47.652Z - info: Creating default express app.
+2019-05-28T12:01:47.676Z - error: Error when starting http server on port 5488 Error: listen EADDRINUSE :::5488
+    at Object._errnoException (util.js:992:11)
+    at _exceptionWithHostPort (util.js:1014:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1355:14)
+    at listenInCluster (net.js:1396:12)
+    at Server.listen (net.js:1480:7)
+    at Promise (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:23:12)
+    at Promise._execute (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\debuggability.js:313:9)
+    at Promise._resolveFromExecutor (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\promise.js:483:18)
+    at new Promise (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\promise.js:79:10)
+    at startAsync (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:17:10)
+    at steps.push (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:51:14)
+    at Object.start (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:125:13)
+    at Object.reporter.initializeListeners.add (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:308:30)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+2019-05-28T12:01:47.681Z - error: Error occured during reporter init Error: listen EADDRINUSE :::5488
+    at Object._errnoException (util.js:992:11)
+    at _exceptionWithHostPort (util.js:1014:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1355:14)
+    at listenInCluster (net.js:1396:12)
+    at Server.listen (net.js:1480:7)
+    at Promise (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:23:12)
+    at Promise._execute (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\debuggability.js:313:9)
+    at Promise._resolveFromExecutor (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\promise.js:483:18)
+    at new Promise (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\promise.js:79:10)
+    at startAsync (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:17:10)
+    at steps.push (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:51:14)
+    at Object.start (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:125:13)
+    at Object.reporter.initializeListeners.add (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:308:30)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+2019-05-28T12:02:28.580Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:02:28.589Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:02:28.625Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:02:28.922Z - info: Found 31 extensions
+2019-05-28T12:02:29.022Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:02:29.024Z - debug: Discovered 31 extensions
+2019-05-28T12:02:29.120Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:02:29.130Z - info: Using extension import-export@1.3.0
+2019-05-28T12:02:29.472Z - info: Using extension tags@2.2.0
+2019-05-28T12:02:29.476Z - info: Using extension templates@2.2.0
+2019-05-28T12:02:29.480Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:02:29.482Z - info: Using extension authentication@2.2.3
+2019-05-28T12:02:29.563Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:02:29.563Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:02:29.567Z - info: Using extension cli@2.0.7
+2019-05-28T12:02:29.569Z - info: Using extension freeze@2.0.0
+2019-05-28T12:02:29.574Z - info: Using extension debug@2.0.2
+2019-05-28T12:02:29.577Z - info: Using extension express@2.4.0
+2019-05-28T12:02:29.844Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:02:30.229Z - info: Using extension data@2.1.0
+2019-05-28T12:02:30.232Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:02:30.371Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:02:30.373Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:02:30.513Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:02:30.521Z - info: Using extension licensing@2.1.0
+2019-05-28T12:02:30.627Z - info: Using extension authorization@2.2.4
+2019-05-28T12:02:30.637Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:02:30.638Z - info: Using extension version-control@1.2.3
+2019-05-28T12:02:30.882Z - info: Using extension reports@2.2.0
+2019-05-28T12:02:30.891Z - info: Using extension text@2.0.0
+2019-05-28T12:02:30.893Z - info: Using extension base@2.0.2
+2019-05-28T12:02:30.896Z - info: Using extension studio@2.5.1
+2019-05-28T12:02:31.029Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:02:31.030Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:02:31.461Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:02:31.462Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:02:31.488Z - info: Using extension scripts@2.1.0
+2019-05-28T12:02:31.595Z - info: Using extension assets@1.1.3
+2019-05-28T12:02:31.750Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:02:32.015Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:02:32.015Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:02:32.291Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:02:32.296Z - info: Using extension resources@2.0.3
+2019-05-28T12:02:32.298Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:02:32.301Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:02:32.302Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:02:32.380Z - info: Creating default express app.
+2019-05-28T12:02:32.417Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:02:32.418Z - info: Verifying license key free
+2019-05-28T12:02:32.421Z - info: Using free license
+2019-05-28T12:02:32.426Z - debug: Creating samples is disabled
+2019-05-28T12:02:32.430Z - info: reporter initialized
+2019-05-28T12:02:32.449Z - info: Starting rendering request 1 (user: null)
+2019-05-28T12:02:32.451Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T12:02:32.463Z - debug: Inline data specified.
+2019-05-28T12:02:32.465Z - debug: Resources not defined for this template.
+2019-05-28T12:02:32.485Z - error: Error when processing render request Asset DroidKufi-Regular.ttf not found Error: Asset DroidKufi-Regular.ttf not found
+    at readAsset (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-assets\lib\assets.js:226:15)
+    at <anonymous>
+2019-05-28T12:03:21.525Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:03:21.530Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:03:21.551Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:03:21.828Z - info: Found 31 extensions
+2019-05-28T12:03:21.859Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:03:21.863Z - debug: Discovered 31 extensions
+2019-05-28T12:03:21.949Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:03:21.957Z - info: Using extension import-export@1.3.0
+2019-05-28T12:03:22.304Z - info: Using extension tags@2.2.0
+2019-05-28T12:03:22.309Z - info: Using extension templates@2.2.0
+2019-05-28T12:03:22.314Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:03:22.315Z - info: Using extension authentication@2.2.3
+2019-05-28T12:03:22.405Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:03:22.406Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:03:22.410Z - info: Using extension cli@2.0.7
+2019-05-28T12:03:22.412Z - info: Using extension freeze@2.0.0
+2019-05-28T12:03:22.416Z - info: Using extension debug@2.0.2
+2019-05-28T12:03:22.420Z - info: Using extension express@2.4.0
+2019-05-28T12:03:22.734Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:03:23.121Z - info: Using extension data@2.1.0
+2019-05-28T12:03:23.123Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:03:23.279Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:03:23.280Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:03:23.389Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:03:23.400Z - info: Using extension licensing@2.1.0
+2019-05-28T12:03:23.493Z - info: Using extension authorization@2.2.4
+2019-05-28T12:03:23.502Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:03:23.503Z - info: Using extension version-control@1.2.3
+2019-05-28T12:03:23.868Z - info: Using extension reports@2.2.0
+2019-05-28T12:03:23.875Z - info: Using extension text@2.0.0
+2019-05-28T12:03:23.877Z - info: Using extension base@2.0.2
+2019-05-28T12:03:23.880Z - info: Using extension studio@2.5.1
+2019-05-28T12:03:24.018Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:03:24.019Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:03:24.642Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:03:24.643Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:03:24.666Z - info: Using extension scripts@2.1.0
+2019-05-28T12:03:24.757Z - info: Using extension assets@1.1.3
+2019-05-28T12:03:24.887Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:03:25.162Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:03:25.163Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:03:25.525Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:03:25.532Z - info: Using extension resources@2.0.3
+2019-05-28T12:03:25.535Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:03:25.538Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:03:25.539Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:03:25.612Z - info: Creating default express app.
+2019-05-28T12:03:25.654Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:03:25.656Z - info: Verifying license key free
+2019-05-28T12:03:25.658Z - info: Using free license
+2019-05-28T12:03:25.665Z - debug: Creating samples is disabled
+2019-05-28T12:03:25.668Z - info: reporter initialized
+2019-05-28T12:03:25.689Z - info: Starting rendering request 1 (user: null)
+2019-05-28T12:03:25.691Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T12:03:25.692Z - debug: Inline data specified.
+2019-05-28T12:03:25.694Z - debug: Resources not defined for this template.
+2019-05-28T12:03:25.715Z - error: Error when processing render request Asset DroidKufi-Regular.ttf not found Error: Asset DroidKufi-Regular.ttf not found
+    at readAsset (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-assets\lib\assets.js:226:15)
+    at <anonymous>
+2019-05-28T12:04:38.431Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:04:38.434Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:04:38.462Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:04:38.769Z - info: Found 31 extensions
+2019-05-28T12:04:38.807Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:04:38.809Z - debug: Discovered 31 extensions
+2019-05-28T12:04:38.905Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:04:38.926Z - info: Using extension import-export@1.3.0
+2019-05-28T12:04:39.279Z - info: Using extension tags@2.2.0
+2019-05-28T12:04:39.284Z - info: Using extension templates@2.2.0
+2019-05-28T12:04:39.288Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:04:39.292Z - info: Using extension authentication@2.2.3
+2019-05-28T12:04:39.365Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:04:39.366Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:04:39.370Z - info: Using extension cli@2.0.7
+2019-05-28T12:04:39.372Z - info: Using extension freeze@2.0.0
+2019-05-28T12:04:39.376Z - info: Using extension debug@2.0.2
+2019-05-28T12:04:39.380Z - info: Using extension express@2.4.0
+2019-05-28T12:04:39.646Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:04:40.021Z - info: Using extension data@2.1.0
+2019-05-28T12:04:40.023Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:04:40.163Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:04:40.165Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:04:40.249Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:04:40.256Z - info: Using extension licensing@2.1.0
+2019-05-28T12:04:40.359Z - info: Using extension authorization@2.2.4
+2019-05-28T12:04:40.372Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:04:40.373Z - info: Using extension version-control@1.2.3
+2019-05-28T12:04:40.664Z - info: Using extension reports@2.2.0
+2019-05-28T12:04:40.674Z - info: Using extension text@2.0.0
+2019-05-28T12:04:40.676Z - info: Using extension base@2.0.2
+2019-05-28T12:04:40.680Z - info: Using extension studio@2.5.1
+2019-05-28T12:04:40.812Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:04:40.814Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:04:41.290Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:04:41.291Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:04:41.323Z - info: Using extension scripts@2.1.0
+2019-05-28T12:04:41.436Z - info: Using extension assets@1.1.3
+2019-05-28T12:04:41.597Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:04:41.821Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:04:41.822Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:04:42.088Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:04:42.093Z - info: Using extension resources@2.0.3
+2019-05-28T12:04:42.096Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:04:42.102Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:04:42.103Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:04:42.161Z - info: Creating default express app.
+2019-05-28T12:04:42.191Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:04:42.193Z - info: Verifying license key free
+2019-05-28T12:04:42.196Z - info: Using free license
+2019-05-28T12:04:42.206Z - debug: Creating samples is disabled
+2019-05-28T12:04:42.213Z - info: reporter initialized
+2019-05-28T12:04:42.233Z - info: Starting rendering request 1 (user: null)
+2019-05-28T12:04:42.235Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T12:04:42.236Z - debug: Inline data specified.
+2019-05-28T12:04:42.237Z - debug: Resources not defined for this template.
+2019-05-28T12:04:42.251Z - debug: Base url not specified, skipping its injection.
+2019-05-28T12:04:42.252Z - debug: Rendering engine handlebars
+2019-05-28T12:04:44.220Z - warn: Error when processing render request Error while executing templating engine. Missing helper: "inc" Error: Missing helper: "inc"
+    at Object.<anonymous> (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\helpers\helper-missing.js:19:13)
+    at eval (eval at createFunctionContext (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:257:23), <anonymous>:6:64)
+    at prog (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\runtime.js:221:12)
+    at execIteration (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\helpers\each.js:51:19)
+    at Object.<anonymous> (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\helpers\each.js:61:13)
+    at Object.eval [as main] (eval at createFunctionContext (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:257:23), <anonymous>:14:31)
+    at main (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\runtime.js:175:32)
+    at ret (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\runtime.js:178:12)
+    at ret (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:526:21)
+    at F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-handlebars\lib\handlebarsEngine.js:25:14
+2019-05-28T12:17:01.566Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:17:01.573Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:17:01.667Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:17:01.971Z - info: Found 31 extensions
+2019-05-28T12:17:02.010Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:17:02.013Z - debug: Discovered 31 extensions
+2019-05-28T12:17:02.101Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:17:02.111Z - info: Using extension import-export@1.3.0
+2019-05-28T12:17:02.453Z - info: Using extension tags@2.2.0
+2019-05-28T12:17:02.459Z - info: Using extension templates@2.2.0
+2019-05-28T12:17:02.463Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:17:02.465Z - info: Using extension authentication@2.2.3
+2019-05-28T12:17:02.539Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:17:02.540Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:17:02.544Z - info: Using extension cli@2.0.7
+2019-05-28T12:17:02.546Z - info: Using extension freeze@2.0.0
+2019-05-28T12:17:02.551Z - info: Using extension debug@2.0.2
+2019-05-28T12:17:02.554Z - info: Using extension express@2.4.0
+2019-05-28T12:17:02.821Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:17:03.194Z - info: Using extension data@2.1.0
+2019-05-28T12:17:03.196Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:17:03.337Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:17:03.338Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:17:03.454Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:17:03.462Z - info: Using extension licensing@2.1.0
+2019-05-28T12:17:03.619Z - info: Using extension authorization@2.2.4
+2019-05-28T12:17:03.627Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:17:03.628Z - info: Using extension version-control@1.2.3
+2019-05-28T12:17:03.877Z - info: Using extension reports@2.2.0
+2019-05-28T12:17:03.884Z - info: Using extension text@2.0.0
+2019-05-28T12:17:03.886Z - info: Using extension base@2.0.2
+2019-05-28T12:17:03.889Z - info: Using extension studio@2.5.1
+2019-05-28T12:17:04.002Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:17:04.004Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:17:04.516Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:17:04.517Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:17:04.540Z - info: Using extension scripts@2.1.0
+2019-05-28T12:17:04.626Z - info: Using extension assets@1.1.3
+2019-05-28T12:17:04.765Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:17:05.120Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:17:05.121Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:17:05.436Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:17:05.442Z - info: Using extension resources@2.0.3
+2019-05-28T12:17:05.444Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:17:05.449Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:17:05.449Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:17:05.513Z - info: Creating default express app.
+2019-05-28T12:17:05.543Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:17:05.545Z - info: Verifying license key free
+2019-05-28T12:17:05.546Z - info: Using free license
+2019-05-28T12:17:05.555Z - debug: Creating samples is disabled
+2019-05-28T12:17:05.570Z - info: reporter initialized
+2019-05-28T12:17:05.591Z - info: Starting rendering request 1 (user: null)
+2019-05-28T12:17:05.593Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T12:17:05.594Z - debug: Inline data specified.
+2019-05-28T12:17:05.595Z - debug: Resources not defined for this template.
+2019-05-28T12:17:05.610Z - debug: Base url not specified, skipping its injection.
+2019-05-28T12:17:05.612Z - debug: Rendering engine handlebars
+2019-05-28T12:17:06.104Z - warn: Error when processing render request Error while executing templating engine. Missing helper: "inc" Error: Missing helper: "inc"
+    at Object.<anonymous> (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\helpers\helper-missing.js:19:13)
+    at eval (eval at createFunctionContext (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:257:23), <anonymous>:6:64)
+    at prog (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\runtime.js:221:12)
+    at execIteration (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\helpers\each.js:51:19)
+    at Object.<anonymous> (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\helpers\each.js:61:13)
+    at Object.eval [as main] (eval at createFunctionContext (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:257:23), <anonymous>:14:31)
+    at main (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\runtime.js:175:32)
+    at ret (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\runtime.js:178:12)
+    at ret (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:526:21)
+    at F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-handlebars\lib\handlebarsEngine.js:25:14
+2019-05-28T12:40:30.046Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:40:30.049Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:40:30.104Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:40:33.421Z - info: Found 31 extensions
+2019-05-28T12:40:33.551Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:40:33.554Z - debug: Discovered 31 extensions
+2019-05-28T12:40:33.641Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:40:33.689Z - info: Using extension import-export@1.3.0
+2019-05-28T12:40:36.666Z - info: Using extension tags@2.2.0
+2019-05-28T12:40:36.689Z - info: Using extension templates@2.2.0
+2019-05-28T12:40:36.701Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:40:36.704Z - info: Using extension authentication@2.2.3
+2019-05-28T12:40:37.110Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:40:37.111Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:40:37.115Z - info: Using extension cli@2.0.7
+2019-05-28T12:40:37.117Z - info: Using extension freeze@2.0.0
+2019-05-28T12:40:37.130Z - info: Using extension debug@2.0.2
+2019-05-28T12:40:37.150Z - info: Using extension express@2.4.0
+2019-05-28T12:40:39.228Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:40:41.354Z - info: Using extension data@2.1.0
+2019-05-28T12:40:41.369Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:40:42.607Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:40:42.608Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:40:43.158Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:40:43.170Z - info: Using extension licensing@2.1.0
+2019-05-28T12:40:44.391Z - info: Using extension authorization@2.2.4
+2019-05-28T12:40:44.471Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:40:44.472Z - info: Using extension version-control@1.2.3
+2019-05-28T12:40:45.879Z - info: Using extension reports@2.2.0
+2019-05-28T12:40:45.911Z - info: Using extension text@2.0.0
+2019-05-28T12:40:45.927Z - info: Using extension base@2.0.2
+2019-05-28T12:40:45.940Z - info: Using extension studio@2.5.1
+2019-05-28T12:40:46.743Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:40:46.744Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:40:49.384Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:40:49.385Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:40:49.500Z - info: Using extension scripts@2.1.0
+2019-05-28T12:40:50.117Z - info: Using extension assets@1.1.3
+2019-05-28T12:40:50.823Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:40:52.940Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:40:52.941Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:40:55.186Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:40:55.205Z - info: Using extension resources@2.0.3
+2019-05-28T12:40:55.221Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:40:55.226Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:40:55.226Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:40:55.427Z - info: Creating default express app.
+2019-05-28T12:40:55.960Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:40:55.962Z - info: Verifying license key free
+2019-05-28T12:40:55.964Z - info: Using free license
+2019-05-28T12:40:55.969Z - debug: Creating samples is disabled
+2019-05-28T12:40:55.972Z - info: reporter initialized
+2019-05-28T12:40:55.997Z - info: Starting rendering request 1 (user: null)
+2019-05-28T12:40:55.999Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T12:40:56.001Z - debug: Inline data specified.
+2019-05-28T12:40:56.002Z - debug: Resources not defined for this template.
+2019-05-28T12:40:56.020Z - debug: Base url not specified, skipping its injection.
+2019-05-28T12:40:56.021Z - debug: Rendering engine handlebars
+2019-05-28T12:40:57.357Z - warn: Error when processing render request Error while executing templating engine. Missing helper: "inc" Error: Missing helper: "inc"
+    at Object.<anonymous> (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\helpers\helper-missing.js:19:13)
+    at eval (eval at createFunctionContext (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:257:23), <anonymous>:6:64)
+    at prog (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\runtime.js:221:12)
+    at execIteration (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\helpers\each.js:51:19)
+    at Object.<anonymous> (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\helpers\each.js:61:13)
+    at Object.eval [as main] (eval at createFunctionContext (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:257:23), <anonymous>:14:31)
+    at main (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\runtime.js:175:32)
+    at ret (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\runtime.js:178:12)
+    at ret (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:526:21)
+    at F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-handlebars\lib\handlebarsEngine.js:25:14
+2019-05-28T12:42:49.337Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:42:49.357Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:42:49.405Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:42:49.760Z - info: Found 31 extensions
+2019-05-28T12:42:49.796Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:42:49.799Z - debug: Discovered 31 extensions
+2019-05-28T12:42:49.913Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:42:49.921Z - info: Using extension import-export@1.3.0
+2019-05-28T12:42:50.244Z - info: Using extension tags@2.2.0
+2019-05-28T12:42:50.275Z - info: Using extension templates@2.2.0
+2019-05-28T12:42:50.282Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:42:50.284Z - info: Using extension authentication@2.2.3
+2019-05-28T12:42:50.361Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:42:50.362Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:42:50.367Z - info: Using extension cli@2.0.7
+2019-05-28T12:42:50.382Z - info: Using extension freeze@2.0.0
+2019-05-28T12:42:50.386Z - info: Using extension debug@2.0.2
+2019-05-28T12:42:50.390Z - info: Using extension express@2.4.0
+2019-05-28T12:42:50.678Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:42:51.108Z - info: Using extension data@2.1.0
+2019-05-28T12:42:51.111Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:42:51.267Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:42:51.268Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:42:51.361Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:42:51.367Z - info: Using extension licensing@2.1.0
+2019-05-28T12:42:51.459Z - info: Using extension authorization@2.2.4
+2019-05-28T12:42:51.466Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:42:51.467Z - info: Using extension version-control@1.2.3
+2019-05-28T12:42:51.666Z - info: Using extension reports@2.2.0
+2019-05-28T12:42:51.674Z - info: Using extension text@2.0.0
+2019-05-28T12:42:51.677Z - info: Using extension base@2.0.2
+2019-05-28T12:42:51.680Z - info: Using extension studio@2.5.1
+2019-05-28T12:42:51.797Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:42:51.799Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:42:52.338Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:42:52.338Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:42:52.361Z - info: Using extension scripts@2.1.0
+2019-05-28T12:42:52.446Z - info: Using extension assets@1.1.3
+2019-05-28T12:42:52.563Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:42:52.788Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:42:52.789Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:42:53.057Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:42:53.062Z - info: Using extension resources@2.0.3
+2019-05-28T12:42:53.065Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:42:53.070Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:42:53.070Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:42:53.146Z - info: Creating default express app.
+2019-05-28T12:42:53.176Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:42:53.179Z - info: Verifying license key free
+2019-05-28T12:42:53.183Z - info: Using free license
+2019-05-28T12:42:53.189Z - debug: Creating samples is disabled
+2019-05-28T12:42:53.192Z - info: reporter initialized
+2019-05-28T12:42:53.215Z - info: Starting rendering request 1 (user: null)
+2019-05-28T12:42:53.218Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T12:42:53.219Z - debug: Inline data specified.
+2019-05-28T12:42:53.221Z - debug: Resources not defined for this template.
+2019-05-28T12:42:53.238Z - debug: Base url not specified, skipping its injection.
+2019-05-28T12:42:53.242Z - debug: Rendering engine handlebars
+2019-05-28T12:42:53.682Z - debug: Compiled template not found in the cache, compiling
+2019-05-28T12:42:53.685Z - debug: Executing recipe chrome-pdf
+2019-05-28T12:43:04.061Z - debug: Converting with chrome HeadlessChrome/76.0.3803.0 using dedicated-process strategy
+2019-05-28T12:43:20.726Z - debug: Running chrome with params {"margin":{},"printBackground":true}
+2019-05-28T12:43:21.512Z - debug: Skipping storing report.
+2019-05-28T12:43:21.513Z - info: Rendering request 1 finished in 28299 ms
+2019-05-28T12:44:30.446Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:44:30.450Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:44:30.471Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:44:30.744Z - info: Found 31 extensions
+2019-05-28T12:44:30.778Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:44:30.781Z - debug: Discovered 31 extensions
+2019-05-28T12:44:30.884Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:44:30.894Z - info: Using extension import-export@1.3.0
+2019-05-28T12:44:31.269Z - info: Using extension tags@2.2.0
+2019-05-28T12:44:31.274Z - info: Using extension templates@2.2.0
+2019-05-28T12:44:31.278Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:44:31.280Z - info: Using extension authentication@2.2.3
+2019-05-28T12:44:31.348Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:44:31.349Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:44:31.353Z - info: Using extension cli@2.0.7
+2019-05-28T12:44:31.355Z - info: Using extension freeze@2.0.0
+2019-05-28T12:44:31.358Z - info: Using extension debug@2.0.2
+2019-05-28T12:44:31.362Z - info: Using extension express@2.4.0
+2019-05-28T12:44:31.700Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:44:32.076Z - info: Using extension data@2.1.0
+2019-05-28T12:44:32.078Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:44:32.224Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:44:32.229Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:44:32.325Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:44:32.330Z - info: Using extension licensing@2.1.0
+2019-05-28T12:44:32.407Z - info: Using extension authorization@2.2.4
+2019-05-28T12:44:32.415Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:44:32.416Z - info: Using extension version-control@1.2.3
+2019-05-28T12:44:32.660Z - info: Using extension reports@2.2.0
+2019-05-28T12:44:32.668Z - info: Using extension text@2.0.0
+2019-05-28T12:44:32.670Z - info: Using extension base@2.0.2
+2019-05-28T12:44:32.674Z - info: Using extension studio@2.5.1
+2019-05-28T12:44:32.792Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:44:32.793Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:44:33.311Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:44:33.312Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:44:33.337Z - info: Using extension scripts@2.1.0
+2019-05-28T12:44:33.413Z - info: Using extension assets@1.1.3
+2019-05-28T12:44:33.547Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:44:33.856Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:44:33.857Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:44:34.157Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:44:34.163Z - info: Using extension resources@2.0.3
+2019-05-28T12:44:34.166Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:44:34.170Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:44:34.171Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:44:34.235Z - info: Creating default express app.
+2019-05-28T12:44:34.267Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:44:34.268Z - info: Verifying license key free
+2019-05-28T12:44:34.271Z - info: Using free license
+2019-05-28T12:44:34.277Z - debug: Creating samples is disabled
+2019-05-28T12:44:34.280Z - info: reporter initialized
+2019-05-28T12:44:34.310Z - info: Starting rendering request 1 (user: null)
+2019-05-28T12:44:34.313Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T12:44:34.314Z - debug: Inline data specified.
+2019-05-28T12:44:34.315Z - debug: Resources not defined for this template.
+2019-05-28T12:44:34.329Z - debug: Base url not specified, skipping its injection.
+2019-05-28T12:44:34.330Z - debug: Rendering engine handlebars
+2019-05-28T12:44:34.798Z - debug: Compiled template not found in the cache, compiling
+2019-05-28T12:44:34.801Z - debug: Executing recipe chrome-pdf
+2019-05-28T12:44:35.797Z - debug: Converting with chrome HeadlessChrome/76.0.3803.0 using dedicated-process strategy
+2019-05-28T12:44:36.225Z - debug: Running chrome with params {"margin":{},"printBackground":true}
+2019-05-28T12:44:36.573Z - debug: Skipping storing report.
+2019-05-28T12:44:36.575Z - info: Rendering request 1 finished in 2265 ms
+2019-05-28T12:46:30.606Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:46:30.607Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:46:30.613Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:46:30.930Z - info: Found 31 extensions
+2019-05-28T12:46:30.934Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:46:30.935Z - debug: Discovered 31 extensions
+2019-05-28T12:46:31.017Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:46:31.021Z - info: Using extension import-export@1.3.0
+2019-05-28T12:46:31.023Z - info: Using extension tags@2.2.0
+2019-05-28T12:46:31.025Z - info: Using extension templates@2.2.0
+2019-05-28T12:46:31.027Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:46:31.029Z - info: Using extension authentication@2.2.3
+2019-05-28T12:46:31.038Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:46:31.039Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:46:31.039Z - info: Using extension cli@2.0.7
+2019-05-28T12:46:31.040Z - info: Using extension freeze@2.0.0
+2019-05-28T12:46:31.042Z - info: Using extension debug@2.0.2
+2019-05-28T12:46:31.044Z - info: Using extension express@2.4.0
+2019-05-28T12:46:31.052Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:46:31.053Z - info: Using extension data@2.1.0
+2019-05-28T12:46:31.056Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:46:31.060Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:46:31.061Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:46:31.063Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:46:31.065Z - info: Using extension licensing@2.1.0
+2019-05-28T12:46:31.066Z - info: Using extension authorization@2.2.4
+2019-05-28T12:46:31.067Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:46:31.068Z - info: Using extension version-control@1.2.3
+2019-05-28T12:46:31.071Z - info: Using extension reports@2.2.0
+2019-05-28T12:46:31.075Z - info: Using extension text@2.0.0
+2019-05-28T12:46:31.077Z - info: Using extension base@2.0.2
+2019-05-28T12:46:31.079Z - info: Using extension studio@2.5.1
+2019-05-28T12:46:31.084Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:46:31.084Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:46:31.090Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:46:31.091Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:46:31.095Z - info: Using extension scripts@2.1.0
+2019-05-28T12:46:31.100Z - info: Using extension assets@1.1.3
+2019-05-28T12:46:31.104Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:46:31.108Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:46:31.109Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:46:31.113Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:46:31.116Z - info: Using extension resources@2.0.3
+2019-05-28T12:46:31.117Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:46:31.118Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:46:31.118Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:46:31.151Z - info: Creating default express app.
+2019-05-28T12:46:31.175Z - error: Error when starting http server on port 5488 Error: listen EADDRINUSE :::5488
+    at Object._errnoException (util.js:992:11)
+    at _exceptionWithHostPort (util.js:1014:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1355:14)
+    at listenInCluster (net.js:1396:12)
+    at Server.listen (net.js:1480:7)
+    at Promise (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:23:12)
+    at Promise._execute (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\debuggability.js:313:9)
+    at Promise._resolveFromExecutor (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\promise.js:483:18)
+    at new Promise (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\promise.js:79:10)
+    at startAsync (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:17:10)
+    at steps.push (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:51:14)
+    at Object.start (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:125:13)
+    at Object.reporter.initializeListeners.add (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:308:30)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+2019-05-28T12:46:31.181Z - error: Error occured during reporter init Error: listen EADDRINUSE :::5488
+    at Object._errnoException (util.js:992:11)
+    at _exceptionWithHostPort (util.js:1014:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1355:14)
+    at listenInCluster (net.js:1396:12)
+    at Server.listen (net.js:1480:7)
+    at Promise (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:23:12)
+    at Promise._execute (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\debuggability.js:313:9)
+    at Promise._resolveFromExecutor (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\promise.js:483:18)
+    at new Promise (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\node_modules\bluebird\js\release\promise.js:79:10)
+    at startAsync (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:17:10)
+    at steps.push (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:51:14)
+    at Object.start (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:125:13)
+    at Object.reporter.initializeListeners.add (F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\node_modules\jsreport-express\lib\reporter.express.js:308:30)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+2019-05-28T12:47:00.510Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:47:00.512Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:47:00.524Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:47:00.840Z - info: Found 31 extensions
+2019-05-28T12:47:00.879Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:47:00.883Z - debug: Discovered 31 extensions
+2019-05-28T12:47:00.982Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:47:00.995Z - info: Using extension import-export@1.3.0
+2019-05-28T12:47:01.345Z - info: Using extension tags@2.2.0
+2019-05-28T12:47:01.350Z - info: Using extension templates@2.2.0
+2019-05-28T12:47:01.365Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:47:01.368Z - info: Using extension authentication@2.2.3
+2019-05-28T12:47:01.439Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:47:01.440Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:47:01.444Z - info: Using extension cli@2.0.7
+2019-05-28T12:47:01.446Z - info: Using extension freeze@2.0.0
+2019-05-28T12:47:01.450Z - info: Using extension debug@2.0.2
+2019-05-28T12:47:01.455Z - info: Using extension express@2.4.0
+2019-05-28T12:47:01.759Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:47:02.213Z - info: Using extension data@2.1.0
+2019-05-28T12:47:02.217Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:47:02.371Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:47:02.372Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:47:02.458Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:47:02.470Z - info: Using extension licensing@2.1.0
+2019-05-28T12:47:02.558Z - info: Using extension authorization@2.2.4
+2019-05-28T12:47:02.566Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:47:02.566Z - info: Using extension version-control@1.2.3
+2019-05-28T12:47:02.789Z - info: Using extension reports@2.2.0
+2019-05-28T12:47:02.798Z - info: Using extension text@2.0.0
+2019-05-28T12:47:02.801Z - info: Using extension base@2.0.2
+2019-05-28T12:47:02.804Z - info: Using extension studio@2.5.1
+2019-05-28T12:47:02.929Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:47:02.930Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:47:03.401Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:47:03.402Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:47:03.424Z - info: Using extension scripts@2.1.0
+2019-05-28T12:47:03.497Z - info: Using extension assets@1.1.3
+2019-05-28T12:47:03.662Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:47:03.934Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:47:03.934Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:47:04.227Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:47:04.233Z - info: Using extension resources@2.0.3
+2019-05-28T12:47:04.236Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:47:04.240Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:47:04.241Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:47:04.310Z - info: Creating default express app.
+2019-05-28T12:47:04.341Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:47:04.343Z - info: Verifying license key free
+2019-05-28T12:47:04.345Z - info: Using free license
+2019-05-28T12:47:04.351Z - debug: Creating samples is disabled
+2019-05-28T12:47:04.354Z - info: reporter initialized
+2019-05-28T12:47:04.381Z - info: Starting rendering request 1 (user: null)
+2019-05-28T12:47:04.383Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T12:47:04.385Z - debug: Inline data specified.
+2019-05-28T12:47:04.386Z - debug: Resources not defined for this template.
+2019-05-28T12:47:04.407Z - debug: Base url not specified, skipping its injection.
+2019-05-28T12:47:04.409Z - debug: Rendering engine handlebars
+2019-05-28T12:47:04.877Z - debug: Compiled template not found in the cache, compiling
+2019-05-28T12:47:04.881Z - debug: Executing recipe chrome-pdf
+2019-05-28T12:47:05.583Z - debug: Converting with chrome HeadlessChrome/76.0.3803.0 using dedicated-process strategy
+2019-05-28T12:47:05.926Z - debug: Running chrome with params {"margin":{},"printBackground":true}
+2019-05-28T12:47:06.244Z - debug: Skipping storing report.
+2019-05-28T12:47:06.246Z - info: Rendering request 1 finished in 1865 ms
+2019-05-28T12:59:41.233Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T12:59:41.242Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:59:41.276Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T12:59:41.605Z - info: Found 31 extensions
+2019-05-28T12:59:41.655Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T12:59:41.657Z - debug: Discovered 31 extensions
+2019-05-28T12:59:41.752Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T12:59:41.761Z - info: Using extension import-export@1.3.0
+2019-05-28T12:59:42.323Z - info: Using extension tags@2.2.0
+2019-05-28T12:59:42.329Z - info: Using extension templates@2.2.0
+2019-05-28T12:59:42.334Z - info: Using extension jsrender@2.0.0
+2019-05-28T12:59:42.338Z - info: Using extension authentication@2.2.3
+2019-05-28T12:59:42.483Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T12:59:42.484Z - info: Using extension handlebars@2.0.2
+2019-05-28T12:59:42.490Z - info: Using extension cli@2.0.7
+2019-05-28T12:59:42.509Z - info: Using extension freeze@2.0.0
+2019-05-28T12:59:42.535Z - info: Using extension debug@2.0.2
+2019-05-28T12:59:42.543Z - info: Using extension express@2.4.0
+2019-05-28T12:59:43.208Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T12:59:43.883Z - info: Using extension data@2.1.0
+2019-05-28T12:59:43.890Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T12:59:44.189Z - debug: Chrome strategy is dedicated-process
+2019-05-28T12:59:44.191Z - info: Using extension child-templates@1.2.0
+2019-05-28T12:59:44.346Z - info: Using extension browser-client@2.1.1
+2019-05-28T12:59:44.354Z - info: Using extension licensing@2.1.0
+2019-05-28T12:59:44.532Z - info: Using extension authorization@2.2.4
+2019-05-28T12:59:44.544Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T12:59:44.545Z - info: Using extension version-control@1.2.3
+2019-05-28T12:59:44.953Z - info: Using extension reports@2.2.0
+2019-05-28T12:59:44.966Z - info: Using extension text@2.0.0
+2019-05-28T12:59:44.969Z - info: Using extension base@2.0.2
+2019-05-28T12:59:44.976Z - info: Using extension studio@2.5.1
+2019-05-28T12:59:45.185Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T12:59:45.186Z - info: Using extension fs-store@2.4.1
+2019-05-28T12:59:46.289Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T12:59:46.290Z - info: Using extension scheduling@2.0.7
+2019-05-28T12:59:46.347Z - info: Using extension scripts@2.1.0
+2019-05-28T12:59:46.507Z - info: Using extension assets@1.1.3
+2019-05-28T12:59:46.668Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T12:59:47.369Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T12:59:47.370Z - info: Using extension xlsx@2.0.10
+2019-05-28T12:59:47.796Z - info: Using extension sample-template@2.3.0
+2019-05-28T12:59:47.805Z - info: Using extension resources@2.0.3
+2019-05-28T12:59:47.811Z - info: Using extension public-templates@2.0.1
+2019-05-28T12:59:47.834Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T12:59:47.835Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T12:59:47.932Z - info: Creating default express app.
+2019-05-28T12:59:47.989Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T12:59:47.991Z - info: Verifying license key free
+2019-05-28T12:59:47.994Z - info: Using free license
+2019-05-28T12:59:48.004Z - debug: Creating samples is disabled
+2019-05-28T12:59:48.008Z - info: reporter initialized
+2019-05-28T12:59:48.046Z - info: Starting rendering request 1 (user: null)
+2019-05-28T12:59:48.048Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T12:59:48.050Z - debug: Inline data specified.
+2019-05-28T12:59:48.051Z - debug: Resources not defined for this template.
+2019-05-28T12:59:48.071Z - debug: Base url not specified, skipping its injection.
+2019-05-28T12:59:48.075Z - debug: Rendering engine handlebars
+2019-05-28T12:59:48.797Z - debug: Compiled template not found in the cache, compiling
+2019-05-28T12:59:48.800Z - debug: Executing recipe chrome-pdf
+2019-05-28T12:59:49.939Z - debug: Converting with chrome HeadlessChrome/76.0.3803.0 using dedicated-process strategy
+2019-05-28T12:59:50.280Z - debug: Running chrome with params {"margin":{},"printBackground":true}
+2019-05-28T12:59:51.088Z - debug: Skipping storing report.
+2019-05-28T12:59:51.090Z - info: Rendering request 1 finished in 3044 ms
+2019-05-28T13:08:18.870Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T13:08:18.875Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T13:08:18.906Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T13:08:19.207Z - info: Found 31 extensions
+2019-05-28T13:08:19.244Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T13:08:19.246Z - debug: Discovered 31 extensions
+2019-05-28T13:08:19.327Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T13:08:19.339Z - info: Using extension import-export@1.3.0
+2019-05-28T13:08:19.669Z - info: Using extension tags@2.2.0
+2019-05-28T13:08:19.673Z - info: Using extension templates@2.2.0
+2019-05-28T13:08:19.677Z - info: Using extension jsrender@2.0.0
+2019-05-28T13:08:19.679Z - info: Using extension authentication@2.2.3
+2019-05-28T13:08:19.745Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T13:08:19.746Z - info: Using extension handlebars@2.0.2
+2019-05-28T13:08:19.750Z - info: Using extension cli@2.0.7
+2019-05-28T13:08:19.752Z - info: Using extension freeze@2.0.0
+2019-05-28T13:08:19.756Z - info: Using extension debug@2.0.2
+2019-05-28T13:08:19.759Z - info: Using extension express@2.4.0
+2019-05-28T13:08:20.040Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T13:08:20.424Z - info: Using extension data@2.1.0
+2019-05-28T13:08:20.426Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T13:08:20.572Z - debug: Chrome strategy is dedicated-process
+2019-05-28T13:08:20.574Z - info: Using extension child-templates@1.2.0
+2019-05-28T13:08:20.670Z - info: Using extension browser-client@2.1.1
+2019-05-28T13:08:20.676Z - info: Using extension licensing@2.1.0
+2019-05-28T13:08:20.759Z - info: Using extension authorization@2.2.4
+2019-05-28T13:08:20.767Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T13:08:20.767Z - info: Using extension version-control@1.2.3
+2019-05-28T13:08:21.078Z - info: Using extension reports@2.2.0
+2019-05-28T13:08:21.087Z - info: Using extension text@2.0.0
+2019-05-28T13:08:21.089Z - info: Using extension base@2.0.2
+2019-05-28T13:08:21.092Z - info: Using extension studio@2.5.1
+2019-05-28T13:08:21.225Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T13:08:21.226Z - info: Using extension fs-store@2.4.1
+2019-05-28T13:08:21.744Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T13:08:21.745Z - info: Using extension scheduling@2.0.7
+2019-05-28T13:08:21.766Z - info: Using extension scripts@2.1.0
+2019-05-28T13:08:21.837Z - info: Using extension assets@1.1.3
+2019-05-28T13:08:22.019Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T13:08:22.286Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T13:08:22.287Z - info: Using extension xlsx@2.0.10
+2019-05-28T13:08:22.606Z - info: Using extension sample-template@2.3.0
+2019-05-28T13:08:22.614Z - info: Using extension resources@2.0.3
+2019-05-28T13:08:22.633Z - info: Using extension public-templates@2.0.1
+2019-05-28T13:08:22.641Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T13:08:22.642Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T13:08:22.708Z - info: Creating default express app.
+2019-05-28T13:08:22.737Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T13:08:22.739Z - info: Verifying license key free
+2019-05-28T13:08:22.741Z - info: Using free license
+2019-05-28T13:08:22.748Z - debug: Creating samples is disabled
+2019-05-28T13:08:22.750Z - info: reporter initialized
+2019-05-28T13:08:22.770Z - info: Starting rendering request 1 (user: null)
+2019-05-28T13:08:22.772Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T13:08:22.773Z - debug: Inline data specified.
+2019-05-28T13:08:22.774Z - debug: Resources not defined for this template.
+2019-05-28T13:08:22.885Z - debug: Base url not specified, skipping its injection.
+2019-05-28T13:08:22.887Z - debug: Rendering engine handlebars
+2019-05-28T13:08:23.457Z - debug: Compiled template not found in the cache, compiling
+2019-05-28T13:08:23.460Z - debug: Executing recipe chrome-pdf
+2019-05-28T13:08:23.777Z - debug: Converting with chrome HeadlessChrome/76.0.3803.0 using dedicated-process strategy
+2019-05-28T13:08:24.049Z - debug: Running chrome with params {"margin":{},"printBackground":true}
+2019-05-28T13:08:24.311Z - debug: Skipping storing report.
+2019-05-28T13:08:24.313Z - info: Rendering request 1 finished in 1543 ms
+2019-05-28T13:10:00.791Z - info: Initializing jsreport@2.5.0 in development mode using configuration file: none
+2019-05-28T13:10:00.794Z - info: Searching for available extensions in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T13:10:00.823Z - info: Extensions location cache contains up to date information, skipping crawling in F:\كلية الحاسبات والمعلومات\work\x-cortex\2\8drat-api\
+2019-05-28T13:10:01.099Z - info: Found 31 extensions
+2019-05-28T13:10:01.141Z - debug: Writing extension locations cache to C:\Users\ANA-MU~1\AppData\Local\Temp\jsreport\core\locations.json
+2019-05-28T13:10:01.145Z - debug: Discovered 31 extensions
+2019-05-28T13:10:01.246Z - info: Setting dedicated-process (process based) strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2019-05-28T13:10:01.256Z - info: Using extension import-export@1.3.0
+2019-05-28T13:10:01.616Z - info: Using extension tags@2.2.0
+2019-05-28T13:10:01.622Z - info: Using extension templates@2.2.0
+2019-05-28T13:10:01.627Z - info: Using extension jsrender@2.0.0
+2019-05-28T13:10:01.629Z - info: Using extension authentication@2.2.3
+2019-05-28T13:10:01.712Z - debug: Extension authentication@2.2.3 was disabled
+2019-05-28T13:10:01.713Z - info: Using extension handlebars@2.0.2
+2019-05-28T13:10:01.716Z - info: Using extension cli@2.0.7
+2019-05-28T13:10:01.717Z - info: Using extension freeze@2.0.0
+2019-05-28T13:10:01.722Z - info: Using extension debug@2.0.2
+2019-05-28T13:10:01.726Z - info: Using extension express@2.4.0
+2019-05-28T13:10:02.059Z - info: Using extension pdf-utils@1.4.0
+2019-05-28T13:10:02.483Z - info: Using extension data@2.1.0
+2019-05-28T13:10:02.486Z - info: Using extension chrome-pdf@1.4.0
+2019-05-28T13:10:02.679Z - debug: Chrome strategy is dedicated-process
+2019-05-28T13:10:02.680Z - info: Using extension child-templates@1.2.0
+2019-05-28T13:10:02.769Z - info: Using extension browser-client@2.1.1
+2019-05-28T13:10:02.774Z - info: Using extension licensing@2.1.0
+2019-05-28T13:10:02.863Z - info: Using extension authorization@2.2.4
+2019-05-28T13:10:02.868Z - debug: Extension authorization@2.2.4 was disabled
+2019-05-28T13:10:02.869Z - info: Using extension version-control@1.2.3
+2019-05-28T13:10:03.063Z - info: Using extension reports@2.2.0
+2019-05-28T13:10:03.074Z - info: Using extension text@2.0.0
+2019-05-28T13:10:03.077Z - info: Using extension base@2.0.2
+2019-05-28T13:10:03.099Z - info: Using extension studio@2.5.1
+2019-05-28T13:10:03.216Z - debug: studio request logs are enabled (flush interval: 2000)
+2019-05-28T13:10:03.217Z - info: Using extension fs-store@2.4.1
+2019-05-28T13:10:03.788Z - debug: Extension fs-store@2.4.1 was disabled
+2019-05-28T13:10:03.789Z - info: Using extension scheduling@2.0.7
+2019-05-28T13:10:03.823Z - info: Using extension scripts@2.1.0
+2019-05-28T13:10:03.922Z - info: Using extension assets@1.1.3
+2019-05-28T13:10:04.058Z - info: Using extension html-to-xlsx@2.3.1
+2019-05-28T13:10:04.355Z - info: html-to-xlsx detected chrome as available html engine
+2019-05-28T13:10:04.356Z - info: Using extension xlsx@2.0.10
+2019-05-28T13:10:04.652Z - info: Using extension sample-template@2.3.0
+2019-05-28T13:10:04.660Z - info: Using extension resources@2.0.3
+2019-05-28T13:10:04.664Z - info: Using extension public-templates@2.0.1
+2019-05-28T13:10:04.668Z - debug: Extension public-templates@2.0.1 was disabled
+2019-05-28T13:10:04.669Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2019-05-28T13:10:04.826Z - info: Creating default express app.
+2019-05-28T13:10:04.854Z - info: jsreport server successfully started on http port: 5488
+2019-05-28T13:10:04.855Z - info: Verifying license key free
+2019-05-28T13:10:04.857Z - info: Using free license
+2019-05-28T13:10:04.863Z - debug: Creating samples is disabled
+2019-05-28T13:10:04.866Z - info: reporter initialized
+2019-05-28T13:10:04.890Z - info: Starting rendering request 1 (user: null)
+2019-05-28T13:10:04.893Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars }
+2019-05-28T13:10:04.895Z - debug: Inline data specified.
+2019-05-28T13:10:04.896Z - debug: Resources not defined for this template.
+2019-05-28T13:10:04.912Z - debug: Base url not specified, skipping its injection.
+2019-05-28T13:10:04.914Z - debug: Rendering engine handlebars
+2019-05-28T13:10:05.505Z - debug: Compiled template not found in the cache, compiling
+2019-05-28T13:10:05.507Z - debug: Executing recipe chrome-pdf
+2019-05-28T13:10:05.947Z - debug: Converting with chrome HeadlessChrome/76.0.3803.0 using dedicated-process strategy
+2019-05-28T13:10:06.274Z - debug: Running chrome with params {"margin":{},"printBackground":true}
+2019-05-28T13:10:06.599Z - debug: Skipping storing report.
+2019-05-28T13:10:06.617Z - info: Rendering request 1 finished in 1711 ms
