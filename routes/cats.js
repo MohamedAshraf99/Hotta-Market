@@ -11,6 +11,7 @@ router.get('/', async (req, res) => {
 });
 
 
+
 router.post('/add', [upload.single('avatar')], async (req, res) => {
     
     req.body = JSON.parse(req.body.data || {});
