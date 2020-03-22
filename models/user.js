@@ -63,6 +63,10 @@ const userSchema = new mongoose.Schema({
     },
     areaDesc: String,
   }],
+  dateCreate: {
+    type: Date,
+    default: Date.now(),
+},
 });
 
 

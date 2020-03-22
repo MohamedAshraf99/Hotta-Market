@@ -17,6 +17,10 @@ const paymentTransactionSchema = new mongoose.Schema({
         required: true,
         enum: ['COD', 'credit', 'balance', 'sadad']
     },
+    dateCreate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 

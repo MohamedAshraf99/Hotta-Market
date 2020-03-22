@@ -40,6 +40,10 @@ const coboneSchema = new mongoose.Schema({
     toDate: {
         type: Date,
         required: true,
+    },
+    dateCreate: {
+        type: Date,
+        default: Date.now
     }
 });
 

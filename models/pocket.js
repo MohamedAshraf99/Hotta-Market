@@ -27,6 +27,10 @@ const pocketSchema = new mongoose.Schema({
         required: true,
         enum: ['deposite', 'withdraw']
     },
+    dateCreate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 

@@ -40,31 +40,30 @@ module.exports = function (app, io) {
 
   app.set("DefaultAvatar", (req, collectionName) => {
 
-    let host = `${req.protocol}://${req.get('host')}/api`,
+    let host = `${req.protocol}://${req.get('host')}`,
       defaultPic = '';
 
+    if (collectionName == 'host') return host;
+
     switch (collectionName) {
-      case 'host':
-        return host;
-        break;
       case 'user':
-        defaultPic = '/uploads/6r4kR2po1MWWbje1550582821209.png';
-        break;
+        defaultPic = '/uploads/assets/user.png';
       default:
-        defaultPic = '/uploads/6r4kR2po1MWWbje1550582821209.png';
+        defaultPic = '/uploads/assets/default.png';
         break;
     }
+
     return `${host}${defaultPic}`;
   });
 
-  app.use('/api/uploads', express.static('uploads'))
+  app.use('/uploads', express.static('uploads'))
 
   // app.use('/admin',express.static('admin'));
 
   // app.get('/admin/*', function (req, res) {
   //   res.sendFile(path.join(__dirname + '/admin/index.html'));
   // });
-  
+
   app.use(bodyParser.json({ limit: '100mb' }));
   app.use(bodyParser.urlencoded({
     limit: '100mb',
@@ -74,7 +73,7 @@ module.exports = function (app, io) {
 
   app.use('/api/roles', roles);
   app.use('/api/auth', auth);
-  
+
   app.use('/api/announcementPlans', announcementPlans);
   app.use('/api/announcements', announcements);
   app.use('/api/areas', areas);
@@ -97,5 +96,4 @@ module.exports = function (app, io) {
   app.use('/api/users', users);
 
   app.use(error);
-} 
- 
+}

@@ -9,8 +9,14 @@ const specialProductSchema = new mongoose.Schema({
         required: true
     },
     favouriteProducts: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
+        date: {
+            type: Date,
+            default: Date.now(),
+        },
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product",
+        }
     }],
     comparedProducts: [{
         date: {

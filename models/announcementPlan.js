@@ -17,6 +17,10 @@ const announcementPlanSchema = new mongoose.Schema({
         required: true,
         min: 1
     },
+    dateCreate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 

@@ -4,7 +4,12 @@ const mongoose = require('mongoose');
 
 
 const productMainPropSchema = new mongoose.Schema({  
-    name: {
+    nameAr: {
+        type: String,
+        maxlength: 50,
+        required: true,
+    },
+    nameEn: {
         type: String,
         maxlength: 50,
         required: true,
@@ -13,6 +18,10 @@ const productMainPropSchema = new mongoose.Schema({
         maxlength: 1024,
         type: String,
     },
+    dateCreate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 

@@ -9,7 +9,12 @@ const productSubPropSchema = new mongoose.Schema({
         ref: "ProductMainProp",
         required: true,
     },
-    name: {
+    nameAr: {
+        type: String,
+        maxlength: 50,
+        required: true,
+    },
+    nameEn: {
         type: String,
         maxlength: 50,
         required: true,
@@ -18,6 +23,10 @@ const productSubPropSchema = new mongoose.Schema({
         maxlength: 1024,
         type: String,
     },
+    dateCreate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 

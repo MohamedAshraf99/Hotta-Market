@@ -24,6 +24,10 @@ const productPriceSchema = new mongoose.Schema({
         costPrice: Number,
         quantity: Number,
     }],
+    dateCreate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 

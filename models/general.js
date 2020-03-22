@@ -18,6 +18,10 @@ const generalSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    dateCreate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 

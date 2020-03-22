@@ -37,6 +37,10 @@ const creditCardSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    dateCreate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 
