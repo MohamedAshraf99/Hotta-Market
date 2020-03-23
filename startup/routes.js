@@ -21,7 +21,7 @@ const productMainProps = require('../routes/productMainProps');
 const productPrices = require('../routes/productPrices');
 const productSubProps = require('../routes/productSubProps');
 const products = require('../routes/products');
-const shipCards = require('../routes/shipCards');
+const cards = require('../routes/cards');
 const specialProducts = require('../routes/specialProducts');
 const users = require('../routes/users');
 
@@ -91,7 +91,7 @@ module.exports = function (app, io) {
   app.use('/api/productPrices', productPrices);
   app.use('/api/productSubProps', productSubProps);
   app.use('/api/products', products);
-  app.use('/api/shipCards', shipCards);
+  app.use('/api/cards', cards);
   app.use('/api/specialProducts', specialProducts);
   app.use('/api/users', users);
 

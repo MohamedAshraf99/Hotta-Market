@@ -2,13 +2,13 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 
 
-const shipCardSchema = new mongoose.Schema({
+const cardSchema = new mongoose.Schema({
     client: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
-    product: {
+    ProductPrice: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "ProductPrice",
         required: true,
@@ -25,11 +25,11 @@ const shipCardSchema = new mongoose.Schema({
 });
 
 
-const ShipCard = mongoose.model('ShipCard', shipCardSchema);
+const Card = mongoose.model('Card', cardSchema);
 
 
 module.exports = {
-    ShipCard,
+    Card,
 }
 
 

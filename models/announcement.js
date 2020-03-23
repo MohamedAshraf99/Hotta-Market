@@ -14,7 +14,8 @@ const announcementSchema = new mongoose.Schema({
         required: true,
     },
     avatars: [{
-        type: String,
+        avatar: String,
+        link: String,
     }],
     price: {
         type: Number,
