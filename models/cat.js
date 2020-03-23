@@ -50,7 +50,9 @@ const validateAdd = (body) => {
         nameAr: Joi.string().min(3).required(),
         nameEn: Joi.string().min(3).required(),
         parent: Joi.string().length(24).optional(),
+        type: Joi.string().required(),
         avatar: Joi.string().required(),
+        icon: Joi.string().required(),
         profitPercentage: Joi.number().optional(),
     };
 
@@ -60,12 +62,21 @@ const validateAdd = (body) => {
 
 const getCats = async (input) => {
 
-    let cats = await Cat.find();
+    let { startId = false, limit = 10, all = false } = input.query;
+
+    startId = (all || !startId) ? {} : { '_id': { '$gt': startId } };
+    limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+    
+
+    let cats = await Cat.find({...startId, }).limit(limit);
 
     if (cats.length)
         cats = cats.map(cat => {
-            if (cat.avatar) cat.avatar = input.app.get('DefaultAvatar')(input, 'host') + cat.avatar
-            else cat.avatar = input.app.get('DefaultAvatar')(input)
+            ['avatar', 'icon'].map(field => {
+                if (cat[field]) cat[field] = input.app.get('DefaultAvatar')(input, 'host') + cat[field]
+                else cat[field] = input.app.get('DefaultAvatar')(input)
+            })
+            
             return cat;
         });
 
@@ -86,8 +97,10 @@ const addCat = async (input) => {
     newCat = await newCat.save();
 
     if (newCat._id) {
-        if (newCat.avatar) newCat.avatar = input.app.get('DefaultAvatar')(input, 'host') + newCat.avatar
-        else newCat.avatar = input.app.get('DefaultAvatar')(input)
+        ['avatar', 'icon'].map(field => {
+            if (newCat[field]) newCat[field] = input.app.get('DefaultAvatar')(input, 'host') + newCat[field]
+            else newCat[field] = input.app.get('DefaultAvatar')(input)
+        })
     }
 
     return newCat;

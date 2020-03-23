@@ -9,9 +9,11 @@ const announcements = require('../routes/announcements');
 const areas = require('../routes/areas');
 const cats = require('../routes/cats');
 const cities = require('../routes/cities');
+const comparedProducts = require('../routes/comparedProducts');
 const cobones = require('../routes/cobones');
 const countries = require('../routes/countries');
 const creditCards = require('../routes/creditCards');
+const favouriteProducts = require('../routes/favouriteProducts');
 const generals = require('../routes/generals');
 const messages = require('../routes/messages');
 const orders = require('../routes/orders');
@@ -22,7 +24,6 @@ const productPrices = require('../routes/productPrices');
 const productSubProps = require('../routes/productSubProps');
 const products = require('../routes/products');
 const cards = require('../routes/cards');
-const specialProducts = require('../routes/specialProducts');
 const users = require('../routes/users');
 
 
@@ -91,8 +92,9 @@ module.exports = function (app, io) {
   app.use('/api/productPrices', productPrices);
   app.use('/api/productSubProps', productSubProps);
   app.use('/api/products', products);
+  app.use('/api/comparedProducts', comparedProducts);
+  app.use('/api/favouriteProducts', favouriteProducts);
   app.use('/api/cards', cards);
-  app.use('/api/specialProducts', specialProducts);
   app.use('/api/users', users);
 
   app.use(error);

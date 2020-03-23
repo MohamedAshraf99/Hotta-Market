@@ -1,5 +1,5 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { SpecialProduct } = require('../models/specialProduct');
+const { FavouriteProduct } = require('../models/favouriteProduct');
 const express = require('express');
 const router = express.Router();
 

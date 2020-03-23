@@ -5,6 +5,7 @@ const router = express.Router();
 const { upload } = require('../services/helper')
 
 
+
 router.get('/', async (req, res) => {
     let cats = await getCats(req);
     res.send(cats);
@@ -12,18 +13,23 @@ router.get('/', async (req, res) => {
 
 
 
-router.post('/add', [upload.single('avatar')], async (req, res) => {
-    
-    req.body = JSON.parse(req.body.data || {});
+router.post('/add',
+    upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'icon', maxCount: 1 }])
+        , async (req, res) => {
 
-    req.body.avatar = (!req.file)? false :`/uploads/${req.file.filename}`;
+            req.body = JSON.parse(req.body.data || {});
 
-    let newCat = await addCat(req);
+            req.body.avatar = (!req.files) ? false : `/uploads/${req.files.avatar[0].filename}`;
+            req.body.icon = (!req.files) ? false : `/uploads/${req.files.icon[0].filename}`;
 
-    if (newCat.message && newCat.path && newCat.type && newCat.context)
-        return res.status(400).send(newCat.message)
+            let newCat = await addCat(req);
 
-    res.send(newCat);
-});
+            if (newCat.message && newCat.path && newCat.type && newCat.context)
+                return res.status(400).send(newCat.message)
+
+            res.send(newCat);
+        });
+
+
 
 module.exports = router; 
