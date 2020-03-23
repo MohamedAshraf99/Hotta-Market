@@ -19,6 +19,10 @@ const countrySchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    isNeglected: {
+        type: Boolean,
+        default: false
+    },
     dateCreate: {
         type: Date,
         default: Date.now

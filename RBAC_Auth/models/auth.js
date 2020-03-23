@@ -349,6 +349,11 @@ const seedAuths = async (routes = []) => {
     }
 }
 
+//==============assign routes to auth  --put in app.js===============
+// let routes = _.uniq(listEndpoints(app).map(p=>p.path.split('/')[2]));
+// seedAuths(routes)
+//==============================
+
 
 module.exports = {
     Auth,

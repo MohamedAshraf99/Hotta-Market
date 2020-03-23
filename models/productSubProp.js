@@ -23,6 +23,10 @@ const productSubPropSchema = new mongoose.Schema({
         maxlength: 1024,
         type: String,
     },
+    isNeglected: {
+        type: Boolean,
+        default: false
+    },
     dateCreate: {
         type: Date,
         default: Date.now

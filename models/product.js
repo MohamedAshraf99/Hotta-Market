@@ -39,6 +39,10 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },    
+    isNeglected: {
+        type: Boolean,
+        default: false
+    },
     dateCreate: {
         type: Date,
         default: Date.now

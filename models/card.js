@@ -18,6 +18,10 @@ const cardSchema = new mongoose.Schema({
         required: true,
         min: 1
     },
+    isNeglected: {
+        type: Boolean,
+        default: false
+    },
     dateCreate: {
         type: Date,
         default: Date.now

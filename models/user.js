@@ -1,7 +1,6 @@
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const {Role} = require('../RBAC_Auth/models/role')
 const Joi = require('joi');
 
 
@@ -77,47 +76,6 @@ userSchema.methods.generateAuthToken = function () {
 }
 const User = mongoose.model('User', userSchema);
 
-
-
-
-async function seedAdminRoleAndAdminUser() {
-
-  let seedAdminRole = async() => {
-    let count = await Role.find().count();
-  
-    if (!count) {
-      console.log('creating (admin) role')
-      let adminRoleData = {
-          name: 'admin',
-          owner: true,
-      }
-  
-      let adminRole = new Role(adminRoleData)
-  
-      return await adminRole.save()
-    }
-  
-    return {}
-  
-  }
-
-  let count = await User.find({ type: 'admin' }).count();
-
-  let adminRole = await seedAdminRole();
-
-  if (!count && adminRole._id) {
-    console.log('creating adminUser Now')
-    let userAdmin = {
-      phone: '+966admin',
-      password: await getHashPassword('123456'),
-      isAdmin: true,
-
-    }
-    User.insertMany([userAdmin]);
-  }
-
-}
-seedAdminRoleAndAdminUser();
 
 module.exports = {
   User,

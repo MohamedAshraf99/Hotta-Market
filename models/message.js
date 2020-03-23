@@ -16,6 +16,10 @@ const messageSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    isNeglected: {
+        type: Boolean,
+        default: false
+    },
     dateCreate: {
         type: Date,
         default: Date.now

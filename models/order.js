@@ -41,6 +41,10 @@ const orderSchema = new mongoose.Schema({
             enum: ['new', 'progress', 'prepared', 'complete', 'canceled' ]
         }
     }],
+    isNeglected: {
+        type: Boolean,
+        default: false
+    },
     dateCreate: {
         type: Date,
         default: Date.now

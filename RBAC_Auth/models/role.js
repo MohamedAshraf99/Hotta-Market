@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const {User} = require('../../models/user')
 
 
 
@@ -86,26 +87,44 @@ const deleteRole = async (input) => {
 }
 
 
-// moved to seedAdmin in user
+async function seedAdminRoleAndAdminUser() {
 
-// async function seedAdminRole() {
-//     let count = await Role.find().count();
-  
-//     if (!count) {
-//       console.log('creating (admin) role')
-//       let adminRoleData = {
-//           name: 'admin',
-//           owner: true,
-//       }
+    let seedAdminRole = async () => {
+        let count = await Role.find().count();
 
-//       let adminRole = new Role(adminRoleData)
+        if (!count) {
+            console.log('creating (admin) role')
+            let adminRoleData = {
+                name: 'admin',
+                owner: true,
+            }
 
-//       await adminRole.save()
-//     }
-  
-  
-//   }
-//   seedAdminRole();
+            let adminRole = new Role(adminRoleData)
+
+            return await adminRole.save()
+        }
+
+        return {}
+
+    }
+
+    let count = await User.find({ type: 'admin' }).count();
+
+    let adminRole = await seedAdminRole();
+
+    if (!count && adminRole._id) {
+        console.log('creating adminUser Now')
+        let userAdmin = {
+            phone: '+966admin',
+            password: await getHashPassword('123456'),
+            isAdmin: true,
+
+        }
+        User.insertMany([userAdmin]);
+    }
+
+}
+seedAdminRoleAndAdminUser();
 
 
 module.exports = {
