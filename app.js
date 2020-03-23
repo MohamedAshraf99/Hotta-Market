@@ -17,7 +17,7 @@ require('./startup/prod')(app);
 
 // app.use('/api',express.static(__dirname + '/apidoc'));
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 
 http.listen(port, () => console.log(`Listening on port ${port}...`));
 
