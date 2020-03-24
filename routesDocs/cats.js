@@ -3,9 +3,8 @@
 api: {
     get /api/cats
 }
-params: {
-
-}
+body: {}
+params: {}
 qstring: {
     [all] => optional => bool => [true => override all query strings and get all cats],
     [startId] => optional => string => [null => start from first id] or [string => start from this id]

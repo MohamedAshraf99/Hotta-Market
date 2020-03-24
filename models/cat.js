@@ -55,6 +55,7 @@ const validateAdd = (body) => {
         nameEn: Joi.string().min(3).required(),
         parent: Joi.string().length(24).optional(),
         type: Joi.string().required(),
+        isNeglected: Joi.bool().optional(),
         avatar: Joi.string().required(),
         icon: Joi.string().required(),
         profitPercentage: Joi.number().optional(),
