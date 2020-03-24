@@ -8,13 +8,21 @@ const productPriceSchema = new mongoose.Schema({
         ref: "Product",
         required: true,
     },
+    tax: {
+        type: Number,
+        default: 0,
+    }, 
     props: [{
         productSubProp: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "ProductSubProp",
         },
         value: String
-    }],  
+    }],
+    avatars: [{
+        type: String,
+        required: true,
+    }],
     prices: [{
         date: Date,
         // initialPrice: Number,
@@ -40,6 +48,7 @@ const ProductPrice = mongoose.model('ProductPrice', productPriceSchema);
 
 module.exports = {
     ProductPrice,
+    productPriceSchema,
 }
 
 
