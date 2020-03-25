@@ -46,7 +46,6 @@ const productSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    productPrices: [productPriceSchema]
 });
 
 
@@ -88,17 +87,17 @@ const addProduct = async (input) => {
         newProduct = new Product(_.omit(body, ['productPrices']))
         newProduct = await newProduct.save({session})
 
-        // if (newProduct._id) {
-        //     productPricesArr = productPricesArr
-        //         .map(pp => ({ ...pp, product: newProduct._id }));
+        if (newProduct._id) {
+            productPricesArr = productPricesArr
+                .map(pp => ({ ...pp, product: newProduct._id }));
 
-        //         // throw new Error("message");
+                // throw new Error("message");
 
-        //     productPricesArr = await ProductPrice
-        //         .insertMany(productPricesArr, { session });
+            productPricesArr = await ProductPrice
+                .insertMany(productPricesArr, { session });
 
-        //     newProduct.productPrices = productPricesArr;
-        // }
+            newProduct.productPrices = productPricesArr;
+        }
 
         //start end
         await session.commitTransaction()
@@ -109,14 +108,11 @@ const addProduct = async (input) => {
     }
     //end transaction
 
-    if (newProduct._id)
-    console.log(newProduct);
+    if (productPricesArr[0]._id)
+    console.log(productPricesArr);
 
     return newProduct;
 }
-
-
-
 
 
 
