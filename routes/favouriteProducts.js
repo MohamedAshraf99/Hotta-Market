@@ -1,4 +1,4 @@
-const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
+const {authnMW, authrMW, testableAuthnMW} = require('../RBAC_Auth/models/auth');
 const { FavouriteProduct, addFavouriteProduct, getFavouriteProducts, toggleFavouriteProduct } = require('../models/favouriteProduct');
 const express = require('express');
 const router = express.Router();
@@ -12,8 +12,13 @@ router.get('/', async (req, res) => {
 });
 
 
+router.post('/add/:product', testableAuthnMW, async (req, res) => {
 
-router.post('/add', async (req, res) => {
+    req.body = {
+        ...req.body,
+        user: req.user._id,
+        product: req.params.product
+    }
     
     let newFavProd = await addFavouriteProduct(req);
 
@@ -24,7 +29,13 @@ router.post('/add', async (req, res) => {
 });
 
 
-router.post('/toggleFavouriteProduct', async (req, res) => {
+router.post('/toggle/:product', testableAuthnMW, async (req, res) => {
+
+    req.body = {
+        ...req.body,
+        user: req.user._id,
+        product: req.params.product
+    }
     
     let toggleFavProd = await toggleFavouriteProduct(req);
 

@@ -246,8 +246,7 @@ const authnMW = async (req, res, next) => {
         //custom validation
         if (!user.activated || !user.neglected)
             return res.status(401).send('Access denied.');
-    
-
+            
         next();
     }
     catch (ex) {
@@ -328,6 +327,19 @@ const authnfunc = async (input) => {
 
 }
 
+const testableAuthnMW = (req,res,next) => {
+    // _id => 5e5ec91519c4fe411c596cd2
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTVlYzkxNTE5YzRmZTQxMWM1OTZjZDIiLCJpYXQiOjE1ODMyNzY0NDR9.oUznYWZwXAhQB2gkgIpZzyuzZg06RwGrWGAH2IT57Ns"
+    const decoded = jwt.verify(token, config.get('jwtPrivateKey')),
+    _id = decoded._id;
+
+    req.user = {
+        _id
+    }
+
+    next();
+}
+
 //used in app.js
 const seedAuths = async (routes = []) => {
     let existRoutesNames = await Auth.find({}, { name: 1 })
@@ -365,6 +377,7 @@ module.exports = {
     deleteAuth,
     authrMW,
     authnMW,
+    testableAuthnMW,
     authrfunc,
     authnfunc,
     seedAuths

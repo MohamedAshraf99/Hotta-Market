@@ -16,10 +16,11 @@ const productSchema = new mongoose.Schema({
         ref: "Cat",
         required: true,
     },
-    linkedProducts: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-    }],       
+    linkedProducts: {
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: "Product",
+            default: []
+    },       
     nameAr: {
         type: String,
         required: true,
@@ -76,39 +77,42 @@ const addProduct = async (input) => {
     if (error) return (error.details[0]);
 
     let newProduct = {},
-    productPricesArr = body.productPrices;
-
+        productPricesArr = body.productPrices;
 
     //transaction guaranted
     const session = await mongoose.startSession()
-    session.startTransaction()
+    session.startTransaction({ readPreference: { mode: "primary" } })
     try {
         //start code
 
-        newProduct = await Product
-            .create(_.omit(body, ['productPrices']), { session })
+        newProduct = new Product(_.omit(body, ['productPrices']))
+        newProduct = await newProduct.save({session})
 
-        if (newProduct._id) {
-            productPricesArr = productPricesArr
-                .map(pp => ({ ...pp, product: newProduct._id }));
+        // if (newProduct._id) {
+        //     productPricesArr = productPricesArr
+        //         .map(pp => ({ ...pp, product: newProduct._id }));
 
-            productPricesArr = await ProductPrice
-                .insertMany(productPricesArr, { session });
-        }
+        //         // throw new Error("message");
+
+        //     productPricesArr = await ProductPrice
+        //         .insertMany(productPricesArr, { session });
+
+        //     newProduct.productPrices = productPricesArr;
+        // }
 
         //start end
         await session.commitTransaction()
-        session.endSession()
     } catch (err) {
         await session.abortTransaction()
+    } finally {
         session.endSession()
     }
     //end transaction
 
+    if (newProduct._id)
+    console.log(newProduct);
 
-
-
-    return newCat;
+    return newProduct;
 }
 
 

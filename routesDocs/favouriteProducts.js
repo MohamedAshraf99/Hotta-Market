@@ -15,16 +15,15 @@ return: {
 //#endregion
 
 
-//#region toggleFavouriteProduct :: add or remove favourite product to a user
+//#region toggle favourite Product :: add or remove favourite product to a user
 /*
 api: {
-    post /api/favouriteProducts/toggleFavouriteProduct
+    post /api/favouriteProducts/toggle/:product
 }
-body: {
-[user] => required => string => [owner of favourite Product],
-[product] => required => string => [id of the favourite Product],
+body: {}
+params: {
+    [product] => required => string => [id of the favourite Product],
 }
-params: {}
 qstring: {}
 return: {
     if no product it create one then return it
@@ -37,13 +36,12 @@ return: {
 //#region addFavouriteProduct :: add a new favourite product to a user
 /*
 api: {
-    post /api/favouriteProducts/addFavouriteProduct
+    post /api/favouriteProducts/addFavouriteProduct/:product
 }
-body: {
-[user] => required => string => [owner of favourite Product],
-[product] => required => string => [id of the favourite Product],
+body: {}
+params: {
+    [product] => required => string => [id of the favourite Product],
 }
-params: {}
 qstring: {}
 return: {
     object of the new product
