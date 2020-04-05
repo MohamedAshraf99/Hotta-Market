@@ -78,38 +78,36 @@ const addProduct = async (input) => {
     let newProduct = {},
         productPricesArr = body.productPrices;
 
-    //transaction guaranted
+    //transaction guaranted 
     const session = await mongoose.startSession()
-    session.startTransaction({ readPreference: { mode: "primary" } })
+    session.startTransaction()
     try {
         //start code
 
-        newProduct = new Product(_.omit(body, ['productPrices']))
-        newProduct = await newProduct.save({session})
+        newProduct = await Product.insertMany([_.omit(body, ['productPrices'])], {session})
+        // newProduct = await newProduct.save({session})
 
-        if (newProduct._id) {
-            productPricesArr = productPricesArr
-                .map(pp => ({ ...pp, product: newProduct._id }));
+        // if (newProduct._id) {
+        //     productPricesArr = productPricesArr
+        //         .map(pp => ({ ...pp, product: newProduct._id }));
 
-                // throw new Error("message");
+        //         // throw new Error("message");
 
-            productPricesArr = await ProductPrice
-                .insertMany(productPricesArr, { session });
+        //     productPricesArr = await ProductPrice
+        //         .insertMany(productPricesArr, { session });
 
-            newProduct.productPrices = productPricesArr;
-        }
+        //     newProduct.productPrices = productPricesArr;
+        // }
 
         //start end
         await session.commitTransaction()
+        session.endSession()
     } catch (err) {
+        console.log(err);
         await session.abortTransaction()
-    } finally {
         session.endSession()
     }
     //end transaction
-
-    if (productPricesArr[0]._id)
-    console.log(productPricesArr);
 
     return newProduct;
 }

@@ -19,29 +19,27 @@ const orderSchema = new mongoose.Schema({
         required: true,
     },
     requiredDateTime: Date,
-    products: [{
-        product: {
+    logs: [{
+        vendor: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "ProductPrice",
-            required: true,
+            ref: "User",
         },
-        quantity: {
-            type: Number,
-            required: true,
-        },
-        price: {
-            type: Number,
-            required: true,
-        },
-    }],
-    log: [{
-        date: Date,
-        state: {
-            type: String,
-            enum: ['new', 'progress', 'prepared', 'complete', 'canceled' ]
-        }
+        log: [{
+            date: {
+                type: Date,
+                default: Date.now()
+            },
+            state: {
+                type: String,
+                enum: ['new', 'progress', 'prepared', 'complete', 'canceled']
+            }
+        }]
     }],
     isNeglected: {
+        type: Boolean,
+        default: false
+    },
+    completed: {
         type: Boolean,
         default: false
     },
