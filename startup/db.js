@@ -2,7 +2,7 @@
 
 
 module.exports = function () {
-  mongoose.connect('mongodb://localhost:27017/mrMgr'+(false? '?replicaSet=rs': ''), {useCreateIndex: true,
+  mongoose.connect('mongodb://admin2:mrMgr2020@localhost:27017/mrMgr', {useCreateIndex: true,
   useNewUrlParser: true})
     .then(() => console.log("Connetion To MongoDB ......."))
     .catch((err) => console.error('error When Connecting to MongoDB...',err))
