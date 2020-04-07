@@ -42,7 +42,7 @@ const catSchema = new mongoose.Schema({
     dateCreate: {
         type: Date,
         default: Date.now
-    }
+    },
 });
 
 
@@ -81,10 +81,11 @@ const getCats = async (input) => {
                 if (cat[field]) cat[field] = input.app.get('DefaultAvatar')(input, 'host') + cat[field]
                 else cat[field] = input.app.get('DefaultAvatar')(input)
             })
-            
-            return cat;
-        });
 
+            let lang = (input.headers["accept-language"]).split('-')[0] == 'en'? "En": "Ar"
+            
+            return {...cat._doc, name: cat[`name${lang}`]};
+        });
 
     return cats
 }
@@ -108,7 +109,9 @@ const addCat = async (input) => {
         })
     }
 
-    return newCat;
+    let lang = (input.headers["accept-language"]).split('-')[0] == 'en'? "En": "Ar"
+            
+    return {...newCat._doc, name: newCat[`name${lang}`]};
 }
 
 
