@@ -17,3 +17,25 @@ return: {
 //#endregion
 
 
+//#region add cat
+/*
+api: {
+    post /api/cats/add
+}
+body: {
+    [profitPercentage] => optional => number => [profitPercentage from the country on products of this cat default zero],
+    [isNeglected] => optional => bool => [is this cat deleted => default false],
+    [nameAr] => required => string => [arabic name],
+    [nameEn] => required => string => [english name],
+    [avatar] => required => file => [image file],
+    [icon] => required => file => [image file],
+    [parent] => required => string => [id of cat parent],
+    [type] => required => string => enum: ['vendor', 'productiveFamily', 'admin'],
+}
+params: {}
+qstring: {}
+return: {
+    object of new cat
+}
+*/
+//#endregion

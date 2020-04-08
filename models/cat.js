@@ -64,6 +64,21 @@ const validateAdd = (body) => {
     return Joi.validate(body, schema);
 }
 
+const validateUpdate = (body) => {
+    let schema = {
+        nameAr: Joi.string().min(3).optional(),
+        nameEn: Joi.string().min(3).optional(),
+        parent: Joi.string().length(24).optional(),
+        type: Joi.string().optional(),
+        isNeglected: Joi.bool().optional(),
+        avatar: Joi.string().optional(),
+        icon: Joi.string().optional(),
+        profitPercentage: Joi.number().optional(),
+    };
+
+    return Joi.validate(body, schema);
+}
+
 
 const getCats = async (input) => {
 
@@ -115,10 +130,35 @@ const addCat = async (input) => {
 }
 
 
+const updateCat = async (input) => {
+
+    let body = input.body,
+        id = input.params.id
+
+    const { error } = validateUpdate(body);
+    if (error) return (error.details[0]);
+
+    let updatedCat = await Cat.findOneAndUpdate({_id: id}, body, {new: true})
+
+    if (updatedCat._id) {
+        ['avatar', 'icon'].map(field => {
+            if (updatedCat[field])
+                updatedCat[field] = input.app.get('DefaultAvatar')(input, 'host') + updatedCat[field]
+            else updatedCat[field] = input.app.get('DefaultAvatar')(input)
+        })
+    }
+
+    let lang = (input.headers["accept-language"]).split('-')[0] == 'en'? "En": "Ar"
+            
+    return {...updatedCat._doc, name: updatedCat[`name${lang}`]};
+}
+
+
 module.exports = {
     Cat,
     getCats,
     addCat,
+    updateCat
 }
 
 
