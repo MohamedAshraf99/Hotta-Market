@@ -80,9 +80,20 @@ const validateUpdate = (body) => {
 }
 
 
+const validateToggleNeglectCats = (body) => {
+    let schema = {
+        neglected: Joi.bool().required(),
+        ids: Joi.array().required(),
+    };
+
+    return Joi.validate(body, schema);
+}
+
 const getCats = async (input) => {
 
     let { startId = false, limit = 10, all = false } = input.query;
+
+    startId = (!startId || startId == "false") ? false: startId
 
     startId = (all || !startId) ? {} : { '_id': { '$gt': startId } };
     limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
@@ -153,12 +164,28 @@ const updateCat = async (input) => {
     return {...updatedCat._doc, name: updatedCat[`name${lang}`]};
 }
 
+const toggleNeglectCats = async (input) => {
+
+    let {ids, neglected} = input.body;
+
+    const { error } = validateToggleNeglectCats(input.body);
+    if (error) return (error.details[0]);
+
+    let cats = await Cat.updateMany(
+        { _id: { $in: ids } },
+        { $set: { isNeglected : neglected } },
+        {multi: true}
+    )
+
+    return cats
+}
+
 
 module.exports = {
     Cat,
     getCats,
     addCat,
-    updateCat
+    updateCat,
+    toggleNeglectCats,
 }
-
 

@@ -1,5 +1,5 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { Cat, getCats, addCat, updateCat } = require('../models/cat');
+const { Cat, getCats, addCat, updateCat, toggleNeglectCats } = require('../models/cat');
 const express = require('express');
 const router = express.Router();
 const { upload } = require('../services/helper')
@@ -11,6 +11,11 @@ router.get('/', async (req, res) => {
     res.send(cats);
 });
 
+
+router.put('/toggleNeglectCats', async (req, res) => {
+    let cats = await toggleNeglectCats(req);
+    res.send(cats);
+});
 
 
 router.post('/add',
