@@ -100,9 +100,8 @@ const validateRegister = (body) => {
       phone: Joi.string().required(),
       email: Joi.string().required(),
       type: Joi.string().required(),
-      role: Joi.string().length(24).required(),
       password: Joi.string().min(2).required(),
-      addresses: Joi.array().required(),
+      addresses: Joi.array().optional(),
   };
 
   return Joi.validate(body, schema);
@@ -115,8 +114,6 @@ const validateUpdate = (body) => {
     avatar: Joi.string().optional(),
     phone: Joi.string().optional(),
     email: Joi.string().optional(),
-    type: Joi.string().optional(),
-    role: Joi.string().length(24).optional(),
     password: Joi.string().min(2).optional(),
     addresses: Joi.array().optional(),
     isNeglected: Joi.bool().optional(),
@@ -159,7 +156,7 @@ const validateResetPassword = (body) => {
 
 const getUsers = async (input) => {
 
-  let { startId = false, limit = 10, all = false, filter="{}" } = input.query;
+  let { startId = false, limit = 10, all = false, filter="{}", fields="{}" } = input.query;
 
   startId = (!startId || startId == "false") ? false: startId
 
@@ -167,7 +164,10 @@ const getUsers = async (input) => {
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
   
 
-  let users = await User.find({...startId, ...JSON.parse(filter)}).limit(limit);
+  let users = await User.find(
+    { ...startId, ...JSON.parse(filter) },
+    { ...JSON.parse(fields) }
+  ).limit(limit);
 
   if (users.length)
     users = users.map(user => {
@@ -197,6 +197,11 @@ const register = async (input) => {
   const { error } = validateRegister(body);
   if (error) return (error.details[0]);
 
+  let Role = mongoose.model("Role"),
+      userRole = await Role.findOne({name: body.type})
+
+  if(userRole._id) body.role = userRole._id;
+
   body.password = await getHashPassword(input.body.password);
   body.isActivated = body.type == "admin" ? true: false;
   body.latestActivationCode = activationCode;
@@ -204,19 +209,12 @@ const register = async (input) => {
   let user = new User(body)
   user = await user.save();
 
-  if(user._id) {
-
-  }
-  else return {}
-
   let code = await sendMessage(user.phone, activationCode);
 
-  if (true || code == 100) {
- 
-    if (user._id) {
+  // if (user._id && code == 100) {
+ if (true) {
       if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
       else user.avatar = input.app.get('defaultAvatar')(input)
-    }
   
     return (
       _.omit(user.toObject(),
