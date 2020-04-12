@@ -221,7 +221,10 @@ const authrMW = async (req, res, next) => {
                 )
             )
 
-        ) next();
+        ) {
+            req.user = {_id: user._id}
+            next();
+        }
 
 
         return res.status(401).send('Access denied.');
@@ -244,8 +247,10 @@ const authnMW = async (req, res, next) => {
         if (!user._id) return res.status(401).send('Access denied.');
 
         //custom validation
-        if (!user.activated || !user.neglected)
+        if (!user.isActivated || user.isNeglected)
             return res.status(401).send('Access denied.');
+
+        req.user = {_id: user._id}
             
         next();
     }

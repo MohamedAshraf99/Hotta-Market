@@ -104,8 +104,8 @@ const getCats = async (input) => {
     if (cats.length)
         cats = cats.map(cat => {
             ['avatar', 'icon'].map(field => {
-                if (cat[field]) cat[field] = input.app.get('DefaultAvatar')(input, 'host') + cat[field]
-                else cat[field] = input.app.get('DefaultAvatar')(input)
+                if (cat[field]) cat[field] = input.app.get('defaultAvatar')(input, 'host') + cat[field]
+                else cat[field] = input.app.get('defaultAvatar')(input)
             })
 
             let lang = (input.headers["accept-language"]).split('-')[0] == 'en'? "En": "Ar"
@@ -128,10 +128,10 @@ const addCat = async (input) => {
 
     newCat = await newCat.save();
 
-    if (newCat._id) {
+    if (newCat._id){
         ['avatar', 'icon'].map(field => {
-            if (newCat[field]) newCat[field] = input.app.get('DefaultAvatar')(input, 'host') + newCat[field]
-            else newCat[field] = input.app.get('DefaultAvatar')(input)
+            if (newCat[field]) newCat[field] = input.app.get('defaultAvatar')(input, 'host') + newCat[field]
+            else newCat[field] = input.app.get('defaultAvatar')(input)
         })
     }
 
@@ -154,8 +154,8 @@ const updateCat = async (input) => {
     if (updatedCat._id) {
         ['avatar', 'icon'].map(field => {
             if (updatedCat[field])
-                updatedCat[field] = input.app.get('DefaultAvatar')(input, 'host') + updatedCat[field]
-            else updatedCat[field] = input.app.get('DefaultAvatar')(input)
+                updatedCat[field] = input.app.get('defaultAvatar')(input, 'host') + updatedCat[field]
+            else updatedCat[field] = input.app.get('defaultAvatar')(input)
         })
     }
 

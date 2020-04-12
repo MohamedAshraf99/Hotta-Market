@@ -9,6 +9,10 @@ let dictionary = {
         ar: "لا تمتلك صلاحية الدخول !",
         en: "access denied !"
     },
+    "Invalid phone or password.": {
+        ar: "رقم الجوال أو رقم سري غير صحيح",
+        en: "Invalid phone or password."
+    },
 };
 
 
@@ -17,6 +21,7 @@ var langType = 'en';
 function lang(newLangType) {
     langType = newLangType;
 }
+
 function translate(message){
 
     let returnMessage = "";
@@ -31,7 +36,8 @@ function translate(message){
     });
     return returnMessage;
 }
-function langTranslate(lang, message){
+
+function translate2(lang, message){
     
         let returnMessage = "";
     
@@ -40,7 +46,7 @@ function langTranslate(lang, message){
         message;
         
         Object.values(arguments).forEach(function(arg, ind) {
-            if(ind>1)
+            if(ind > 1)
                 returnMessage = returnMessage.replace("$$" + (ind - 2), arg);
         });
         return returnMessage;
@@ -48,5 +54,5 @@ function langTranslate(lang, message){
 
 
 exports.t = translate;
-exports.t2 = langTranslate;
+exports.t2 = translate2;
 exports.lang = lang;

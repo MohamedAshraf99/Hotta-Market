@@ -40,7 +40,7 @@ module.exports = function (app, io) {
   app.set("io", io);
 
 
-  app.set("DefaultAvatar", (req, collectionName) => {
+  app.set("defaultAvatar", (req, collectionName) => {
 
     let host = `${req.protocol}://${req.get('host')}`,
       defaultPic = '';

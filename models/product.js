@@ -37,6 +37,10 @@ const productSchema = new mongoose.Schema({
     taxState: {
         type: Boolean,
         default: false,
+    },
+    available: {
+        type: Boolean,
+        default: true,
     },    
     isNeglected: {
         type: Boolean,
@@ -62,6 +66,7 @@ const validateAdd = (body) => {
         nameEn: Joi.string().required(),
         code: Joi.string().required(),
         taxState: Joi.bool().optional(),
+        available: Joi.bool().optional(),
         productPrices: Joi.array().required(),
     };
 

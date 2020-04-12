@@ -45,8 +45,8 @@ const getFavouriteProducts = async (input) => {
     if (cats.length)
         cats = cats.map(cat => {
             ['avatar', 'icon'].map(field => {
-                if (cat[field]) cat[field] = input.app.get('DefaultAvatar')(input, 'host') + cat[field]
-                else cat[field] = input.app.get('DefaultAvatar')(input)
+                if (cat[field]) cat[field] = input.app.get('defaultAvatar')(input, 'host') + cat[field]
+                else cat[field] = input.app.get('defaultAvatar')(input)
             })
             
             return cat;

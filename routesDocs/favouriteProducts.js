@@ -12,7 +12,7 @@ return: {
     array of Products
 }
 */
-//#endregion
+//#endregion=================================================================================
 
 
 //#region toggle favourite Product :: add or remove favourite product to a user
@@ -30,7 +30,7 @@ return: {
     else return empty object
 }
 */
-//#endregion
+//#endregion=================================================================================
 
 
 //#region addFavouriteProduct :: add a new favourite product to a user
@@ -47,6 +47,6 @@ return: {
     object of the new product
 }
 */
-//#endregion
+//#endregion=================================================================================
 
 
