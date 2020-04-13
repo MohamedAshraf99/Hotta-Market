@@ -153,6 +153,23 @@ const validateResetPassword = (body) => {
   return Joi.validate(body, schema);
 }
 
+const validateActivate = (body) => {
+  let schema = {
+      phone: Joi.string().required(),
+      code: Joi.string().min(2).required(),
+  };
+
+  return Joi.validate(body, schema);
+}
+
+const validateGetActivationCode = (body) => {
+  let schema = {
+      phone: Joi.string().required(),
+  };
+
+  return Joi.validate(body, schema);
+}
+
 
 const getUsers = async (input) => {
 
@@ -332,6 +349,8 @@ async function resetPassword(input){
 
   const token = user.generateAuthToken();
 
+  if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
+  else user.avatar = input.app.get('defaultAvatar')(input)
 
   return ({
     ..._.omit(user.toObject(),
@@ -339,12 +358,57 @@ async function resetPassword(input){
         'latestActivationCode',
         'connectionId',
         'deviceId',
-        'isAdmin',
         '__v'
       ]),
 
     ...{ token: token }
   });
+
+}
+
+async function activate(input){
+
+  const { error } = validateActivate(input.body);
+  if (error) return (error.details[0]);
+
+  let {phone, code} = input.body
+
+  let user = await User.findOne({ phone });
+
+  if(user._id && user.latestActivationCode == code ){
+    user.isActivated = true
+    await user.save()
+  }
+
+  const token = user.generateAuthToken();
+
+  if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
+  else user.avatar = input.app.get('defaultAvatar')(input)
+
+  return ({
+    ..._.omit(user.toObject(),
+      ['password',
+        'latestActivationCode',
+        'connectionId',
+        'deviceId',
+        '__v'
+      ]),
+
+    ...{ token: token }
+  });
+
+}
+
+async function getActivationCode(input){
+
+  const { error } = validateGetActivationCode(input.params);
+  if (error) return (error.details[0]);
+
+  let {phone} = input.params
+
+  let user = await User.findOne({ phone });
+
+  return ({latestActivationCode: user.latestActivationCode});
 
 }
 
@@ -364,7 +428,6 @@ async function getUser(input) {
         'latestActivationCode',
         'connectionId',
         'deviceId',
-        'isAdmin',
         '__v'
       ]),
   });
@@ -379,5 +442,7 @@ module.exports = {
   updateUser,
   resetPassword,
   getUser,
-  getUsers
+  getUsers,
+  activate,
+  getActivationCode
 }
