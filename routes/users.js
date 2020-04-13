@@ -1,7 +1,7 @@
 const { authnMW, authrMW } = require('../RBAC_Auth/models/auth');
 const { User, register, login,
     changePassword, updateUser, resetPassword,
-    getUser, getUsers, activate, getActivationCode } = require('../models/user');
+    getUser, getUsers, activate, sendActivationCode } = require('../models/user');
 const express = require('express');
 const router = express.Router();
 
@@ -71,9 +71,9 @@ router.put('/activate', async (req, res) => {
     res.send(user);
 });
 
-router.get('/activationCode/:phone', async (req, res) => {
+router.get('/sendActivationCode/:phone', async (req, res) => {
 
-    let user = await getActivationCode(req);
+    let user = await sendActivationCode(req);
 
     if (user.message && user.path && user.type && user.context)
         return res.status(400).send(user.message)

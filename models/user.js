@@ -162,7 +162,7 @@ const validateActivate = (body) => {
   return Joi.validate(body, schema);
 }
 
-const validateGetActivationCode = (body) => {
+const validateSendActivationCode = (body) => {
   let schema = {
       phone: Joi.string().required(),
   };
@@ -222,6 +222,7 @@ const register = async (input) => {
       { email: body.email },
     ]
   });
+  
    if(checkUser._id){
    if (checkUser.name == body.name) {return t2(input.header('Accept-Language'),'name already registered.');}
    else if (checkUser.phone == body.phone) return t2(input.header('Accept-Language'),'Phone already registered.');
@@ -241,12 +242,14 @@ const register = async (input) => {
   let user = new User(body)
   user = await user.save();
 
-  let code = await sendMessage(user.phone, activationCode);
+  // let code = await sendMessage(user.phone, activationCode);
 
-  // if (user._id && code == 100) {
- if (true) {
+
+ if (true) {// if (user._id && code == 100) {
+
       if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
       else user.avatar = input.app.get('defaultAvatar')(input)
+      
   
     return (
       _.omit(user.toObject(),
@@ -258,7 +261,7 @@ const register = async (input) => {
     );
 
   }
-  else return {}
+  else return "cant create user"
 
 }
 
@@ -414,16 +417,36 @@ async function activate(input){
 
 }
 
-async function getActivationCode(input){
+async function sendActivationCode(input){
 
-  const { error } = validateGetActivationCode(input.params);
+  const { error } = validateSendActivationCode(input.params);
   if (error) return (error.details[0]);
 
-  let {phone} = input.params
+  let {phone} = input.params,
+      latestActivationCode = randomString(4, "#");
 
-  let user = await User.findOne({ phone });
+      
+  // let code = await sendMessage(user.phone, latestActivationCode);
 
-  return ({latestActivationCode: user.latestActivationCode});
+  
+ if (true) {// if (user._id && code == 100) {
+
+  let user = await User.findOneAndUpdate({ phone }, {latestActivationCode}, {new: true});
+
+      if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
+      else user.avatar = input.app.get('defaultAvatar')(input)
+
+  const token = user.generateAuthToken();
+
+   return ({
+     ..._.omit(user.toObject(),
+       ['connectionId',
+         'deviceId',
+         '__v']),
+     ...{ token: token }
+   });
+
+  }
 
 }
 
@@ -456,5 +479,5 @@ module.exports = {
   getUser,
   getUsers,
   activate,
-  getActivationCode
+  sendActivationCode
 }
