@@ -440,9 +440,6 @@ async function getUser(input) {
   return ({
     ..._.omit(user.toObject(),
       ['password',
-        'latestActivationCode',
-        'connectionId',
-        'deviceId',
         '__v'
       ]),
   });
