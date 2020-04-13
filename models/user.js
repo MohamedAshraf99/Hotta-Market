@@ -214,6 +214,21 @@ const register = async (input) => {
   const { error } = validateRegister(body);
   if (error) return (error.details[0]);
 
+
+  let checkUser = await User.findOne({
+    $or: [
+      { phone: body.phone },
+      { email: body.email },
+      { email: body.email },
+    ]
+  });
+   if(checkUser._id){
+   if (checkUser.name == body.name) {return t2(input.header('Accept-Language'),'name already registered.');}
+   else if (checkUser.phone == body.phone) return t2(input.header('Accept-Language'),'Phone already registered.');
+   else if (checkUser.email == body.email) return t2(input.header('Accept-Language'),'Email already registered.');
+   }
+
+
   let Role = mongoose.model("Role"),
       userRole = await Role.findOne({name: body.type})
 

@@ -18,6 +18,8 @@ router.post('/register', upload.single('avatar'), async (req, res) => {
 
     if (newUser.message && newUser.path && newUser.type && newUser.context)
         return res.status(400).send(newUser.message)
+    else if (typeof newUser == "string")
+        return res.status(400).send(newUser)
 
     res.send(newUser);
 });
