@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
   // }],
   type: {
     type: String,
-    enum: ['admin','client','vendor','productiveFamily', ],
+    enum: ['admin','client','vendor','productiveFamily'],
     required: true,
   },
   role: {
@@ -179,7 +179,6 @@ const getUsers = async (input) => {
 
   startId = (all || !startId) ? {} : { '_id': { '$gt': startId } };
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
-  
 
   let users = await User.find(
     { ...startId, ...JSON.parse(filter) },

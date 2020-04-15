@@ -19,6 +19,10 @@ const roleSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    editableName: {
+        type: Boolean,
+        default: true,
+    },
     dateUpdate: {
         type: Date,
         default: Date.now
@@ -53,7 +57,7 @@ const getRoles = async (input) => {
 
 
 const addRole = async (input) => {
-
+    
     let body = input.body;
 
     const { error } = validateAdd(body);
@@ -87,21 +91,32 @@ const deleteRole = async (input) => {
 }
 
 
-async function seedAdminRoleAndAdminUser() {
+async function seedNonEditableNamedRolesAndAdminRoleAndAdminUser(constRoles) {
 
     let seedAdminRole = async () => {
-        let count = await Role.find().count();
+        let roles = await Role.find({}, { name: 1 });
 
-        if (!count) {
-            console.log('creating (admin) role')
-            let adminRoleData = {
-                name: 'admin',
-                owner: true,
-            }
+        if (!roles.length) {
 
-            let adminRole = new Role(adminRoleData)
+            //----------assign users const roles with non editableName----------
+            let nonEditableNameRoles = [];
+            await Promise.all(
+                constRoles.map(async (roleName, ind) => {
+                    let roleData = {
+                        name: roleName,
+                        owner: ind == 0,    //first role is owner
+                        editableName: false,
+                    }
 
-            return await adminRole.save()
+                    let newRole = await Role.create(roleData)
+
+                    if (newRole) nonEditableNameRoles.push(newRole)
+                })
+            )
+            //----------end assign users const roles with non editableName----------
+
+
+            return nonEditableNameRoles[0]
         }
 
         return {}
@@ -118,13 +133,13 @@ async function seedAdminRoleAndAdminUser() {
             phone: '+966admin',
             password: await getHashPassword('123456'),
             isAdmin: true,
-
         }
         User.insertMany([userAdmin]);
     }
 
 }
-seedAdminRoleAndAdminUser();
+seedNonEditableNamedRolesAndAdminRoleAndAdminUser(['admin', 'client', 'vendor', 'productiveFamily']);
+
 
 
 module.exports = {

@@ -103,16 +103,6 @@ router.get('/getUser/:id', async (req, res) => {
     res.send(user);
 });
 
-router.get('/getUser/:id', async (req, res) => {
-
-    let user = await getUser(req);
-
-    if (user.message && user.path && user.type && user.context)
-        return res.status(400).send(user.message)
-
-    res.send(user);
-});
-
 
 router.get('/', async (req, res) => {
 

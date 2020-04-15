@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 //parameter ended with ? mean :: optional param
 router.post('/add', async (req, res) => {
     let newRole = await addRole(req);
-
+    
     if (newRole.message && newRole.path && newRole.type && newRole.context)
         return res.status(400).send(newRole.message)
 
