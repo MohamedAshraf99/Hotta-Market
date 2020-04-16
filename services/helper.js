@@ -11,13 +11,13 @@ async function sendMessage(phone, activationCode) {
           
       let messageBody = `The Activation Code Is  : ${activationCode}`;
   
-  
-      let res = await axios()  //&smstype=0/4/3
+      let res = await axios.post(`http://www.mshastra.com/sendurlcomma.aspx?user=20092880&pwd=6221&senderid=MOBSMS&mobileno=${phone}&msgtext=${messageBody}&smstype=0`)
+    //  let res = await axios()  //&smstype=0/4/3
       
       if(res) console.log(res);
       
       // let res = await axios.post(`http://www.oursms.net/api/sendsms.php?username=QODRAT&password=123456&message=${messageBody}&numbers=${phone}&sender=NewSMS-ad`)
-      let res = await axios.post(`http://www.mshastra.com/sendurlcomma.aspx?user=20092880&pwd=6221&senderid=MOBSMS&mobileno=${phone}&msgtext=${messageBody}&smstype=0`)
+      
       return res.data;
   
   
