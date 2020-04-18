@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const _ = require('lodash');
 
 
 
@@ -53,7 +54,7 @@ const validateAdd = (body) => {
     let schema = {
         nameAr: Joi.string().min(3).required(),
         nameEn: Joi.string().min(3).required(),
-        parent: Joi.string().length(24).optional(),
+        parent: Joi.string().optional(),
         type: Joi.string().required(),
         isNeglected: Joi.bool().optional(),
         avatar: Joi.string().required(),
@@ -68,7 +69,7 @@ const validateUpdate = (body) => {
     let schema = {
         nameAr: Joi.string().min(3).optional(),
         nameEn: Joi.string().min(3).optional(),
-        parent: Joi.string().length(24).optional(),
+        parent: Joi.string().optional(),
         type: Joi.string().optional(),
         isNeglected: Joi.bool().optional(),
         avatar: Joi.string().optional(),
@@ -124,8 +125,12 @@ const addCat = async (input) => {
     const { error } = validateAdd(body);
     if (error) return (error.details[0]);
 
-    let newCat = new Cat(body)
+    let isParentDeleted = body.parent == "0" ?
+        { $unset: { parent: 1 } } : false
 
+    if (isParentDeleted) body = _.omit(body, ["parent"]);
+
+    let newCat = new Cat({...body, ...isParentDeleted})
     newCat = await newCat.save();
 
     if (newCat._id){
@@ -149,7 +154,17 @@ const updateCat = async (input) => {
     const { error } = validateUpdate(body);
     if (error) return (error.details[0]);
 
-    let updatedCat = await Cat.findOneAndUpdate({_id: id}, body, {new: true})
+    let isParentDeleted = body.parent == "0" ?
+        { $unset: { parent: 1 } } : false
+
+    if(isParentDeleted) body = _.omit(body, ["parent"]);
+
+    let updatedCat = await Cat.findOneAndUpdate(
+        { _id: id },
+        { ...body, ...isParentDeleted },
+        { new: true }
+    )
+
 
     if (updatedCat._id) {
         ['avatar', 'icon'].map(field => {

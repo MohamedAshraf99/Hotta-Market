@@ -102,6 +102,7 @@ const validateRegister = (body) => {
       type: Joi.string().required(),
       password: Joi.string().min(2).required(),
       addresses: Joi.array().optional(),
+      role: Joi.string().length(24).optional(),
   };
 
   return Joi.validate(body, schema);
@@ -183,7 +184,9 @@ const getUsers = async (input) => {
   let users = await User.find(
     { ...startId, ...JSON.parse(filter) },
     { ...JSON.parse(fields) }
-  ).limit(limit);
+  )
+  .populate("role")
+  .limit(limit);
 
   if (users.length)
     users = users.map(user => {
@@ -218,7 +221,7 @@ const register = async (input) => {
     $or: [
       { phone: body.phone },
       { email: body.email },
-      { email: body.email },
+      { name: body.name },
     ]
   });
   
@@ -228,12 +231,15 @@ const register = async (input) => {
    else if (checkUser.email == body.email) return t2(input.header('Accept-Language'),'Email already registered.');
    }
 
+   
+  if (!body.role) {
+    let Role = mongoose.model("Role"),
+      userRole = await Role.findOne({ name: body.type })
 
-  let Role = mongoose.model("Role"),
-      userRole = await Role.findOne({name: body.type})
+    if (userRole._id) body.role = userRole._id;
+  }
 
-  if(userRole._id) body.role = userRole._id;
-
+  
   body.password = await getHashPassword(input.body.password);
   body.isActivated = body.type == "admin" ? true: false;
   body.latestActivationCode = activationCode;
@@ -241,7 +247,7 @@ const register = async (input) => {
   let user = new User(body)
   user = await user.save();
 
-  // let code = await sendMessage(user.phone, activationCode);
+  // let code = body.type == "admin" ? 100 : await sendMessage(user.phone, activationCode);
 
 
  if (true) {// if (user._id && code == 100) {
