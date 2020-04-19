@@ -428,10 +428,11 @@ async function sendActivationCode(input){
       latestActivationCode = randomString(4, "#");
 
       
-  // let code = await sendMessage(user.phone, latestActivationCode);
-
+  let code = await sendMessage(user.phone, latestActivationCode);
+  code = code.replace(/^\s+|\s+$/g, '').trim();
   
- if (true) {// if (user._id && code == 100) {
+ //if (true) {
+  if (user._id && (code == "Send Successful")) {
 
   let user = await User.findOneAndUpdate({ phone }, {latestActivationCode}, {new: true});
 
