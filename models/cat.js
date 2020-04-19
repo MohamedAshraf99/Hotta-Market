@@ -98,7 +98,7 @@ const getCats = async (input) => {
 
     startId = (all || !startId) ? {} : { '_id': { '$gt': startId } };
     limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
-    
+                    
 
     let cats = await Cat.find({...startId, }).limit(limit);
 
