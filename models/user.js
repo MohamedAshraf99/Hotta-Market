@@ -245,11 +245,10 @@ const register = async (input) => {
   let user = new User(body)
   user = await user.save();
 
-   let code = body.type == "admin" ? 100 : await sendMessage(user.phone, activationCode);
-
+   let code = body.type == "admin" ? "Send Successful" : await sendMessage(user.phone, activationCode);
  //if (true) {
-   if (user._id && code == 100) {
-
+   code = code.replace(/^\s+|\s+$/g, '').trim();
+   if (user._id && (code == "Send Successful")) {
       if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
       else user.avatar = input.app.get('defaultAvatar')(input)
       
