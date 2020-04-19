@@ -425,8 +425,14 @@ async function sendActivationCode(input){
   if (error) return (error.details[0]);
 
   let {phone} = input.params,
-      latestActivationCode = randomString(4, "#");
-
+  latestActivationCode = randomString(4, "#");
+  let user = await User.findOne(
+      { phone: phone }
+);
+  if(!user){
+    return "user not registered";
+  }     
+else{
       
   let code = await sendMessage(user.phone, latestActivationCode);
   code = code.replace(/^\s+|\s+$/g, '').trim();
@@ -450,7 +456,7 @@ async function sendActivationCode(input){
    });
 
   }
-
+}
 }
 
 
