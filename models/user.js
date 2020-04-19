@@ -224,13 +224,11 @@ const register = async (input) => {
       { name: body.name },
     ]
   });
-  
-   if(checkUser._id){
+   if(checkUser){
    if (checkUser.name == body.name) {return t2(input.header('Accept-Language'),'name already registered.');}
    else if (checkUser.phone == body.phone) return t2(input.header('Accept-Language'),'Phone already registered.');
    else if (checkUser.email == body.email) return t2(input.header('Accept-Language'),'Email already registered.');
    }
-
    
   if (!body.role) {
     let Role = mongoose.model("Role"),
@@ -247,19 +245,19 @@ const register = async (input) => {
   let user = new User(body)
   user = await user.save();
 
-  // let code = body.type == "admin" ? 100 : await sendMessage(user.phone, activationCode);
+   let code = body.type == "admin" ? 100 : await sendMessage(user.phone, activationCode);
 
-
- if (true) {// if (user._id && code == 100) {
+ //if (true) {
+   if (user._id && code == 100) {
 
       if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
       else user.avatar = input.app.get('defaultAvatar')(input)
       
-  
+    // i will show activation code in the response for mahmoud for testing purpose don't forget to delete it from response after that
     return (
       _.omit(user.toObject(),
         ['password',
-          'latestActivationCode',
+          //'latestActivationCode',
           'connectionId',
           'deviceId',
           '__v'])
