@@ -1,5 +1,5 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { Country, addCountry, deleteCountry, getCountries, updateCountry } = require('../models/country');
+const { Country, addCountry, deleteCountry, getCountries, updateCountry, getFullPlaces } = require('../models/country');
 const express = require('express');
 const router = express.Router();
 
@@ -7,6 +7,12 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     let countries = await getCountries();
     res.send(countries);
+});
+
+
+router.get('/getFullPlaces', async (req, res) => {
+    let fullPlaces = await getFullPlaces();
+    res.send(fullPlaces);
 });
 
 

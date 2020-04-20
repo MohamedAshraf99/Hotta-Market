@@ -46,6 +46,8 @@ router.post('/login', async (req, res) => {
 
     if (loggedUser.message && loggedUser.path && loggedUser.type && loggedUser.context)
         return res.status(400).send(loggedUser.message)
+    else if (typeof loggedUser == "string")
+        return res.status(400).send(loggedUser)
 
     res.send(loggedUser);
 });

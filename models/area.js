@@ -58,6 +58,22 @@ const getAreas = async (input) => {
     .find({city: cityId});
 }
 
+const getDifferentAreas = async (input) => {
+    let {ids=""} = input.query;
+
+    ids = ids.split(',');
+
+    return await Area
+    .find({_id: {$in: ids}})
+    .populate({ 
+        path: 'city',
+        populate: {
+          path: 'country',
+          model: 'Country'
+        } 
+     });
+}
+
 
 const addArea = async (input) => {
     
@@ -100,6 +116,7 @@ module.exports = {
     addArea,
     updateArea,
     deleteArea,
+    getDifferentAreas
 }
 
 

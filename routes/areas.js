@@ -1,11 +1,16 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { Area, addArea, deleteArea, getAreas, updateArea } = require('../models/area');
+const { Area, addArea, deleteArea, getAreas, updateArea, getDifferentAreas } = require('../models/area');
 const express = require('express');
 const router = express.Router();
 
 
 router.get('/', async (req, res) => {
     let areas = await getAreas(req);
+    res.send(areas);
+});
+
+router.get('/getDifferentAreas', async (req, res) => {
+    let areas = await getDifferentAreas(req);
     res.send(areas);
 });
 

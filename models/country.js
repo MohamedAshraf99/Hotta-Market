@@ -63,6 +63,50 @@ const getCountries = async (input) => {
 }
 
 
+const getFullPlaces = async (input) => {
+
+    return await Country.aggregate([
+        {
+            '$lookup': {
+                'from': 'cities',
+                'localField': '_id',
+                'foreignField': 'country',
+                'as': 'cities'
+            }
+        }, {
+            '$unwind': {
+                'path': '$cities',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$lookup': {
+                'from': 'areas',
+                'localField': 'cities._id',
+                'foreignField': 'city',
+                'as': 'cities.areas'
+            }
+        }, {
+            '$group': {
+                '_id': '$_id',
+                'doc': {
+                    '$first': '$$ROOT'
+                },
+                'cities': {
+                    '$push': '$cities'
+                }
+            }
+        }, {
+            '$addFields': {
+                'doc.cities': '$cities'
+            }
+        }, {
+            '$replaceRoot': {
+                'newRoot': '$doc'
+            }
+        }
+    ]);
+}
+
 const addCountry = async (input) => {
     
     let body = input.body;
@@ -103,7 +147,8 @@ module.exports = {
     getCountries,
     addCountry,
     updateCountry,
-    deleteCountry
+    deleteCountry,
+    getFullPlaces
 }
 
 
