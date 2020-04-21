@@ -13,10 +13,15 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    area: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Area",
-        required: true,
+    location: {
+        area: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Area",
+            required: true,
+        },
+        lat: String,
+        lang: String,
+        desc: String
     },
     requiredDateTime: Date,
     logs: [{
