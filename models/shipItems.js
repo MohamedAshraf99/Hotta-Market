@@ -23,6 +23,20 @@ const shipItemsSchema = new mongoose.Schema({
             required: true,
         },
     },  
+    rate:{
+        positive: {
+            type: Boolean,
+            required: true,
+        },
+        negative: {
+            type: Boolean,
+            required: true,
+        },
+        rate:{
+            type: Number,
+            required: true,
+        }
+    },
     isNeglected: {
         type: Boolean,
         default: false
