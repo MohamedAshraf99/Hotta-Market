@@ -57,17 +57,15 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 1024
   },
-  addresses: [{
+  addresses: {
     area: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Area",
     },
-    default: {
-      type: Boolean,
-      default: false,
-    },
+    lat: Number,
+    lang: Number,
     areaDesc: String,
-  }],
+  },
   latestActivationCode: String,
   connectionId: {
     type: String,

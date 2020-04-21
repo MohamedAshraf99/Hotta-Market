@@ -2,22 +2,17 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 
 
-const orderSchema = new mongoose.Schema({
-    client: {
+const orderShipsSchema = new mongoose.Schema({
+    order: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "order",
         required: true,
     },
     vendor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
-    },
-    area: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Area",
-        required: true,
-    },
+    },  
     requiredDateTime: Date,
     logs: [{
         vendor: {
@@ -50,11 +45,11 @@ const orderSchema = new mongoose.Schema({
 });
 
 
-const Order = mongoose.model('Order', orderSchema);
+const orderShips = mongoose.model('orderShips', orderShipsSchema);
 
 
 module.exports = {
-    Order,
+    orderShips,
 }
 
 
