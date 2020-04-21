@@ -11,11 +11,11 @@ const productSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    cat: {
+    cat: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Cat",
         required: true,
-    },
+    }],
     linkedProducts: {
             type: [mongoose.Schema.Types.ObjectId],
             ref: "Product",

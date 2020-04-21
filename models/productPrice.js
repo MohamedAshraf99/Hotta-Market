@@ -8,10 +8,6 @@ const productPriceSchema = new mongoose.Schema({
         ref: "Product",
         required: true,
     },
-    tax: {
-        type: Number,
-        default: 0,
-    }, 
     props: [{
         productSubProp: {
             type: mongoose.Schema.Types.ObjectId,
@@ -23,7 +19,7 @@ const productPriceSchema = new mongoose.Schema({
         type: String,
         required: true,
     }],
-    prices: [{
+    prices: {
         date: Date,
         // initialPrice: Number,
         // reducedPrice: Number,
@@ -31,7 +27,7 @@ const productPriceSchema = new mongoose.Schema({
         // reducedPriceEDate: Date,
         costPrice: Number,
         quantity: Number,
-    }],
+    },
     isNeglected: {
         type: Boolean,
         default: false

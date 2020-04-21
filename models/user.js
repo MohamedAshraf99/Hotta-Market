@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 1024
   },
-  location: {
+  addresses: {
     area: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Area",

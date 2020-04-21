@@ -59,6 +59,8 @@ router.put('/changePassword', async (req, res) => {
 
     if (user.message && user.path && user.type && user.context)
         return res.status(400).send(user.message)
+    else if (typeof user == "string")
+    return res.status(400).send(user)
 
     res.send(user);
 });

@@ -27,6 +27,10 @@ const announcementSchema = new mongoose.Schema({
         required: true,
         min: 1
     },
+    callsCount: {
+        type: Number,
+        required: true,
+    },
     dateCreate: {
         type: Date,
         default: Date.now
