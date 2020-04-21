@@ -67,44 +67,91 @@ const getFullPlaces = async (input) => {
 
     return await Country.aggregate([
         {
-            '$lookup': {
-                'from': 'cities',
-                'localField': '_id',
-                'foreignField': 'country',
-                'as': 'cities'
-            }
+          '$lookup': {
+            'from': 'cities', 
+            'localField': '_id', 
+            'foreignField': 'country', 
+            'as': 'cities'
+          }
         }, {
-            '$unwind': {
-                'path': '$cities',
-                'preserveNullAndEmptyArrays': true
-            }
+          '$match': {
+            'isNeglected': false
+          }
         }, {
-            '$lookup': {
-                'from': 'areas',
-                'localField': 'cities._id',
-                'foreignField': 'city',
-                'as': 'cities.areas'
-            }
+          '$unwind': {
+            'path': '$cities', 
+            'preserveNullAndEmptyArrays': true
+          }
         }, {
-            '$group': {
-                '_id': '$_id',
-                'doc': {
-                    '$first': '$$ROOT'
-                },
-                'cities': {
-                    '$push': '$cities'
+          '$match': {
+            'cities.isNeglected': false
+          }
+        }, {
+          '$lookup': {
+            'from': 'areas', 
+            'let': {
+              'cityId': '$cities._id'
+            }, 
+            'pipeline': [
+              {
+                '$match': {
+                  '$expr': {
+                    '$and': [
+                      {
+                        '$eq': [
+                          '$city', '$$cityId'
+                        ]
+                      }, {
+                        '$eq': [
+                          '$isNeglected', false
+                        ]
+                      }
+                    ]
+                  }
                 }
-            }
+              }
+            ], 
+            'as': 'cities.areas'
+          }
         }, {
-            '$addFields': {
-                'doc.cities': '$cities'
+          '$match': {
+            '$expr': {
+              '$gt': [
+                {
+                  '$size': '$cities.areas'
+                }, 0
+              ]
             }
+          }
         }, {
-            '$replaceRoot': {
-                'newRoot': '$doc'
+          '$group': {
+            '_id': '$_id', 
+            'doc': {
+              '$first': '$$ROOT'
+            }, 
+            'cities': {
+              '$push': '$cities'
             }
+          }
+        }, {
+          '$addFields': {
+            'doc.cities': '$cities'
+          }
+        }, {
+          '$replaceRoot': {
+            'newRoot': '$doc'
+          }
+        }, {
+          '$project': {
+            '_id': 1, 
+            'nameAr': 1, 
+            'cities._id': 1, 
+            'cities.nameAr': 1, 
+            'cities.areas._id': 1, 
+            'cities.areas.nameAr': 1
+          }
         }
-    ]);
+      ]);
 }
 
 const addCountry = async (input) => {

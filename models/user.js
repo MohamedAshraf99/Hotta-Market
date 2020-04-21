@@ -57,14 +57,14 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 1024
   },
-  addresses: {
+  location: {
     area: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Area",
     },
-    lat: Number,
-    lang: Number,
-    areaDesc: String,
+    desc: String,
+    lang: String,
+    lat: String
   },
   latestActivationCode: String,
   connectionId: {
@@ -99,7 +99,7 @@ const validateRegister = (body) => {
       email: Joi.string().required(),
       type: Joi.string().required(),
       password: Joi.string().min(2).required(),
-      addresses: Joi.array().optional(),
+      location: Joi.object().optional(),
       role: Joi.string().length(24).optional(),
   };
 
@@ -114,7 +114,7 @@ const validateUpdate = (body) => {
     phone: Joi.string().optional(),
     email: Joi.string().optional(),
     password: Joi.string().min(2).optional(),
-    addresses: Joi.array().optional(),
+    location: Joi.object().optional(),
     isNeglected: Joi.bool().optional(),
     connectionId: Joi.string().optional(),
     deviceId: Joi.array().optional(),
