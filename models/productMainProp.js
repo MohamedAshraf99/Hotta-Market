@@ -14,10 +14,6 @@ const productMainPropSchema = new mongoose.Schema({
         maxlength: 50,
         required: true,
     },
-    details: {
-        maxlength: 1024,
-        type: String,
-    },
     isNeglected: {
         type: Boolean,
         default: false
