@@ -63,8 +63,8 @@ const userSchema = new mongoose.Schema({
       ref: "Area",
     },
     desc: String,
-    lng: String,
-    lat: String
+    lng: Number,
+    lat: Number
   },
   latestActivationCode: String,
   connectionId: {
