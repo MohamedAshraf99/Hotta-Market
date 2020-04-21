@@ -8,6 +8,11 @@ const announcementSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
+    cat: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cat",
+        required: true,
+    },
     announcementPlan: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "AnnouncementPlan",

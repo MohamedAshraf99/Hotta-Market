@@ -63,7 +63,7 @@ const userSchema = new mongoose.Schema({
       ref: "Area",
     },
     desc: String,
-    lang: String,
+    lng: String,
     lat: String
   },
   latestActivationCode: String,
