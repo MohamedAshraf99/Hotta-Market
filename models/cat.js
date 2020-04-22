@@ -198,7 +198,7 @@ const getCats = async (input) => {
 
             let lang = (input.headers["accept-language"]).split('-')[0] == 'en'? "En": "Ar"
             
-            return {...cat._doc, name: cat[`name${lang}`]};
+            return {...cat, name: cat[`name${lang}`]};
         });
 
     return cats
