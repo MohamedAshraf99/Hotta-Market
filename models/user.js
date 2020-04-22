@@ -98,7 +98,7 @@ const validateRegister = (body) => {
       phone: Joi.string().required(),
       email: Joi.string().required(),
       type: Joi.string().required(),
-      password: Joi.string().min(2).required(),
+      password: Joi.string().min(5).required(),
       location: Joi.object().optional(),
       role: Joi.string().length(24).optional(),
   };
