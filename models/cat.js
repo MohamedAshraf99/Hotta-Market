@@ -280,7 +280,73 @@ const toggleNeglectCats = async (input) => {
 
     return cats
 }
-
+async function getsubCategories(input) {
+    let startId = input.params.id;
+    console.log(startId)
+    let aggr = [
+        {
+          '$match': {
+            '_id': mongoose.Types.ObjectId(startId),
+            'isNeglected': false
+          }
+        },
+        {
+            '$lookup': {
+              'from': 'materials', 
+              'localField': '_id', 
+              'foreignField': 'cat', 
+              'as': 'matCount'
+            }
+        },
+        // {
+        //   '$group': {
+        //     '_id': '$_id',
+        //     'nameAr': {
+        //       '$first': '$nameAr'
+        //     },
+        //     'nameEn': {
+        //       '$first': '$nameEn'
+        //     },
+        //     'icon': {
+        //       '$first': '$icon'
+        //     },
+        //     'avatar': {
+        //       '$first': '$avatar'
+        //     },
+        //     'billAvatar': {
+        //       '$first': '$payment.paid.billAvatar'
+        //     },
+        //     'billState': {
+        //       '$first': '$payment.paid.billState'
+        //     }
+        //   }
+        // },
+        // {
+        //   '$addFields': {
+        //     'billAvatar': {
+        //       '$arrayElemAt': [
+        //         '$billAvatar', 0
+        //       ]
+        //     }
+        //   }
+        // },
+        // {
+        //   '$addFields': {
+        //     'billAvatar': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$billAvatar"] }
+        //   }
+        // },
+        // {
+        //   '$skip': skipped
+        // },
+        // {
+        //   '$limit': pageSize
+        // },
+      ];
+      let subCategories = await Cat.aggregate(aggr);
+      console.log(subCategories);
+      return (subCategories);
+  }
+  
 
 module.exports = {
     Cat,
@@ -288,5 +354,6 @@ module.exports = {
     addCat,
     updateCat,
     toggleNeglectCats,
+    getsubCategories,
 }
 
