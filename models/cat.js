@@ -120,16 +120,23 @@ const getCats = async (input) => {
     limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
 
-    let main = input.query.main == "true" ?
-        { parent: { $eq: null } } : {}
-                    
+    let parent = {}
+
+    if(input.query.parent){
+        if(input.query.parent == "false")
+            parent = { parent: { $eq: null } }
+        else 
+        parent = { parent: mongoose.Types.ObjectId(input.query.parent) }
+    }
+           
+    
     let cats = await Cat.aggregate([
         {
             '$match': startId
         }, {
             '$match': {
                 'isNeglected': false,
-                ...main
+                ...parent
             }
         }, {
             '$lookup': {
