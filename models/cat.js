@@ -304,58 +304,136 @@ async function getsubCategories(input) {
         },
         {
             '$lookup': {
-              'from': 'materials', 
+              'from': 'products', 
               'localField': '_id', 
               'foreignField': 'cat', 
-              'as': 'matCount'
+              'as': 'products'
             }
         },
-        // {
-        //   '$group': {
-        //     '_id': '$_id',
-        //     'nameAr': {
-        //       '$first': '$nameAr'
-        //     },
-        //     'nameEn': {
-        //       '$first': '$nameEn'
-        //     },
-        //     'icon': {
-        //       '$first': '$icon'
-        //     },
-        //     'avatar': {
-        //       '$first': '$avatar'
-        //     },
-        //     'billAvatar': {
-        //       '$first': '$payment.paid.billAvatar'
-        //     },
-        //     'billState': {
-        //       '$first': '$payment.paid.billState'
-        //     }
-        //   }
-        // },
-        // {
-        //   '$addFields': {
-        //     'billAvatar': {
-        //       '$arrayElemAt': [
-        //         '$billAvatar', 0
-        //       ]
-        //     }
-        //   }
-        // },
-        // {
-        //   '$addFields': {
-        //     'billAvatar': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$billAvatar"] }
-        //   }
-        // },
-        // {
-        //   '$skip': skipped
-        // },
-        // {
-        //   '$limit': pageSize
-        // },
+          {
+            '$lookup': {
+              'from': 'users', 
+              'localField': 'products.vendor', 
+              'foreignField': '_id', 
+              'as': 'vendor'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$vendor',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'areas', 
+              'localField': 'vendor.location.area', 
+              'foreignField': '_id', 
+              'as': 'vendor'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$vendor',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$addFields': {
+              'areaAr': "$vendor.nameAr"  ,
+              'areaEn': "$vendor.nameEn"  ,
+              'city': "$vendor.city"
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'cities', 
+              'localField': 'city', 
+              'foreignField': '_id', 
+              'as': 'city'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$city',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$addFields': {
+              'cityAr': "$city.nameAr"  ,
+              'cityEn': "$city.nameEn"  ,
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'productPrices', 
+              'localField': 'products._id', 
+              'foreignField': 'product', 
+              'as': 'productPrices'
+            }
+        },
+        {
+            '$lookup': {
+              'from': 'shipItems', 
+              'localField': 'productPrices._id', 
+              'foreignField': 'product.productPrice', 
+              'as': 'shipItems'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$shipItems',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+        {
+          '$group': {
+            '_id': '$_id',
+            'nameAr': {
+                '$first': '$nameAr'
+              },
+            'nameEn': {
+            '$first': '$nameEn'
+            },
+            'avatar': {
+            '$first': '$avatar'
+            },
+            'icon': {
+            '$first': '$icon'
+            },
+            'areaAr': {
+                '$first': '$areaAr'
+            },
+            'areaEn': {
+                '$first': '$areaEn'
+            },
+            'cityAr': {
+                '$first': '$cityAr'
+            },
+            'cityEn': {
+                '$first': '$cityEn'
+            },
+            'icon': {
+                '$first': '$icon'
+            },    
+            'rate': {
+                 '$avg': "$shipItems.rate.rate" 
+            },
+          }
+        },
+        {
+          '$addFields': {
+            'avatar': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$avatar"] }
+          }
+        },
+        {
+            '$addFields': {
+              'icon': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$icon"] }
+            }
+          },
       ];
       let subCategories = await Cat.aggregate(aggr);
-      console.log(subCategories);
       return (subCategories);
   }
   
