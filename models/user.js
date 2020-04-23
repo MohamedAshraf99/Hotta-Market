@@ -29,10 +29,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  commercialName: String,
+  commercialNumber: String,
+  icon: String,
   phone: {
     type: String,
     required: true,
-    unique: true,
+  },
+  contacts: {
+    type: [String]
   },
   email: {
     type: String,
@@ -95,7 +100,11 @@ const validateRegister = (body) => {
       name: Joi.string().min(5).required(),
       isActivated: Joi.bool().optional(),
       avatar: Joi.string().required(),
+      icon: Joi.string().optional(),
+      commercialName: Joi.string().optional(),
+      commercialNumber: Joi.string().optional(),
       phone: Joi.string().required(),
+      contacts: Joi.array().optional(),
       email: Joi.string().required(),
       type: Joi.string().required(),
       password: Joi.string().min(5).required(),
@@ -111,7 +120,11 @@ const validateUpdate = (body) => {
     name: Joi.string().min(5).optional(),
     isActivated: Joi.bool().optional(),
     avatar: Joi.string().optional(),
+    icon: Joi.string().optional(),
+    commercialName: Joi.string().optional(),
+    commercialNumber: Joi.string().optional(),
     phone: Joi.string().optional(),
+    contacts: Joi.array().optional(),
     email: Joi.string().optional(),
     password: Joi.string().min(2).optional(),
     location: Joi.object().optional(),
@@ -127,7 +140,7 @@ const validateUpdate = (body) => {
 const validateLogin = (body) => {
   let schema = {
       phone: Joi.string().required(),
-      password: Joi.string().min(2).required(),
+      password: Joi.string().min(5).required(),
   };
 
   return Joi.validate(body, schema);
@@ -136,8 +149,8 @@ const validateLogin = (body) => {
 const validateChangePassword = (body) => {
   let schema = {
       phone: Joi.string().required(),
-      password: Joi.string().min(2).required(),
-      newPassword: Joi.string().min(2).required(),
+      password: Joi.string().min(5).required(),
+      newPassword: Joi.string().min(5).required(),
   };
 
   return Joi.validate(body, schema);
@@ -146,7 +159,7 @@ const validateChangePassword = (body) => {
 const validateResetPassword = (body) => {
   let schema = {
       phone: Joi.string().required(),
-      password: Joi.string().min(2).required(),
+      password: Joi.string().min(5).required(),
   };
 
   return Joi.validate(body, schema);
@@ -155,7 +168,7 @@ const validateResetPassword = (body) => {
 const validateActivate = (body) => {
   let schema = {
       phone: Joi.string().required(),
-      code: Joi.string().min(2).required(),
+      code: Joi.string().min(5).required(),
   };
 
   return Joi.validate(body, schema);
@@ -302,7 +315,7 @@ async function login(input){
 
     if (!phone || !password) return t2(input.header('Accept-Language'),'Invalid phone or password.');
 
-    let user = await User.findOne({ phone: phone });
+    let user = await User.findOne({ phone });
 
     if (!user) return t2(input.header('Accept-Language'),'Invalid phone or password.');
 
@@ -424,9 +437,7 @@ async function sendActivationCode(input){
 
   let {phone} = input.params,
   latestActivationCode = randomString(4, "#");
-  let user = await User.findOne(
-      { phone: phone }
-);
+  let user = await User.findOne({ phone });
   if(!user){
     return "user not registered";
   }     
