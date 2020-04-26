@@ -36,9 +36,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  contacts: {
-    type: [String]
-  },
+  contacts: [{
+    contact: String,
+    name: String,
+    job: String,
+    default: {
+      type: Boolean,
+      default: false
+    }
+  }],
   email: {
     type: String,
     required: true,
