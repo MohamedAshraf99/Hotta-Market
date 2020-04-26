@@ -294,13 +294,6 @@ const toggleNeglectCats = async (input) => {
 }
 async function getsubCategories(input) {
     let startId = input.params.id;
-    let {limit = 10, all = false } = input.query;
-
-    startId = (!startId || startId == "false") ? false: startId
-
-    startId = (all || !startId) ? {} : { '_id': { '$gt': mongoose.Types.ObjectId(startId) } };
-    limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
-           
     
     console.log(startId)
     let aggr = [
