@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
   contacts: [{
     contact: String,
     name: String,
-    profession: String,
+    job: String,
     default: {
       type: Boolean,
       default: false
