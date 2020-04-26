@@ -38,6 +38,8 @@ const userSchema = new mongoose.Schema({
   },
   contacts: [{
     contact: String,
+    name: String,
+    profession: String,
     default: {
       type: Boolean,
       default: false
