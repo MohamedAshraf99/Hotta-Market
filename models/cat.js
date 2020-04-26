@@ -310,6 +310,12 @@ async function getsubCategories(input) {
               'as': 'products'
             }
         },
+        {
+            '$unwind': {
+              'path': '$products',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
           {
             '$lookup': {
               'from': 'users', 
@@ -329,26 +335,19 @@ async function getsubCategories(input) {
               'from': 'areas', 
               'localField': 'vendor.location.area', 
               'foreignField': '_id', 
-              'as': 'vendor'
+              'as': 'area'
             }
         },
         {
             '$unwind': {
-              'path': '$vendor',
+              'path': '$area',
               'preserveNullAndEmptyArrays': true
             }
           },
-          {
-            '$addFields': {
-              'areaAr': "$vendor.nameAr"  ,
-              'areaEn': "$vendor.nameEn"  ,
-              'city': "$vendor.city"
-            }
-          },
-          {
+           {
             '$lookup': {
               'from': 'cities', 
-              'localField': 'city', 
+              'localField': 'area.city', 
               'foreignField': '_id', 
               'as': 'city'
             }
@@ -359,13 +358,7 @@ async function getsubCategories(input) {
               'preserveNullAndEmptyArrays': true
             }
           },
-          {
-            '$addFields': {
-              'cityAr': "$city.nameAr"  ,
-              'cityEn': "$city.nameEn"  ,
-            }
-          },
-          {
+            {
             '$lookup': {
               'from': 'productPrices', 
               'localField': 'products._id', 
@@ -374,6 +367,12 @@ async function getsubCategories(input) {
             }
         },
         {
+            '$unwind': {
+              'path': '$productPrices',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
             '$lookup': {
               'from': 'shipItems', 
               'localField': 'productPrices._id', 
@@ -381,57 +380,49 @@ async function getsubCategories(input) {
               'as': 'shipItems'
             }
         },
-        {
+                {
             '$unwind': {
               'path': '$shipItems',
               'preserveNullAndEmptyArrays': true
             }
           },
-        {
-          '$group': {
-            '_id': '$_id',
-            'nameAr': {
-                '$first': '$nameAr'
-              },
-            'nameEn': {
-            '$first': '$nameEn'
-            },
-            'avatar': {
-            '$first': '$avatar'
-            },
-            'icon': {
-            '$first': '$icon'
-            },
-            'areaAr': {
-                '$first': '$areaAr'
-            },
-            'areaEn': {
-                '$first': '$areaEn'
-            },
-            'cityAr': {
-                '$first': '$cityAr'
-            },
-            'cityEn': {
-                '$first': '$cityEn'
-            },
-            'icon': {
-                '$first': '$icon'
-            },    
-            'rate': {
-                 '$avg': "$shipItems.rate.rate" 
-            },
-          }
-        },
-        {
-          '$addFields': {
-            'avatar': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$avatar"] }
-          }
-        },
-        {
+                  {
             '$addFields': {
-              'icon': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$icon"] }
+              'vendor.areaAr': "$area.nameAr"  ,
+              'vendor.areaEn': "$area.nameEn"  ,
+              'vendor.cityAr': "$city.nameAr",
+              'vendor.cityEn': "$city.nameEn"
             }
           },
+            {
+              '$group': {
+               '_id': '$vendor',
+                'rate': {
+                     '$avg': "$shipItems.rate.rate" 
+                },
+               }
+           },
+           {
+            '$addFields': {
+              '_id.rate': "$rate",
+              '_id.avatar': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$_id.avatar"] },
+              '_id.icon': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$_id.icon"] }
+            }
+          },
+           {
+            '$project': {
+                '_id._id': 1,
+                '_id.commercialName': 1,
+                '_id.icon': 1,
+                '_id.avatar': 1,
+                '_id.rate': 1,
+                '_id.areaAr': 1,
+                '_id.areaEn': 1,
+                '_id.cityAr': 1,
+                '_id.cityEn': 1,
+            }
+           }, 
+           
       ];
       let subCategories = await Cat.aggregate(aggr);
       return (subCategories);
