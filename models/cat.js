@@ -292,7 +292,143 @@ const toggleNeglectCats = async (input) => {
 
     return cats
 }
-
+async function getsubCategories(input) {
+    let startId = input.params.id;
+    
+    console.log(startId)
+    let aggr = [
+        {
+          '$match': {
+            '_id': mongoose.Types.ObjectId(startId),
+            'isNeglected': false
+          }
+        },
+        {
+            '$lookup': {
+              'from': 'products', 
+              'localField': '_id', 
+              'foreignField': 'cat', 
+              'as': 'products'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$products',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'users', 
+              'localField': 'products.vendor', 
+              'foreignField': '_id', 
+              'as': 'vendor'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$vendor',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'areas', 
+              'localField': 'vendor.location.area', 
+              'foreignField': '_id', 
+              'as': 'area'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$area',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+           {
+            '$lookup': {
+              'from': 'cities', 
+              'localField': 'area.city', 
+              'foreignField': '_id', 
+              'as': 'city'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$city',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+            {
+            '$lookup': {
+              'from': 'productPrices', 
+              'localField': 'products._id', 
+              'foreignField': 'product', 
+              'as': 'productPrices'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$productPrices',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'shipItems', 
+              'localField': 'productPrices._id', 
+              'foreignField': 'product.productPrice', 
+              'as': 'shipItems'
+            }
+        },
+                {
+            '$unwind': {
+              'path': '$shipItems',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+                  {
+            '$addFields': {
+              'vendor.areaAr': "$area.nameAr"  ,
+              'vendor.areaEn': "$area.nameEn"  ,
+              'vendor.cityAr': "$city.nameAr",
+              'vendor.cityEn': "$city.nameEn"
+            }
+          },
+            {
+              '$group': {
+               '_id': '$vendor',
+                'rate': {
+                     '$avg': "$shipItems.rate.rate" 
+                },
+               }
+           },
+           {
+            '$addFields': {
+              '_id.rate': "$rate",
+              '_id.avatar': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$_id.avatar"] },
+              '_id.icon': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$_id.icon"] }
+            }
+          },
+           {
+            '$project': {
+                '_id._id': 1,
+                '_id.commercialName': 1,
+                '_id.icon': 1,
+                '_id.avatar': 1,
+                '_id.rate': 1,
+                '_id.areaAr': 1,
+                '_id.areaEn': 1,
+                '_id.cityAr': 1,
+                '_id.cityEn': 1,
+            }
+           }, 
+           
+      ];
+      let subCategories = await Cat.aggregate(aggr);
+      return (subCategories);
+  }
+  
 
 module.exports = {
     Cat,
@@ -300,5 +436,6 @@ module.exports = {
     addCat,
     updateCat,
     toggleNeglectCats,
+    getsubCategories,
 }
 

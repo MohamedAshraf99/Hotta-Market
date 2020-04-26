@@ -12,6 +12,7 @@
                 {
                     "entity": {
                         "type": "Service",
+                        "description": "",
                         "id": "f082bfad-a8d0-4998-812f-0c85a9e15ca1",
                         "name": "cats"
                     },
@@ -126,6 +127,38 @@
                                         "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Y2QyOTZlMzkzOGY0NTE0M2NiMWM0NTMiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU3MzA5MjQ3fQ.fwrnDP7JerP6Y-cHZH8kX9Ohm9wIDpvQYgjteuN0GPw"
                                     }
                                 ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/cats/getsubCategories/5e9c2db0b1f95f001ca1dd45"
+                                },
+                                "id": "8fdfa988-6589-436c-94b2-b1c3dce87d72",
+                                "name": "getsubCategories",
+                                "headers": []
                             }
                         },
                         {
@@ -481,7 +514,7 @@
                                         ]
                                     },
                                     "bodyType": "Text",
-                                    "textBody": "{\"phone\": \"+966111111122\",\"code\": \"9883\"}"
+                                    "textBody": "{\n  \"phone\": \"+966111111122\",\n  \"code\": \"9883\"\n}"
                                 },
                                 "uri": {
                                     "query": {

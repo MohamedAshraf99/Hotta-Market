@@ -1,5 +1,5 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { Cat, getCats, addCat, updateCat, toggleNeglectCats } = require('../models/cat');
+const { Cat, getCats, addCat, updateCat, toggleNeglectCats,getsubCategories } = require('../models/cat');
 const express = require('express');
 const router = express.Router();
 const { upload } = require('../services/helper')
@@ -56,6 +56,14 @@ router.put('/update/:id',
         res.send(updatedCat);
     });    
 
+router.get('/getsubCategories/:id', async (req, res) => {
 
+    let subCategories = await getsubCategories(req);
+
+    if (subCategories.message && subCategories.path && subCategories.type && subCategories.context)
+        return res.status(400).send(subCategories.message)
+
+    res.send(subCategories);
+});
 
 module.exports = router; 
