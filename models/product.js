@@ -38,7 +38,8 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    avatar: String,
+    avatar: [String],
+    description: String,
     available: {
         type: Boolean,
         default: true,
@@ -117,12 +118,168 @@ const addProduct = async (input) => {
 
     return newProduct;
 }
-
+async function getProductDetails(input) {
+    let startId = input.params.id;
+    let userId = input.query.userId;
+    console.log(userId)
+    let aggr = [
+        {
+          '$match': {
+            '_id': mongoose.Types.ObjectId(startId),
+            'isNeglected': false
+          }
+        },
+            {
+            '$lookup': {
+              'from': 'productPrices', 
+              'localField': '_id', 
+              'foreignField': 'product', 
+              'as': 'productPrices'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$productPrices',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'users', 
+              'localField': 'vendor', 
+              'foreignField': '_id', 
+              'as': 'vendor'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$vendor',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'shipItems', 
+              'localField': 'productPrices._id', 
+              'foreignField': 'product.productPrice', 
+              'as': 'shipItems'
+            }
+        },
+                {
+            '$unwind': {
+              'path': '$shipItems',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'favouriteProducts', 
+              'localField': '_id', 
+              'foreignField': 'product', 
+              'as': 'favouriteProducts'
+            }
+        },
+                {
+            '$unwind': {
+              'path': '$favouriteProducts',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$lookup': {
+              'from': 'shipCards', 
+              'localField': 'productPrices._id', 
+              'foreignField': 'productPrice', 
+              'as': 'shipCards'
+            }
+        },
+                {
+            '$unwind': {
+              'path': '$shipCards',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$addFields': {
+                'favourite': {
+                    '$and': [ { '$eq': [ "$favouriteProducts.user", mongoose.Types.ObjectId(userId) ] }, { '$eq': [ "$favouriteProducts.product", "$_id" ] } ]
+                }
+            }
+        },
+        {
+            '$addFields': {
+                'cart': {
+                    '$and': [ { '$eq': [ "$shipCards.client", mongoose.Types.ObjectId(userId) ] }, { '$eq': [ "$productPrices._id", "$shipCards.productPrice" ] } ]
+                }
+            }
+        },
+            {
+              '$group': {
+               '_id': '$_id',
+               'avatar': {
+                '$first': '$avatar'
+                },
+                'nameAr': {
+                    '$first': '$nameAr'
+                },
+                'nameEn': {
+                    '$first': '$nameEn'
+                },
+                'shopName': {
+                    '$first': '$vendor.commercialName'
+                },
+                'description': {
+                    '$first': '$description'
+                },
+                'price': {
+                    '$first': '$productPrices.prices'
+                },
+                'favourite': {
+                    '$first': '$favourite'
+                },
+                'cart': {
+                    '$first': '$cart'
+                },
+                'totalRates':{ '$addToSet': '$shipItems.rate.rate' },
+                'rate': {
+                    '$avg': "$shipItems.rate.rate" 
+            },
+               }
+           },
+           {
+            '$project': {
+                '_id': 1,
+                'avatar': 1,
+                'nameAr': 1,
+                'nameEn': 1,
+                'shopName': 1,
+                'description': 1,
+                'price.initialPrice': 1,
+                'price.reducedPrice': 1,
+                'favourite': 1,
+                'cart': 1,
+                'totalRates': 1,
+                'rate': 1,
+                'newPrice': { "$subtract": ['$price.initialPrice',{"$multiply": [ { "$divide": ["$price.reducedPrice",100] }, '$price.initialPrice' ]}]},
+            }
+           }, 
+           
+      ];
+     
+      let getProducts = await Product.aggregate(aggr);
+      getProducts[0].totalRates = getProducts[0].totalRates.length;
+      getProducts[0].avatar = getProducts[0].avatar.map(product => {
+    product = input.app.get('defaultAvatar')(input, 'host') + product
+        return product;
+    })
+      return (getProducts);
+  }
 
 
 module.exports = {
     Product,
     addProduct,
+    getProductDetails,
 }
 
 

@@ -136,11 +136,11 @@ async function getProducts(input) {
            {
             '$addFields': {
               'subCategoryImage': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$subCategoryImage"] },
-              '_id.avatar': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$_id.avatar"] }
             }
           },
            {
             '$project': {
+                'subCategoryImage': 1,
                 '_id._id': 1,
                 '_id.nameAr': 1,
                 '_id.nameEn': 1,
@@ -153,6 +153,10 @@ async function getProducts(input) {
            
       ];
       let getProducts = await Cat.aggregate(aggr);
+      getProducts = getProducts.map(product => {
+        product._id.avatar = product._id.avatar.map(avatar=>{avatar= input.app.get('defaultAvatar')(input, 'host') + avatar ;return avatar })
+        return product;
+    })
       return (getProducts);
   }
 const getCats_OldWithoutHasChildren = async (input) => {
