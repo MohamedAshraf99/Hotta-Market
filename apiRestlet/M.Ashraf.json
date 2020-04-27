@@ -89,6 +89,38 @@
                                 "body": {
                                     "formBody": {
                                         "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/cats/getCatProducts/5e9c2db0b1f95f001ca1dd45"
+                                },
+                                "id": "5ed8b2e6-7b25-423a-99bc-58e86a67ebd8",
+                                "name": "getCatProducts",
+                                "headers": []
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
                                         "encoding": "multipart/form-data",
                                         "items": [
                                             {
@@ -153,7 +185,7 @@
                                         "name": "http",
                                         "version": "V11"
                                     },
-                                    "host": "localhost:8000",
+                                    "host": "173.212.224.29:8000",
                                     "path": "/api/cats/getsubCategories/5e9c2db0b1f95f001ca1dd45"
                                 },
                                 "id": "8fdfa988-6589-436c-94b2-b1c3dce87d72",
@@ -471,6 +503,38 @@
                                         "value": "multipart/form-data"
                                     }
                                 ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/products/getProducts/"
+                                },
+                                "id": "22580865-3c64-4541-96cc-1ba9171c4ea9",
+                                "name": "getProducts",
+                                "headers": []
                             }
                         }
                     ]
