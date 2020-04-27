@@ -20,12 +20,10 @@ const productPriceSchema = new mongoose.Schema({
         required: true,
     }],
     price: {
-        date: Date,
         initialPrice: Number,
         reducedPrice: Number,
         reducedPriceFDate: Date,
         reducedPriceEDate: Date,
-        // costPrice: Number,
         quantity: Number,
     },
     isNeglected: {

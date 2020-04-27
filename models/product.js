@@ -34,10 +34,11 @@ const productSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
-    taxState: {
-        type: Boolean,
-        default: false,
+    tax: {
+        type: Number,
+        default: 0,
     },
+    avatar: String,
     available: {
         type: Boolean,
         default: true,
