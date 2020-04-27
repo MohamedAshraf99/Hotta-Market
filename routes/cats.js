@@ -1,5 +1,5 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { Cat, getCats, addCat, updateCat, toggleNeglectCats,getsubCategories } = require('../models/cat');
+const { Cat, getCats, addCat, updateCat, toggleNeglectCats,getsubCategories,getProducts } = require('../models/cat');
 const express = require('express');
 const router = express.Router();
 const { upload } = require('../services/helper')
@@ -64,6 +64,15 @@ router.get('/getsubCategories/:id', async (req, res) => {
         return res.status(400).send(subCategories.message)
 
     res.send(subCategories);
+});
+router.get('/getCatProducts/:id', async (req, res) => {
+
+    let CatProducts = await getProducts(req);
+
+    if (CatProducts.message && CatProducts.path && CatProducts.type && CatProducts.context)
+        return res.status(400).send(CatProducts.message)
+
+    res.send(CatProducts);
 });
 
 module.exports = router; 

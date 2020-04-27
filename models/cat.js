@@ -81,7 +81,80 @@ const validateToggleNeglectCats = (body) => {
     return Joi.validate(body, schema);
 }
 
-
+async function getProducts(input) {
+    let startId = input.params.id;
+    
+    console.log(startId)
+    let aggr = [
+        {
+          '$match': {
+            '_id': mongoose.Types.ObjectId(startId),
+            'isNeglected': false
+          }
+        },
+        {
+            '$lookup': {
+              'from': 'products', 
+              'localField': '_id', 
+              'foreignField': 'cat', 
+              'as': 'products'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$products',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+            {
+            '$lookup': {
+              'from': 'productPrices', 
+              'localField': 'products._id', 
+              'foreignField': 'product', 
+              'as': 'productPrices'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$productPrices',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+        {
+            '$addFields': {
+              'products.price': "$productPrices.prices",
+            }
+          },
+            {
+              '$group': {
+               '_id': '$products',
+               'subCategoryImage': {
+                '$first': '$avatar'
+            },
+               }
+           },
+           {
+            '$addFields': {
+              'subCategoryImage': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$subCategoryImage"] },
+              '_id.avatar': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$_id.avatar"] }
+            }
+          },
+           {
+            '$project': {
+                '_id._id': 1,
+                '_id.nameAr': 1,
+                '_id.nameEn': 1,
+                '_id.avatar': 1,
+                '_id.price.initialPrice': 1,
+                '_id.price.reducedPrice': 1,
+                '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
+            }
+           }, 
+           
+      ];
+      let getProducts = await Cat.aggregate(aggr);
+      return (getProducts);
+  }
 const getCats_OldWithoutHasChildren = async (input) => {
 
     let { startId = false, limit = 10, all = false } = input.query;
@@ -430,6 +503,8 @@ async function getsubCategories(input) {
   }
   
 
+
+
 module.exports = {
     Cat,
     getCats,
@@ -437,5 +512,6 @@ module.exports = {
     updateCat,
     toggleNeglectCats,
     getsubCategories,
+    getProducts
 }
 
