@@ -104,7 +104,7 @@
                                         "version": "V11"
                                     },
                                     "host": "localhost:8000",
-                                    "path": "/api/cats/getCatProducts/5e9c2db0b1f95f001ca1dd45"
+                                    "path": "/api/users/getCatProducts/5ea068314afa0010cca54335"
                                 },
                                 "id": "5ed8b2e6-7b25-423a-99bc-58e86a67ebd8",
                                 "name": "getCatProducts",
@@ -528,6 +528,11 @@
                                                 "enabled": true,
                                                 "name": "userId",
                                                 "value": "5e94333ae2d033010e7eac50"
+                                            },
+                                            {
+                                                "enabled": true,
+                                                "name": "type",
+                                                "value": "productiveFamily"
                                             }
                                         ]
                                     },
