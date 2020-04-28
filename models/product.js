@@ -121,7 +121,90 @@ const addProduct = async (input) => {
 async function getProductDetails(input) {
     let startId = input.params.id;
     let userId = input.query.userId;
-    console.log(userId)
+    let type = input.query.type;
+    if(type =="productiveFamily"){
+        let aggr = [
+            {
+              '$match': {
+                '_id': mongoose.Types.ObjectId(startId),
+                'isNeglected': false
+              }
+            },
+                {
+                '$lookup': {
+                  'from': 'productPrices', 
+                  'localField': '_id', 
+                  'foreignField': 'product', 
+                  'as': 'productPrices'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$productPrices',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'users', 
+                  'localField': 'vendor', 
+                  'foreignField': '_id', 
+                  'as': 'vendor'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$vendor',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+                {
+                  '$group': {
+                   '_id': '$_id',
+                   'avatar': {
+                    '$first': '$avatar'
+                    },
+                    'nameAr': {
+                        '$first': '$nameAr'
+                    },
+                    'nameEn': {
+                        '$first': '$nameEn'
+                    },
+                    'phoneNumber': {
+                        '$first': '$vendor.phone'
+                    },
+                    'description': {
+                        '$first': '$description'
+                    },
+                    'price': {
+                        '$first': '$productPrices.prices'
+                    },
+                   }
+               },
+               {
+                '$project': {
+                    '_id': 1,
+                    'avatar': 1,
+                    'nameAr': 1,
+                    'nameEn': 1,
+                    'description': 1,
+                    'phoneNumber':1,
+                    'price.initialPrice': 1,
+                }
+               }, 
+               
+          ];
+          let getProducts = await Product.aggregate(aggr);
+          if(getProducts.length != 0)
+            {
+                getProducts[0].avatar = getProducts[0].avatar.map(product => {
+                product = input.app.get('defaultAvatar')(input, 'host') + product
+                    return product;
+                })
+            }
+          return (getProducts);
+    }
+    else{
     let aggr = [
         {
           '$match': {
@@ -265,14 +348,19 @@ async function getProductDetails(input) {
            }, 
            
       ];
-     
       let getProducts = await Product.aggregate(aggr);
-      getProducts[0].totalRates = getProducts[0].totalRates.length;
-      getProducts[0].avatar = getProducts[0].avatar.map(product => {
-    product = input.app.get('defaultAvatar')(input, 'host') + product
-        return product;
-    })
+      if(getProducts.length != 0)
+      {
+        getProducts[0].totalRates = getProducts[0].totalRates.length;
+        console.log(getProducts[0]);
+        getProducts[0].avatar = getProducts[0].avatar.map(product => {
+        product = input.app.get('defaultAvatar')(input, 'host') + product
+            return product;
+        })
+     }
       return (getProducts);
+    }
+     
   }
 
 

@@ -535,6 +535,11 @@ async function getProducts(input) {
             'products.price': "$productPrices.prices",
           }
         },
+        {
+          '$addFields': {
+            'products.type': "$type",
+          }
+        },
           {
             '$group': {
              '_id': '$products',
@@ -555,6 +560,7 @@ async function getProducts(input) {
               '_id.nameAr': 1,
               '_id.nameEn': 1,
               '_id.avatar': 1,
+              '_id.type': 1,
               '_id.price.initialPrice': 1,
               '_id.price.reducedPrice': 1,
               '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
