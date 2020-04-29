@@ -39,7 +39,7 @@ const productSchema = new mongoose.Schema({
         default: 0,
     },
     avatar: [String],
-    description: String,
+    desc: String,
     available: {
         type: Boolean,
         default: true,
@@ -68,6 +68,7 @@ const validateAdd = (body) => {
         nameEn: Joi.string().required(),
         code: Joi.string().required(),
         taxState: Joi.bool().optional(),
+        desc: Joi.string().optional(),
         available: Joi.bool().optional(),
         productPrices: Joi.array().required(),
     };
