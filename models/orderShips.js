@@ -14,21 +14,15 @@ const orderShipsSchema = new mongoose.Schema({
         required: true,
     },  
     requiredDateTime: Date,
-    logs: [{
-        vendor: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+    log: [{
+        date: {
+            type: Date,
+            default: Date.now()
         },
-        log: [{
-            date: {
-                type: Date,
-                default: Date.now()
-            },
-            state: {
-                type: String,
-                enum: ['new', 'progress','complete', 'canceled']
-            }
-        }]
+        state: {
+            type: String,
+            enum: ['new', 'progress','complete', 'canceled']
+        }
     }],
     isNeglected: {
         type: Boolean,

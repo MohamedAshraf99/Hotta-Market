@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
   },
   commercialName: String,
   commercialNumber: String,
+  desc: String,
   icon: String,
   phone: {
     type: String,
@@ -109,6 +110,7 @@ const validateRegister = (body) => {
       icon: Joi.string().optional(),
       commercialName: Joi.string().optional(),
       commercialNumber: Joi.string().optional(),
+      desc: Joi.string().optional(),
       phone: Joi.string().required(),
       contacts: Joi.array().optional(),
       email: Joi.string().required(),
@@ -129,6 +131,7 @@ const validateUpdate = (body) => {
     icon: Joi.string().optional(),
     commercialName: Joi.string().optional(),
     commercialNumber: Joi.string().optional(),
+    desc: Joi.string().optional(),
     phone: Joi.string().optional(),
     contacts: Joi.array().optional(),
     email: Joi.string().optional(),
@@ -207,9 +210,10 @@ const getUsers = async (input) => {
 
   if (users.length)
     users = users.map(user => {
-
       if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
       else user.avatar = input.app.get('defaultAvatar')(input)
+
+      if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
 
       return (
         _.omit(user.toObject(),
@@ -268,6 +272,8 @@ const register = async (input) => {
    if (user._id && (code == "Send Successful")) {
       if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
       else user.avatar = input.app.get('defaultAvatar')(input)
+
+      if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
       
     // i will show activation code in the response for mahmoud for testing purpose don't forget to delete it from response after that
     return (
@@ -299,6 +305,8 @@ const updateUser = async (input) => {
     if (user._id) {
       if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
       else user.avatar = input.app.get('defaultAvatar')(input)
+
+      if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
     }
   
     return (
@@ -345,6 +353,8 @@ async function login(input){
     if (user._id) {
       if (ret.avatar) ret.avatar = input.app.get('defaultAvatar')(input, 'host') + ret.avatar
       else ret.avatar = input.app.get('defaultAvatar')(input)
+
+      if (ret.icon) ret.icon = input.app.get('defaultAvatar')(input, 'host') + ret.icon
     }
     
     return ret;
@@ -389,6 +399,8 @@ async function resetPassword(input){
   if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
   else user.avatar = input.app.get('defaultAvatar')(input)
 
+  if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
+
   return ({
     ..._.omit(user.toObject(),
       ['password',
@@ -421,6 +433,8 @@ async function activate(input){
 
   if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
   else user.avatar = input.app.get('defaultAvatar')(input)
+
+  if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
 
   return ({
     ..._.omit(user.toObject(),
@@ -460,6 +474,8 @@ else{
       if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
       else user.avatar = input.app.get('defaultAvatar')(input)
 
+      if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
+
   const token = user.generateAuthToken();
 
    return ({
@@ -477,11 +493,24 @@ else{
 
 async function getUser(input) {
   let {id} = input.params
-  let user = await User.findById(id);
+  let user = await User
+  .findById(id)
+  .populate('role')
+  .populate({
+    path: "location.area",
+    populate: {
+      path: 'city',
+      populate: {
+        path: 'country',
+      } 
+    }
+  });
 
   if (user._id) {
     if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
     else user.avatar = input.app.get('defaultAvatar')(input)
+
+    if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
   }
 
   return ({

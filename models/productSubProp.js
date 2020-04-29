@@ -50,7 +50,6 @@ const validateUpdate = (body) => {
         nameAr: Joi.string().min(3).optional(),
         nameEn: Joi.string().min(3).optional(),
         isNeglected: Joi.bool().optional(),
-        productMainProp: Joi.string().length(24).required(),
     };
 
     return Joi.validate(body, schema);
@@ -69,7 +68,7 @@ const addSubProp = async (input) => {
     const { error } = validateAdd(body);
     if (error) return (error.details[0]);
 
-    let newMainProp = new ProductMainProp(body)
+    let newMainProp = new ProductSubProp(body)
 
     newMainProp = await newMainProp.save();
 
