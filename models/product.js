@@ -123,7 +123,7 @@ async function getProductDetails(input) {
     let startId = input.params.id;
     let userId = input.query.userId;
     let type = input.query.type;
-    if(type =="productiveFamily"){
+    if(type =="admin"){
         let aggr = [
             {
               '$match': {

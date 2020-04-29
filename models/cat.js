@@ -299,8 +299,9 @@ const toggleNeglectCats = async (input) => {
 
 async function getsubCategories(input) {
     let startId = input.params.id;
-    
-    console.log(startId)
+    let type = input.query.type;
+    if(type == "vendor")
+    {
     let aggr = [
         {
           '$match': {
@@ -432,6 +433,72 @@ async function getsubCategories(input) {
       ];
       let subCategories = await Cat.aggregate(aggr);
       return (subCategories);
+    }
+    else{
+        let aggr = [
+            {
+              '$match': {
+                '_id': mongoose.Types.ObjectId(startId),
+                'isNeglected': false
+              }
+            },
+            {
+                '$lookup': {
+                  'from': 'products', 
+                  'localField': '_id', 
+                  'foreignField': 'cat', 
+                  'as': 'products'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$products',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'users', 
+                  'localField': 'products.vendor', 
+                  'foreignField': '_id', 
+                  'as': 'vendor'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$vendor',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+            
+                {
+                  '$group': {
+                   '_id': '$vendor',
+                   }
+               },
+               {
+                '$addFields': {
+                  
+                  '_id.avatar': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$_id.avatar"] },
+                }
+              },
+               {
+                '$project': {
+                    '_id._id': 1,
+                    '_id.commercialName': 1,
+                    '_id.avatar': 1,
+                    '_id.desc': 1,
+                }
+               }, 
+               
+          ];
+          let subCategories = await Cat.aggregate(aggr);
+          return (subCategories);
+    }
+
+
+
+
   }
   
 

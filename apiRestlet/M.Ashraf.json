@@ -179,14 +179,20 @@
                                 "uri": {
                                     "query": {
                                         "delimiter": "&",
-                                        "items": []
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "type",
+                                                "value": "admin"
+                                            }
+                                        ]
                                     },
                                     "scheme": {
                                         "name": "http",
                                         "version": "V11"
                                     },
-                                    "host": "173.212.224.29:8000",
-                                    "path": "/api/cats/getsubCategories/5e9c2db0b1f95f001ca1dd45"
+                                    "host": "localhost:8000",
+                                    "path": "/api/cats/getsubCategories/5ea83e551312560d24ea3a73"
                                 },
                                 "id": "8fdfa988-6589-436c-94b2-b1c3dce87d72",
                                 "name": "getsubCategories",
@@ -532,7 +538,7 @@
                                             {
                                                 "enabled": true,
                                                 "name": "type",
-                                                "value": "productiveFamily"
+                                                "value": "vendor"
                                             }
                                         ]
                                     },
@@ -541,7 +547,7 @@
                                         "version": "V11"
                                     },
                                     "host": "localhost:8000",
-                                    "path": "/api/products/getProductDetails/5e9f40a54f2f7340900fd7b9"
+                                    "path": "/api/products/getProductDetails/5ea1696722dcd0367c24335b"
                                 },
                                 "id": "22580865-3c64-4541-96cc-1ba9171c4ea9",
                                 "name": "getProducts",
