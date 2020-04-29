@@ -69,6 +69,7 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 1024
   },
+  callsCount: Number,
   location: {
     area: {
       type: mongoose.Schema.Types.ObjectId,

@@ -15,12 +15,7 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Cat",
         required: true,
-    },
-    linkedProducts: {
-            type: [mongoose.Schema.Types.ObjectId],
-            ref: "Product",
-            default: []
-    },       
+    },   
     nameAr: {
         type: String,
         required: true,
@@ -63,7 +58,6 @@ const validateAdd = (body) => {
     let schema = {
         vendor: Joi.string().length(24).required(),
         cat: Joi.string().length(24).required(),
-        linkedProducts: Joi.array().optional(),
         nameAr: Joi.string().required(),
         nameEn: Joi.string().required(),
         code: Joi.string().required(),
