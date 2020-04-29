@@ -66,4 +66,5 @@ router.get('/getsubCategories/:id', async (req, res) => {
     res.send(subCategories);
 });
 
+
 module.exports = router; 
