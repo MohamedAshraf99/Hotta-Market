@@ -8,37 +8,15 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    vendor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-    location: {
-        area: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Area",
-            required: true,
+    log: [{
+        date: {
+            type: Date,
+            default: Date.now()
         },
-        lat: String,
-        lang: String,
-        desc: String
-    },
-    requiredDateTime: Date,
-    logs: [{
-        vendor: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-        },
-        log: [{
-            date: {
-                type: Date,
-                default: Date.now()
-            },
-            state: {
-                type: String,
-                enum: ['new', 'progress','complete', 'canceled']
-            }
-        }]
+        state: {
+            type: String,
+            enum: ['new', 'progress','complete', 'canceled']
+        }
     }],
     isNeglected: {
         type: Boolean,

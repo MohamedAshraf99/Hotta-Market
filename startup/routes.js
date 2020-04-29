@@ -24,6 +24,7 @@ const productMainProps = require('../routes/productMainProps');
 const productPrices = require('../routes/productPrices');
 const productSubProps = require('../routes/productSubProps');
 const products = require('../routes/products');
+const linkedProducts = require('../routes/linkedProducts');
 const cards = require('../routes/cards');
 const users = require('../routes/users');
 
@@ -94,6 +95,7 @@ module.exports = function (app, io) {
   app.use('/api/productPrices', productPrices);
   app.use('/api/productSubProps', productSubProps);
   app.use('/api/products', products);
+  app.use('/api/linkedProducts', linkedProducts);
   app.use('/api/comparedProducts', comparedProducts);
   app.use('/api/favouriteProducts', favouriteProducts);
   app.use('/api/cards', cards);
