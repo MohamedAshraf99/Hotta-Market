@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const {productPriceSchema, ProductPrice} = require('./productPrice')
+const {ProductPrice} = require('./productPrice')
 const _ = require('lodash')
 
 
@@ -33,7 +33,10 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    avatar: [String],
+    avatar: {
+      type: String,
+      required: true,
+    },
     desc: String,
     available: {
         type: Boolean,
@@ -63,6 +66,7 @@ const validateAdd = (body) => {
         code: Joi.string().required(),
         taxState: Joi.bool().optional(),
         desc: Joi.string().optional(),
+        avatar: Joi.string().required(),
         available: Joi.bool().optional(),
         productPrices: Joi.array().required(),
     };
@@ -113,6 +117,8 @@ const addProduct = async (input) => {
 
     return newProduct;
 }
+
+
 async function getProductDetails(input) {
     let startId = input.params.id;
     let userId = input.query.userId;

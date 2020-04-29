@@ -31,6 +31,11 @@ const catSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    type: {
+        type: String,
+        required: true,
+        enum: ['admin', 'vendor', 'productiveFamily']
+    },
     dateCreate: {
         type: Date,
         default: Date.now
@@ -61,7 +66,6 @@ const validateUpdate = (body) => {
         nameAr: Joi.string().min(3).optional(),
         nameEn: Joi.string().min(3).optional(),
         parent: Joi.string().optional(),
-        type: Joi.string().optional(),
         isNeglected: Joi.bool().optional(),
         avatar: Joi.string().optional(),
         icon: Joi.string().optional(),
@@ -292,6 +296,7 @@ const toggleNeglectCats = async (input) => {
 
     return cats
 }
+
 async function getsubCategories(input) {
     let startId = input.params.id;
     
@@ -429,8 +434,6 @@ async function getsubCategories(input) {
       return (subCategories);
   }
   
-
-
 
 module.exports = {
     Cat,
