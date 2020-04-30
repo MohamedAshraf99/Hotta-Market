@@ -9,12 +9,9 @@ const productPriceSchema = new mongoose.Schema({
         required: true,
     },
     props: [{
-        productSubProp: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "ProductSubProp",
-        },
-        value: String
-    }],
+        }],
     avatars: [{
         type: String,
         required: true,
