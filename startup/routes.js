@@ -17,6 +17,7 @@ const favouriteProducts = require('../routes/favouriteProducts');
 const generals = require('../routes/generals');
 const messages = require('../routes/messages');
 const orders = require('../routes/orders');
+const orderShips = require('../routes/orderShips');
 const shipCards = require('../routes/shipCards');
 const paymentTransactions = require('../routes/paymentTransactions');
 const pockets = require('../routes/pockets');
@@ -88,6 +89,7 @@ module.exports = function (app, io) {
   app.use('/api/generals', generals);
   app.use('/api/messages', messages);
   app.use('/api/orders', orders);
+  app.use('/api/orderShips', orderShips);
   app.use('/api/shipCards', shipCards);
   app.use('/api/paymentTransactions', paymentTransactions);
   app.use('/api/pockets', pockets);

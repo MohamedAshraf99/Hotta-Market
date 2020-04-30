@@ -2,7 +2,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 
 
-const orderShipsSchema = new mongoose.Schema({
+const orderShipSchema = new mongoose.Schema({
     order: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "order",
@@ -15,7 +15,7 @@ const orderShipsSchema = new mongoose.Schema({
             required: true,
         },
         lat: String,
-        lang: String,
+        lng: String,
         desc: String
     },
     vendor: {
@@ -49,11 +49,11 @@ const orderShipsSchema = new mongoose.Schema({
 });
 
 
-const orderShips = mongoose.model('orderShips', orderShipsSchema);
+const orderShip = mongoose.model('orderShip', orderShipSchema);
 
 
 module.exports = {
-    orderShips,
+    orderShip,
 }
 
 

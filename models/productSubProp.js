@@ -19,6 +19,12 @@ const productSubPropSchema = new mongoose.Schema({
         maxlength: 50,
         required: true,
     },
+        nameAr: {
+        type: String,
+        maxlength: 50,
+        required: true,
+    },
+    additional: String,
     isNeglected: {
         type: Boolean,
         default: false
@@ -39,6 +45,7 @@ const validateAdd = (body) => {
     let schema = {
         nameAr: Joi.string().min(3).required(),
         nameEn: Joi.string().min(3).required(),
+        additional: Joi.string().optional(),
         productMainProp: Joi.string().length(24).required(),
     };
 
@@ -49,6 +56,7 @@ const validateUpdate = (body) => {
     let schema = {
         nameAr: Joi.string().min(3).optional(),
         nameEn: Joi.string().min(3).optional(),
+        additional: Joi.string().optional(),
         isNeglected: Joi.bool().optional(),
     };
 
@@ -57,7 +65,9 @@ const validateUpdate = (body) => {
 
 
 const getSubProps = async (input) => {
-    return await ProductSubProp.find();
+    let productMainPropId = input.query.mainPropId || ""
+
+    return await ProductSubProp.find({productMainProp: productMainPropId});
 }
 
 

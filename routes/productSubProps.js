@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 router.get('/', async (req, res) => {
-    let SubProps = await getSubProps();
+    let SubProps = await getSubProps(req);
     res.send(SubProps);
 });
 
