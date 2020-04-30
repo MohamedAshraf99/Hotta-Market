@@ -180,6 +180,9 @@ async function getProductDetails(input) {
                     'price': {
                         '$first': '$productPrices.prices'
                     },
+                    'productPrices': {
+                      '$addToSet': '$productPrices'
+                    },
                    }
                },
                {
@@ -190,6 +193,7 @@ async function getProductDetails(input) {
                     'nameEn': 1,
                     'description': 1,
                     'phoneNumber':1,
+                    'productPrices':1,
                     'price.initialPrice': 1,
                 }
                }, 
@@ -297,68 +301,72 @@ async function getProductDetails(input) {
                 }
             }
         },
-          //   {
-          //     '$group': {
-          //      '_id': '$_id',
-          //      'avatar': {
-          //       '$first': '$avatar'
-          //       },
-          //       'nameAr': {
-          //           '$first': '$nameAr'
-          //       },
-          //       'nameEn': {
-          //           '$first': '$nameEn'
-          //       },
-          //       'shopName': {
-          //           '$first': '$vendor.commercialName'
-          //       },
-          //       'description': {
-          //           '$first': '$description'
-          //       },
-          //       'price': {
-          //           '$first': '$productPrices.prices'
-          //       },
-          //       'favourite': {
-          //           '$first': '$favourite'
-          //       },
-          //       'cart': {
-          //           '$first': '$cart'
-          //       },
-          //       'totalRates':{ '$addToSet': '$shipItems.rate.rate' },
-          //       'rate': {
-          //           '$avg': "$shipItems.rate.rate" 
-          //   },
-          //      }
-          //  },
-          //  {
-          //   '$project': {
-          //       '_id': 1,
-          //       'avatar': 1,
-          //       'nameAr': 1,
-          //       'nameEn': 1,
-          //       'shopName': 1,
-          //       'description': 1,
-          //       'price.initialPrice': 1,
-          //       'price.reducedPrice': 1,
-          //       'favourite': 1,
-          //       'cart': 1,
-          //       'totalRates': 1,
-          //       'rate': 1,
-          //       'newPrice': { "$subtract": ['$price.initialPrice',{"$multiply": [ { "$divide": ["$price.reducedPrice",100] }, '$price.initialPrice' ]}]},
-          //   }
-          //  }, 
+            {
+              '$group': {
+               '_id': '$_id',
+               'avatar': {
+                '$first': '$avatar'
+                },
+                'nameAr': {
+                    '$first': '$nameAr'
+                },
+                'nameEn': {
+                    '$first': '$nameEn'
+                },
+                'shopName': {
+                    '$first': '$vendor.commercialName'
+                },
+                'description': {
+                    '$first': '$description'
+                },
+                'price': {
+                    '$first': '$productPrices.prices'
+                },
+                'productPrices': {
+                  '$addToSet': '$productPrices'
+                },
+                'favourite': {
+                    '$first': '$favourite'
+                },
+                'cart': {
+                    '$first': '$cart'
+                },
+                'totalRates':{ '$addToSet': '$shipItems.rate.rate' },
+                'rate': {
+                    '$avg': "$shipItems.rate.rate" 
+            },
+               }
+           },
+           {
+            '$project': {
+                '_id': 1,
+                'avatar': 1,
+                'nameAr': 1,
+                'nameEn': 1,
+                'shopName': 1,
+                'description': 1,
+                'productPrices':1,
+                'price.initialPrice': 1,
+                'price.reducedPrice': 1,
+                'favourite': 1,
+                'cart': 1,
+                'totalRates': 1,
+                'rate': 1,
+                'newPrice': { "$subtract": ['$price.initialPrice',{"$multiply": [ { "$divide": ["$price.reducedPrice",100] }, '$price.initialPrice' ]}]},
+            }
+           }, 
            
       ];
       let getProducts = await Product.aggregate(aggr);
-    //   if(getProducts.length != 0)
-    //   {
-    //     getProducts[0].totalRates = getProducts[0].totalRates.length;
-    //     console.log(getProducts[0]);
-    //     getProducts[0].avatar = getProducts[0].avatar.map(product => {
-    //     product = input.app.get('defaultAvatar')(input, 'host') + product
-    //         return product;
-    //     })
-    //  }
+      if(getProducts.length != 0)
+      {
+        getProducts[0].totalRates = getProducts[0].totalRates.length;
+        console.log(getProducts[0]);
+        getProducts[0].avatar = getProducts[0].avatar.map(product => {
+        product = input.app.get('defaultAvatar')(input, 'host') + product
+            return product;
+        })
+     }
       return (getProducts);
     }
      

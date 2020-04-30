@@ -48,10 +48,16 @@ const addCart = async (input) => {
     return newCart;
 }
 
+const deleteCart = async (input) => {
+
+    let ids = input.body.ids;
+    return await ShipCard.deleteMany({ _id: { $in: ids } });
+}
 
 module.exports = {
     ShipCard,
-    addCart
+    addCart,
+    deleteCart
 }
 
 

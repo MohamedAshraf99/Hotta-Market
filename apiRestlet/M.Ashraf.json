@@ -13,6 +13,128 @@
                     "entity": {
                         "type": "Service",
                         "description": "",
+                        "id": "d218dea0-70cb-432c-bb67-b3b921bef19b",
+                        "name": "cart"
+                    },
+                    "children": [
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text",
+                                    "textBody": "{\n  \"client\":\"5e944dd2ba94c4013e22789f\",\n  \"productPrice\":\"5ea176bf22dcd0367c24335d\",\n  \"quantity\":1\n  \n}"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/shipCards/add"
+                                },
+                                "id": "c8590e51-8536-4725-8c2b-f430694c23cd",
+                                "name": "addCart",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text",
+                                    "textBody": "{\n\n  \"ids\":[\"5ea9acd3b3c1ef7e48e702cb\",\"5ea9bb2a1e7d0877f4319f8e\"]\n\n\n}"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/shipCards/delete"
+                                },
+                                "id": "de38bb1e-7bb9-4b0d-8fe4-8b582207c006",
+                                "name": "deleteCart",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/users/getCartProducts/5e94333ae2d033010e7eac50"
+                                },
+                                "id": "55be4614-eab1-4448-abdb-a03e511dc426",
+                                "name": "getCartProducts",
+                                "headers": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity": {
+                        "type": "Service",
+                        "description": "",
                         "id": "f082bfad-a8d0-4998-812f-0c85a9e15ca1",
                         "name": "cats"
                     },
@@ -103,7 +225,7 @@
                                         "name": "http",
                                         "version": "V11"
                                     },
-                                    "host": "localhost:8000",
+                                    "host": "173.212.224.29:8000",
                                     "path": "/api/users/getCatProducts/5ea068314afa0010cca54335"
                                 },
                                 "id": "5ed8b2e6-7b25-423a-99bc-58e86a67ebd8",
@@ -538,7 +660,7 @@
                                             {
                                                 "enabled": true,
                                                 "name": "type",
-                                                "value": "vendor"
+                                                "value": "admin"
                                             }
                                         ]
                                     },
@@ -547,7 +669,7 @@
                                         "version": "V11"
                                     },
                                     "host": "localhost:8000",
-                                    "path": "/api/products/getProductDetails/5ea1696722dcd0367c24335b"
+                                    "path": "/api/products/getProductDetails/5ea83ead1312560d24ea3a74"
                                 },
                                 "id": "22580865-3c64-4541-96cc-1ba9171c4ea9",
                                 "name": "getProducts",
