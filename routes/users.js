@@ -1,7 +1,7 @@
 const { authnMW, authrMW } = require('../RBAC_Auth/models/auth');
 const { User, register, login,
     changePassword, updateUser, resetPassword,
-    getUser, getUsers, activate, sendActivationCode,getProducts } = require('../models/user');
+    getUser, getUsers, activate, sendActivationCode,getProducts,getCart } = require('../models/user');
 const express = require('express');
 const router = express.Router();
 
@@ -126,6 +126,15 @@ router.get('/getCatProducts/:id', async (req, res) => {
         return res.status(400).send(CatProducts.message)
 
     res.send(CatProducts);
+});
+router.get('/getCartProducts/:id', async (req, res) => {
+
+    let CartProducts = await getCart(req);
+
+    if (CartProducts.message && CartProducts.path && CartProducts.type && CartProducts.context)
+        return res.status(400).send(CartProducts.message)
+
+    res.send(CartProducts);
 });
 
 

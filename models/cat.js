@@ -465,6 +465,11 @@ async function getsubCategories(input) {
                   'preserveNullAndEmptyArrays': true
                 }
               },
+              {
+                '$addFields': {
+                  'vendor.product': '$products._id',
+                }
+              },
             
                 {
                   '$group': {
@@ -480,6 +485,7 @@ async function getsubCategories(input) {
                {
                 '$project': {
                     '_id._id': 1,
+                    '_id.product': 1,
                     '_id.commercialName': 1,
                     '_id.avatar': 1,
                     '_id.desc': 1,
