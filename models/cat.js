@@ -201,7 +201,11 @@ const getCats = async (input) => {
                 }
             }
         }, {
-            '$limit': limit
+            '$sort': {
+                _id: 1
+            }
+        },{
+            '$limit': limit? limit: Infinity
         }
     ]);
 
