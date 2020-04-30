@@ -180,6 +180,9 @@ async function getProductDetails(input) {
                     'price': {
                         '$first': '$productPrices.prices'
                     },
+                    'productPrices': {
+                      '$addToSet': '$productPrices'
+                    },
                    }
                },
                {
@@ -190,6 +193,7 @@ async function getProductDetails(input) {
                     'nameEn': 1,
                     'description': 1,
                     'phoneNumber':1,
+                    'productPrices':1,
                     'price.initialPrice': 1,
                 }
                }, 
@@ -271,7 +275,7 @@ async function getProductDetails(input) {
           },
           {
             '$lookup': {
-              'from': 'shipCards', 
+              'from': 'shipcards', 
               'localField': 'productPrices._id', 
               'foreignField': 'productPrice', 
               'as': 'shipCards'
@@ -318,6 +322,9 @@ async function getProductDetails(input) {
                 'price': {
                     '$first': '$productPrices.prices'
                 },
+                'productPrices': {
+                  '$addToSet': '$productPrices'
+                },
                 'favourite': {
                     '$first': '$favourite'
                 },
@@ -338,6 +345,7 @@ async function getProductDetails(input) {
                 'nameEn': 1,
                 'shopName': 1,
                 'description': 1,
+                'productPrices':1,
                 'price.initialPrice': 1,
                 'price.reducedPrice': 1,
                 'favourite': 1,

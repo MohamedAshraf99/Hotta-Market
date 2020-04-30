@@ -606,6 +606,99 @@ async function getProducts(input) {
     return (getProducts);
 }
 
+
+
+async function getCart(input) {
+  let startId = input.params.id;
+  
+  console.log(startId)
+  let aggr = [
+      {
+        '$match': {
+          '_id': mongoose.Types.ObjectId(startId),
+          'isNeglected': false
+        }
+      },
+        {
+          '$lookup': {
+            'from': 'shipcards', 
+            'localField': '_id', 
+            'foreignField': 'client', 
+            'as': 'shipcards'
+          }
+      },
+      {
+          '$unwind': {
+            'path': '$shipcards',
+            'preserveNullAndEmptyArrays': true
+          }
+        },
+        {
+          '$lookup': {
+            'from': 'productPrices', 
+            'localField': 'shipcards.productPrice', 
+            'foreignField': '_id', 
+            'as': 'productPrices'
+          }
+      },
+      {
+          '$unwind': {
+            'path': '$productPrices',
+            'preserveNullAndEmptyArrays': true
+          }
+        },
+      {
+          '$lookup': {
+            'from': 'products', 
+            'localField': 'productPrices.product', 
+            'foreignField': '_id', 
+            'as': 'products'
+          }
+      },
+      {
+          '$unwind': {
+            'path': '$products',
+            'preserveNullAndEmptyArrays': true
+          }
+        },
+      
+      {
+          '$addFields': {
+            'products.price': "$productPrices.prices",
+            'products.quantity': "$shipcards.quantity",
+          }
+        },
+          {
+            '$group': {
+             '_id': '$products',
+             
+             }
+         },
+         {
+          '$project': {
+              '_id._id': 1,
+              '_id.nameAr': 1,
+              '_id.nameEn': 1,
+              '_id.avatar': 1,
+              '_id.quantity': 1,
+              '_id.price.initialPrice': 1,
+              '_id.price.reducedPrice': 1,
+              '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
+          }
+         },
+    ];
+    let getProducts = await User.aggregate(aggr);
+    getProducts = getProducts.map(product => {
+      product._id.avatar = product._id.avatar.map(avatar=>{avatar= input.app.get('defaultAvatar')(input, 'host') + avatar ;return avatar })
+      return product;
+  });
+  let sum = 0;
+  let totalPrice = getProducts.map((product)=>{
+    sum+=product._id.newPrice;return sum ;
+  })
+  getProducts[0]._id.totalPrice = totalPrice[totalPrice.length-1];
+    return (getProducts);
+}
 module.exports = {
   User,
   register,
@@ -617,5 +710,6 @@ module.exports = {
   getUsers,
   activate,
   sendActivationCode,
-  getProducts
+  getProducts,
+  getCart
 }
