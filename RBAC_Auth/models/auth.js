@@ -89,7 +89,6 @@ const validateAdd = (body) => {
 const validateUpdate = (body) => {
     let schema = {
         name: Joi.string().min(3).optional(),
-        route: Joi.string().min(3).optional(),
         access: Joi.string().optional(),
     };
 
@@ -187,27 +186,30 @@ const deleteAuth = async (input) => {
 const authrMW = async (req, res, next) => {
 
     const token = req.header('Authorization');
-    if (!token) return res.status(401).send('Access denied.');
+    if (!token) return res.status(401).send({res: "no token"});
 
     try {
         const decoded = jwt.verify(token, config.get('jwtPrivateKey')),
             userId = decoded._id,
             user = await User.findById(userId)
 
-        if (!user._id) return res.status(401).send('Access denied.');
+        if (!user._id) return res.status(401).send({res: 'no user'});
 
         //custom validation
-        if (!user.activated || !user.neglected)
-            return res.status(401).send('Access denied.');
+        if (user.isNeglected)
+            return res.status(401).send({res: 'user neglected'});
 
-        const userRole = user.role,
+        //custom validation
+        if (!user.isActivated)
+            return res.status(401).send({ res: 'user deactivated'});
+
+        const userRole = user.role || "",
             thisRoute = (req.baseUrl.split('/')[2] /*+ req.path*/),
             thisMethod = req.method.toUpperCase(),
-            userRoleInfo = await Role.findById(userRole),
+            userRoleInfo = await Role.findOne({_id: userRole}),
             owner = userRoleInfo.owner,
-            auth = await getAuth(input = { params: { route_name: thisRoute } })
-
-
+            auth = await Auth.findOne({name: thisRoute})
+            
         if (
             (auth.access != 'stop' && auth[thisMethod]) &&
             (
@@ -216,7 +218,7 @@ const authrMW = async (req, res, next) => {
                     (auth.access == 'normal') &&
                     (
                         // (!auth[thisMethod].length) ||
-                        (auth[thisMethod].map(g => g.toString()).includes(userRole.toString()))
+                        (auth[thisMethod].map(role => role.toString()).includes(userRole.toString()))
                     )
                 )
             )
@@ -225,55 +227,59 @@ const authrMW = async (req, res, next) => {
             req.user = {_id: user._id}
             next();
         }
+        else return res.status(401).send('access denied');
 
-
-        return res.status(401).send('Access denied.');
     }
     catch (ex) {
-        return res.status(400).send('Invalid token');
+        return res.status(400).send({res: 'invalid token'});
     }
 
 }
 
 const authnMW = async (req, res, next) => {
     const token = req.header('Authorization');
-    if (!token) return res.status(401).send('Access denied.');
+    if (!token) return res.status(401).send({res: "no token"});
 
     try {
         const decoded = jwt.verify(token, config.get('jwtPrivateKey')),
             userId = decoded._id,
             user = await User.findById(userId)
 
-        if (!user._id) return res.status(401).send('Access denied.');
+        if (!user._id) return res.status(401).send({res: 'no user'});
 
         //custom validation
-        if (!user.isActivated || user.isNeglected)
-            return res.status(401).send('Access denied.');
+        if (user.isNeglected)
+            return res.status(401).send({res: 'user neglected'});
+
+        //custom validation
+        if (!user.isActivated)
+            return res.status(401).send({ res: 'user deactivated'});
 
         req.user = {_id: user._id}
             
         next();
     }
     catch (ex) {
-        res.status(400).send('Invalid token');
+        res.status(400).send({res: 'invalid token'});
     }
 
 }
 
 const authrfunc = async (input) => {
     const token = input.header('Authorization');
-    if (!token) return false;
-
+    if (!token) return {};
+    
     try {
         const decoded = jwt.verify(token, config.get('jwtPrivateKey')),
-            user = await User.findById(decoded._id)
+            userId = decoded._id,
+            user = await User.findOne({_id: userId})
 
-        if (!user._id) return false;
+        if (!user._id) return {};
 
         //custom validation
-        if(!user.activated || !user.neglected) return false;
+        if(!user.isActivated || user.isNeglected) return {};
 
-        const userRole = user.role,
+        const userRole = user.role || "",
             userRoleInfo = await Role.findById(userRole),
             role = userRoleInfo._id,
             owner = userRoleInfo.owner,
@@ -307,7 +313,7 @@ const authrfunc = async (input) => {
 
         return returnedAuths;
     }
-    catch (ex) { return false }
+    catch (ex) { return {} }
 
 }
 
@@ -319,12 +325,12 @@ const authnfunc = async (input) => {
     try {
         const decoded = jwt.verify(token, config.get('jwtPrivateKey')),
             userId = decoded._id,
-            user = await User.findById(userId)
+            user = await User.findOne({_id: userId})
 
         if (!user._id) return false;
 
         //custom validation
-        if (!user.activated || !user.neglected) return false;
+        if (!user.isActivated || user.isNeglected) return false;
 
         return true
     }
