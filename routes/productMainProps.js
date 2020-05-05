@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 
-router.get('/', [authrMW], async (req, res) => {
+router.get('/', async (req, res) => {
     let mainProps = await getMainProps();
     res.send(mainProps);
 });

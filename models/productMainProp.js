@@ -56,53 +56,53 @@ const getMainProps = async (input) => {
 const getAllProps = async (input) => {
 
     return await ProductMainProp.aggregate([
-        {
-          '$lookup': {
-            'from': 'productSubProps', 
-            'localField': '_id', 
-            'foreignField': 'productMainProp', 
-            'as': 'subProps'
-          }
-        }, {
-          '$match': {
-            'isNeglected': false
-          }
-        }, {
-          '$unwind': {
-            'path': '$subProps'
-          }
-        }, {
-          '$match': {
-            'subProps.isNeglected': false
-          }
-        }, {
-          '$group': {
-            '_id': '$_id', 
-            'nameAr': {
-              '$first': '$nameAr'
-            }, 
-            'nameEn': {
-              '$first': '$nameEn'
-            }, 
-            'isNeglected': {
-              '$first': '$isNeglected'
-            }, 
-            'subProps': {
-              '$push': '$subProps'
-            }
-          }
-        }, {
-          '$match': {
-            '$expr': {
-              '$gt': [
-                {
-                  '$size': '$subProps'
-                }, 0
-              ]
-            }
+      {
+        '$lookup': {
+          'from': 'productsubprops', 
+          'localField': '_id', 
+          'foreignField': 'productMainProp', 
+          'as': 'subProps'
+        }
+      }, {
+        '$match': {
+          'isNeglected': false
+        }
+      }, {
+        '$unwind': {
+          'path': '$subProps'
+        }
+      }, {
+        '$match': {
+          'subProps.isNeglected': false
+        }
+      }, {
+        '$group': {
+          '_id': '$_id', 
+          'nameAr': {
+            '$first': '$nameAr'
+          }, 
+          'nameEn': {
+            '$first': '$nameEn'
+          }, 
+          'isNeglected': {
+            '$first': '$isNeglected'
+          }, 
+          'subProps': {
+            '$push': '$subProps'
           }
         }
-      ]);
+      }, {
+        '$match': {
+          '$expr': {
+            '$gt': [
+              {
+                '$size': '$subProps'
+              }, 0
+            ]
+          }
+        }
+      }
+    ]);
 }
 
 const addMainProp = async (input) => {
