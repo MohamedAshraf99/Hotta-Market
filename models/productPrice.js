@@ -8,19 +8,19 @@ const productPriceSchema = new mongoose.Schema({
         ref: "Product",
         required: true,
     },
-    props: [{
-            type: mongoose.Schema.Types.ObjectId,
+    props: {
+            type: [mongoose.Schema.Types.ObjectId],
             ref: "ProductSubProp",
-        }],
+        },
     avatars: [{
         type: String,
         required: true,
     }],
     price: {
         initialPrice: Number,
-        reducedPricePercentage: Number,
-        reducedPricePercentageFDate: Date,
-        reducedPricePercentageEDate: Date,
+        reducedPrice: Number,
+        reducedPriceFDate: Date,
+        reducedPriceEDate: Date,
         quantity: {
             type: Number,
             default: 0
