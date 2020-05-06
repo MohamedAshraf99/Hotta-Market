@@ -21,7 +21,10 @@ const productPriceSchema = new mongoose.Schema({
         reducedPricePercentage: Number,
         reducedPricePercentageFDate: Date,
         reducedPricePercentageEDate: Date,
-        quantity: Number,
+        quantity: {
+            type: Number,
+            default: 0
+        },
     },
     isNeglected: {
         type: Boolean,
