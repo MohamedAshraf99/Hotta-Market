@@ -11,8 +11,8 @@ const productSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    cat: {
-        type: mongoose.Schema.Types.ObjectId,
+    cats: {
+        type: [mongoose.Schema.Types.ObjectId],
         ref: "Cat",
         required: true,
     },   
@@ -60,7 +60,7 @@ const Product = mongoose.model('Product', productSchema);
 const validateAdd = (body) => {
     let schema = {
         vendor: Joi.string().length(24).required(),
-        cat: Joi.string().length(24).required(),
+        cats: Joi.array().required(),
         nameAr: Joi.string().required(),
         nameEn: Joi.string().required(),
         code: Joi.string().required(),
