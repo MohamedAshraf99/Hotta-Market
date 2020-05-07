@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const {ProductPrice} = require('./productPrice')
+const {ProductPrice, validateAdd:productPriceValidateAdd} = require('./productPrice')
 const _ = require('lodash')
 
 
@@ -76,10 +76,18 @@ const validateAdd = (body) => {
 
 const addProduct = async (input) => {
 
-    let body = input.body;
+    let {body} = input,
+    productPrices = body.productPrices || [{}],
+    productBody = _.omit(body, ['productPrices']);
 
-    const { error } = validateAdd(body);
+
+    const { error } = validateAdd(productBody);
     if (error) return (error.details[0]);
+
+    for (let i = 0; i < productPrices.length; i++) {
+      const { error } = productPriceValidateAdd(productPrices[i]);
+      if (error) return (error.details[0]);
+    }
 
     let newProduct = {},
         productPricesArr = body.productPrices;

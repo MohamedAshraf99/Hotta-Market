@@ -8,10 +8,10 @@ const productPriceSchema = new mongoose.Schema({
         ref: "Product",
         required: true,
     },
-    props: {
-            type: [mongoose.Schema.Types.ObjectId],
+    props: [{
+            type: mongoose.Schema.Types.ObjectId,
             ref: "ProductSubProp",
-        },
+        }],
     avatars: [{
         type: String,
         required: true,
@@ -40,9 +40,25 @@ const productPriceSchema = new mongoose.Schema({
 const ProductPrice = mongoose.model('ProductPrice', productPriceSchema);
 
 
+const validateAdd = (body, beforeProduct) => {
+    let schema = {
+        product: Joi.string().length(24).required(),
+        props: Joi.array().required(),
+        avatars: Joi.array().required(),
+        price: Joi.object().required(),
+    };
+
+    if (beforeProduct)
+        schema.product = Joi.string().length(24).optional()
+
+    return Joi.validate(body, schema);
+}
+
+
 module.exports = {
     ProductPrice,
     productPriceSchema,
+    validateAdd,
 }
 
 
