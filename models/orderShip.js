@@ -18,7 +18,7 @@ const orderShipSchema = new mongoose.Schema({
         lng: String,
         desc: String
     },
-    vendor: {
+    provider: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,

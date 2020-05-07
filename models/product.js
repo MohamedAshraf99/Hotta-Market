@@ -6,7 +6,7 @@ const _ = require('lodash')
 
 
 const productSchema = new mongoose.Schema({
-    vendor: {
+    provider: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
@@ -59,7 +59,7 @@ const Product = mongoose.model('Product', productSchema);
 
 const validateAdd = (body) => {
     let schema = {
-        vendor: Joi.string().length(24).required(),
+        provider: Joi.string().length(24).required(),
         cats: Joi.array().required(),
         nameAr: Joi.string().required(),
         nameEn: Joi.string().required(),
@@ -156,14 +156,14 @@ async function getProductDetails(input) {
               {
                 '$lookup': {
                   'from': 'users', 
-                  'localField': 'vendor', 
+                  'localField': 'provider', 
                   'foreignField': '_id', 
-                  'as': 'vendor'
+                  'as': 'provider'
                 }
             },
             {
                 '$unwind': {
-                  'path': '$vendor',
+                  'path': '$provider',
                   'preserveNullAndEmptyArrays': true
                 }
               },
@@ -180,7 +180,7 @@ async function getProductDetails(input) {
                         '$first': '$nameEn'
                     },
                     'phoneNumber': {
-                        '$first': '$vendor.phone'
+                        '$first': '$provider.phone'
                     },
                     'description': {
                         '$first': '$description'
@@ -242,14 +242,14 @@ async function getProductDetails(input) {
           {
             '$lookup': {
               'from': 'users', 
-              'localField': 'vendor', 
+              'localField': 'provider', 
               'foreignField': '_id', 
-              'as': 'vendor'
+              'as': 'provider'
             }
         },
         {
             '$unwind': {
-              'path': '$vendor',
+              'path': '$provider',
               'preserveNullAndEmptyArrays': true
             }
           },
@@ -322,7 +322,7 @@ async function getProductDetails(input) {
                     '$first': '$nameEn'
                 },
                 'shopName': {
-                    '$first': '$vendor.commercialName'
+                    '$first': '$provider.commercialName'
                 },
                 'description': {
                     '$first': '$description'
