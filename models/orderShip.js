@@ -31,6 +31,7 @@ const orderShipSchema = new mongoose.Schema({
         },
         state: {
             type: String,
+            default: "new",
             enum: ['new', 'progress','complete', 'canceled']
         }
     }],
