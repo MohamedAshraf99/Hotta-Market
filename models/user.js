@@ -532,6 +532,7 @@ async function getUser(input) {
       ]),
   });
 }
+
 async function getProducts(input) {
   let startId = input.params.id;
   
@@ -715,8 +716,8 @@ module.exports = {
   register,
   login,
   changePassword,
-  updateUser,
-  resetPassword,
+  updateUser,    
+  resetPassword,  
   getUser,
   getUsers,
   activate,

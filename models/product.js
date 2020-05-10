@@ -64,7 +64,7 @@ const validateAdd = (body) => {
         nameAr: Joi.string().required(),
         nameEn: Joi.string().required(),
         code: Joi.string().required(),
-        taxState: Joi.bool().optional(),
+        tax: Joi.number().optional(),
         desc: Joi.string().optional(),
         avatar: Joi.string().required(),
         available: Joi.bool().optional(),
@@ -76,16 +76,15 @@ const validateAdd = (body) => {
 
 const addProduct = async (input) => {
 
+  const { error } = validateAdd(input.body);
+  if (error) return (error.details[0]);
+
     let {body} = input,
-    productPrices = body.productPrices || [{}],
+    productPrices = body.productPrices,
     productBody = _.omit(body, ['productPrices']);
 
-
-    const { error } = validateAdd(productBody);
-    if (error) return (error.details[0]);
-
     for (let i = 0; i < productPrices.length; i++) {
-      const { error } = productPriceValidateAdd(productPrices[i]);
+      const { error } = productPriceValidateAdd(productPrices[i], true);
       if (error) return (error.details[0]);
     }
 

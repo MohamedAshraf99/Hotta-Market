@@ -10,9 +10,9 @@ router.post('/add',
     upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'avatars' }])
     , async (req, res) => {
 
-        return console.log(req.body.avatars);
-        
         req.body = JSON.parse(req.body.data || {});
+
+        req.body.avatar = (!req.files.avatar) ? false : `/uploads/${req.files.avatar[0].filename}`;
 
         let productPrices = req.body.productPrices || [];
 
@@ -21,8 +21,8 @@ router.post('/add',
             let avatarsLength = !isNaN(pp.avatars) ? parseInt(pp.avatars) : 0,
                 avatars = []
 
-            for (let i = 0; (i < avatarsLength && req.files.length); i++) {
-                let filename = (req.files.shift()).filename,
+            for (let i = 0; (i < avatarsLength && req.files.avatars.length); i++) {
+                let filename = (req.files.avatars.shift()).filename,
                     avatarPath = `/uploads/${filename}`;
                 avatars.push(avatarPath)
             }
