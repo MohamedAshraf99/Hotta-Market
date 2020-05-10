@@ -23,6 +23,7 @@ const shipItemsSchema = new mongoose.Schema({
             required: true,
         },
     },  
+    requiredDateTime: Date,
     rate:{
         positive: {
             type: String,
