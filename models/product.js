@@ -89,41 +89,33 @@ const addProduct = async (input) => {
       if (error) return (error.details[0]);
     }
 
-    let newProduct = {},
-        productPricesArr = body.productPrices;
+    let newProduct = new Product(productBody);
+    newProduct = await newProduct.save();
 
-    //transaction guaranted 
-    const session = await mongoose.startSession()
-    session.startTransaction()
-    try {
-        //start code
+    if(newProduct._id) {
+      let productId = newProduct._id;
 
-        newProduct = await Product.insertMany([_.omit(body, ['productPrices'])], {session})
-        // newProduct = await newProduct.save({session})
+      productPrices = productPrices.map(pp=>({...pp, product: productId}))
 
-        // if (newProduct._id) {
-        //     productPricesArr = productPricesArr
-        //         .map(pp => ({ ...pp, product: newProduct._id }));
+      if (newProduct.avatar) newProduct.avatar = input.app.get('defaultAvatar')(input, 'host',newProduct.avatar) 
+      else newProduct.avatar = input.app.get('defaultAvatar')(input)
 
-        //         // throw new Error("message");
+      productPrices = await ProductPrice.create(productPrices)
 
-        //     productPricesArr = await ProductPrice
-        //         .insertMany(productPricesArr, { session });
+      if(productPrices) {
 
-        //     newProduct.productPrices = productPricesArr;
-        // }
+        productPrices = productPrices.map(pp=>({
+          ...pp.toObject(),
+          avatars: pp.toObject().avatars.map(av=>input.app.get('defaultAvatar')(input, 'host',av))
+        }))
 
-        //start end
-        await session.commitTransaction()
-        session.endSession()
-    } catch (err) {
-        console.log(err);
-        await session.abortTransaction()
-        session.endSession()
+        return {
+          productPrices,
+          ...newProduct.toObject()
+        }
+      }
     }
-    //end transaction
 
-    return newProduct;
 }
 
 
@@ -387,4 +379,45 @@ module.exports = {
     getProductDetails,
 }
 
+
+
+
+
+
+
+
+
+
+
+
+//transaction guaranted 
+// const session = await mongoose.startSession()
+// session.startTransaction()
+// try {
+//start code
+
+// newProduct = await Product.insertMany([_.omit(body, ['productPrices'])], {session})
+// newProduct = await newProduct.save({session})
+
+// if (newProduct._id) {
+//     productPricesArr = productPricesArr
+//         .map(pp => ({ ...pp, product: newProduct._id }));
+
+//         // throw new Error("message");
+
+//     productPricesArr = await ProductPrice
+//         .insertMany(productPricesArr, { session });
+
+//     newProduct.productPrices = productPricesArr;
+// }
+
+//start end
+// await session.commitTransaction()
+// session.endSession()
+// } catch (err) {
+// console.log(err);
+// await session.abortTransaction()
+// session.endSession()
+// }
+//end transaction
 

@@ -42,12 +42,12 @@ module.exports = function (app, io) {
   app.set("io", io);
 
 
-  app.set("defaultAvatar", (req, collectionName) => {
+  app.set("defaultAvatar", (req, collectionName, avatar) => {
 
     let host = `${req.protocol}://${req.get('host')}`,
       defaultPic = '';
 
-    if (collectionName == 'host') return host;
+    if (collectionName == 'host') return `${host}${avatar || ""}`;
 
     switch (collectionName) {
       case 'user':
