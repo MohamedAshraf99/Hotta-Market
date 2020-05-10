@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  providerStatus: Boolean,
   avatar: {
     type: String,
     required: true,
@@ -139,6 +140,7 @@ const validateUpdate = (body) => {
     password: Joi.string().min(2).optional(),
     location: Joi.object().optional(),
     isNeglected: Joi.bool().optional(),
+    providerStatus: Joi.bool().optional(),
     connectionId: Joi.string().optional(),
     deviceId: Joi.array().optional(),
   };
@@ -195,26 +197,32 @@ const validateSendActivationCode = (body) => {
 
 const getUsers = async (input) => {
 
-  let { startId = false, limit = 10, all = false, filter="{}", fields="{}" } = input.query;
+  let { startId = false, limit = 10, all = false, filter="{}", fields="{}", noAvatar=false, noIcon=false } = input.query;
 
   startId = (!startId || startId == "false") ? false: startId
 
   startId = (all || !startId) ? {} : { '_id': { '$gt': startId } };
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
+
+  fields = Object.keys(JSON.parse(fields)).join(' ')
+
   let users = await User.find(
     { ...startId, ...JSON.parse(filter) },
-    { ...JSON.parse(fields) }
+    
   )
+  .select(fields)
   .populate("role")
   .limit(limit);
 
   if (users.length)
     users = users.map(user => {
-      if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
-      else user.avatar = input.app.get('defaultAvatar')(input)
+      if(!noAvatar){
+        if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
+        else user.avatar = input.app.get('defaultAvatar')(input)
+      }
 
-      if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
+      if (!noIcon && user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
 
       return (
         _.omit(user.toObject(),
@@ -260,9 +268,12 @@ const register = async (input) => {
   }
 
   
-  body.password = await getHashPassword(input.body.password);
+  body.password = await getHashPassword(body.password);
   body.isActivated = body.type == "admin" ? true: false;
   body.latestActivationCode = activationCode;
+
+  if (['productiveFamily', 'vendor'].includes(body.type))
+    body.providerStatus = true;
 
   let user = new User(body)
   user = await user.save();
@@ -521,6 +532,7 @@ async function getUser(input) {
       ]),
   });
 }
+
 async function getProducts(input) {
   let startId = input.params.id;
   
@@ -714,8 +726,8 @@ module.exports = {
   register,
   login,
   changePassword,
-  updateUser,
-  resetPassword,
+  updateUser,    
+  resetPassword,  
   getUser,
   getUsers,
   activate,
