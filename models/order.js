@@ -1,6 +1,8 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-
+const {orderShip,validateAddOrderShip} = require('./orderShip');
+const {shipItems,validateAddShipItems} = require('./shipItems');
+const {PaymentTransaction,validateAddPaymentTransaction} = require('./paymentTransaction');
 
 const orderSchema = new mongoose.Schema({
     client: {
@@ -36,7 +38,15 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', orderSchema);
 
+const validateAddOrder = (body) => {
+    let schema = {
+        client: Joi.string().length(24).required(),
+        log: Joi.array().optional(),
+        completed: Joi.bool().optional(),
+    };
 
+    return Joi.validate(body, schema);
+}
 
 const addOrder = async (input) => {
 

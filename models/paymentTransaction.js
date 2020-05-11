@@ -29,10 +29,19 @@ const paymentTransactionSchema = new mongoose.Schema({
 
 
 const PaymentTransaction = mongoose.model('PaymentTransaction', paymentTransactionSchema);
+const validateAddPaymentTransaction = (body) => {
+    let schema = {
+        order: Joi.string().length(24).required(),
+        price: Joi.number().required(),
+        method: Joi.string().required(),
+    };
 
+    return Joi.validate(body, schema);
+}
 
 module.exports = {
     PaymentTransaction,
+    validateAddPaymentTransaction,
 }
 
 
