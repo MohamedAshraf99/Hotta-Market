@@ -72,7 +72,7 @@
                                         "items": []
                                     },
                                     "bodyType": "Text",
-                                    "textBody": "{\n\n  \"ids\":[\"5ea9acd3b3c1ef7e48e702cb\",\"5ea9bb2a1e7d0877f4319f8e\"]\n\n\n}"
+                                    "textBody": "{\n\n  \"ids\":[\"5ea9bb771e7d0877f4319f90\",\"5ea9bb8f1e7d0877f4319f91\"]\n\n\n}"
                                 },
                                 "uri": {
                                     "query": {
@@ -225,7 +225,7 @@
                                         "name": "http",
                                         "version": "V11"
                                     },
-                                    "host": "173.212.224.29:8000",
+                                    "host": "localhost:8000",
                                     "path": "/api/users/getCatProducts/5ea068314afa0010cca54335"
                                 },
                                 "id": "5ed8b2e6-7b25-423a-99bc-58e86a67ebd8",
@@ -562,6 +562,56 @@
                 {
                     "entity": {
                         "type": "Service",
+                        "id": "0c8b75e6-c9e8-4867-ab82-3cba32b82697",
+                        "name": "order"
+                    },
+                    "children": [
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text",
+                                    "textBodyEditorHeight": 543,
+                                    "textBody": "{\n  \"client\":\"5e94333ae2d033010e7eac50\",\n  \"orderShip\":[\n    {\n      \"provider\":\"5ea068314afa0010cca54335\",\n      \"shipItems\":[\n        {\n          \"product\":{\n            \"productPrice\":\"5ea176bf22dcd0367c24335d\",\n            \"quantity\":20,\n            \"price\":100\n          },\n          \"requiredDateTime\":\"2020-04-20T22:00:00.000+00:00\"\n        }]\n    },\n    {\n      \"provider\":\"5ea068314afa0010cca54335\",\n      \"shipItems\":[\n        {\n          \"product\":{\n            \"productPrice\":\"5ea176bf22dcd0367c24335d\",\n            \"quantity\":20,\n            \"price\":100\n          },\n           \"requiredDateTime\":\"2020-04-20T22:00:00.000+00:00\"\n        }]\n    }],\n  \"location\": {\n    \"area\": \"5e99d718cc9e712f843d5810\",\n    \"desc\": \"oiu;oi\",\n    \"lat\": 87.10078125,\n    \"lng\": 27.912587561488703     \n  },\n  \"price\":1500,\n  \"method\":\"COD\"\n\n}\n"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/orders/add"
+                                },
+                                "id": "ad8cba1a-13ec-4d7d-88df-7daaf59f3ef8",
+                                "name": "addOrder",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity": {
+                        "type": "Service",
                         "id": "e6a3ca88-8eb3-42d5-ba6a-c3be73d36081",
                         "name": "products"
                     },
@@ -668,7 +718,7 @@
                                         "name": "http",
                                         "version": "V11"
                                     },
-                                    "host": "localhost:8000",
+                                    "host": "173.212.224.29:8000",
                                     "path": "/api/products/getProductDetails/5ea83ead1312560d24ea3a74"
                                 },
                                 "id": "22580865-3c64-4541-96cc-1ba9171c4ea9",
