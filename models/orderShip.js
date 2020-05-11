@@ -22,8 +22,7 @@ const orderShipSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
-    },  
-    requiredDateTime: Date,
+    }, 
     log: [{
         date: {
             type: Date,
@@ -31,6 +30,7 @@ const orderShipSchema = new mongoose.Schema({
         },
         state: {
             type: String,
+            default: "new",
             enum: ['new', 'progress','complete', 'canceled']
         }
     }],
@@ -51,9 +51,21 @@ const orderShipSchema = new mongoose.Schema({
 
 const orderShip = mongoose.model('orderShip', orderShipSchema);
 
+const validateAddOrderShip = (body) => {
+    let schema = {
+        provider: Joi.string().length(24).required(),
+        order: Joi.string().length(24).required(),
+        location: Joi.object().required(),
+        log: Joi.array().optional(),
+        completed: Joi.bool().optional(),
+    };
+
+    return Joi.validate(body, schema);
+}
 
 module.exports = {
     orderShip,
+    validateAddOrderShip,
 }
 
 

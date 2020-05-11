@@ -23,18 +23,16 @@ const shipItemsSchema = new mongoose.Schema({
             required: true,
         },
     },  
+    requiredDateTime: Date,
     rate:{
         positive: {
             type: String,
-            required: true,
         },
         negative: {
             type: String,
-            required: true,
         },
         rate:{
             type: Number,
-            required: true,
         }
     },
     isNeglected: {
@@ -49,10 +47,20 @@ const shipItemsSchema = new mongoose.Schema({
 
 
 const shipItems = mongoose.model('shipItems', shipItemsSchema);
+const validateAddShipItems = (body) => {
+    let schema = {
+        orderShips: Joi.string().length(24).required(),
+        requiredDateTime: Joi.date().required(),
+        rate: Joi.object().optional(),
+        product: Joi.object().required(),
+    };
 
+    return Joi.validate(body, schema);
+}
 
 module.exports = {
     shipItems,
+    validateAddShipItems,
 }
 
 

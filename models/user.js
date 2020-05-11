@@ -544,6 +544,7 @@ async function getProducts(input) {
         '$match': {
           '_id': mongoose.Types.ObjectId(startId),
           'isNeglected': false
+
         }
       },
       {
@@ -675,11 +676,27 @@ async function getCart(input) {
             'preserveNullAndEmptyArrays': true
           }
         },
-      
+        {
+          '$lookup': {
+            'from': 'cats', 
+            'localField': 'products.cat', 
+            'foreignField': '_id', 
+            'as': 'cats'
+          }
+      },
+      {
+          '$unwind': {
+            'path': '$cats',
+            'preserveNullAndEmptyArrays': true
+          }
+        },
       {
           '$addFields': {
             'products.price': "$productPrices.prices",
             'products.quantity': "$shipcards.quantity",
+            'products.shipcard': "$shipcards._id",
+            'products.providerId': "$products.vendor",
+            'products.type': "$cats.type",
           }
         },
           {
@@ -695,13 +712,17 @@ async function getCart(input) {
               '_id.nameEn': 1,
               '_id.avatar': 1,
               '_id.quantity': 1,
+              '_id.shipcard': 1,
+              '_id.type': 1,
+              '_id.providerId': 1,
               '_id.price.initialPrice': 1,
               '_id.price.reducedPrice': 1,
               '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
           }
          },
     ];
-    let getProducts = await User.aggregate(aggr);
+     let getProducts = await User.aggregate(aggr);
+    if(getProducts[0]._id.newPrice != null){
     getProducts = getProducts.map(product => {
       product._id.avatar = product._id.avatar.map(avatar=>{avatar= input.app.get('defaultAvatar')(input, 'host') + avatar ;return avatar })
       return product;
@@ -711,7 +732,11 @@ async function getCart(input) {
     sum+=product._id.newPrice;return sum ;
   })
   getProducts[0]._id.totalPrice = totalPrice[totalPrice.length-1];
+  return (getProducts);
+  }
+  else {getProducts = [];
     return (getProducts);
+  }
 }
 module.exports = {
   User,

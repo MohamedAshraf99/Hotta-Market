@@ -127,7 +127,8 @@ async function getProductDetails(input) {
             {
               '$match': {
                 '_id': mongoose.Types.ObjectId(startId),
-                'isNeglected': false
+                'isNeglected': false,
+                'available': true
               }
             },
                 {
@@ -213,7 +214,8 @@ async function getProductDetails(input) {
         {
           '$match': {
             '_id': mongoose.Types.ObjectId(startId),
-            'isNeglected': false
+            'isNeglected': false,
+            'available': true
           }
         },
             {
