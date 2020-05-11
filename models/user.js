@@ -197,7 +197,7 @@ const validateSendActivationCode = (body) => {
 
 const getUsers = async (input) => {
 
-  let { startId = false, limit = 10, all = false, filter="{}", fields="{}", noAvatar=false, noIcon=false } = input.query;
+  let { startId = false, limit = 10, all = false, filter="{}", fields="{}", } = input.query;
 
   startId = (!startId || startId == "false") ? false: startId
 
@@ -205,24 +205,26 @@ const getUsers = async (input) => {
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
 
-  fields = Object.keys(JSON.parse(fields)).join(' ')
+  fields = JSON.parse(fields)
 
-  let users = await User.find(
-    { ...startId, ...JSON.parse(filter) },
-    
-  )
+  fields = Object.keys(fields)
+    .reduce((ac, f) => `${ac} ${fields[f] == "1" ? "" : "-"}${f}`, '')
+
+
+  let users = await User
+  .find({ ...startId, ...JSON.parse(filter) })
   .select(fields)
   .populate("role")
   .limit(limit);
 
   if (users.length)
     users = users.map(user => {
-      if(!noAvatar){
+      if(fields.avatar != 0){
         if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
         else user.avatar = input.app.get('defaultAvatar')(input)
       }
 
-      if (!noIcon && user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
+      if (fields.icon != 0 && user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
 
       return (
         _.omit(user.toObject(),
