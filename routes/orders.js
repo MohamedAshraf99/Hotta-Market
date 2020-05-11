@@ -6,14 +6,6 @@ const router = express.Router();
 
 router.post('/add', async (req, res) => {
 
-    req.body = JSON.parse(req.body.data || {});
-    req.body.vendor = req.user._id
-
-    let productPrices = req.body.productPrices || [];
-
-
-    req.body.productPrices = productPrices;
-
     let newOrder = await addOrder(req);
 
     if (newOrder.message && newOrder.path && newOrder.type && newOrder.context)

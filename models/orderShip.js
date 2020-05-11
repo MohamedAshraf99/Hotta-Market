@@ -8,16 +8,6 @@ const orderShipSchema = new mongoose.Schema({
         ref: "order",
         required: true,
     },
-    location: {
-        area: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Area",
-            required: true,
-        },
-        lat: String,
-        lng: String,
-        desc: String
-    },
     provider: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -55,7 +45,7 @@ const validateAddOrderShip = (body) => {
     let schema = {
         provider: Joi.string().length(24).required(),
         order: Joi.string().length(24).required(),
-        location: Joi.object().required(),
+        shipItems: Joi.array().required(),
         log: Joi.array().optional(),
         completed: Joi.bool().optional(),
     };
