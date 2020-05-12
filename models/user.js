@@ -569,7 +569,7 @@ async function getProducts(input) {
         },
           {
           '$lookup': {
-            'from': 'productPrices', 
+            'from': 'productprices', 
             'localField': 'products._id', 
             'foreignField': 'product', 
             'as': 'productPrices'
@@ -656,7 +656,7 @@ async function getCart(input) {
         },
         {
           '$lookup': {
-            'from': 'productPrices', 
+            'from': 'productprices', 
             'localField': 'shipcards.productPrice', 
             'foreignField': '_id', 
             'as': 'productPrices'
@@ -703,6 +703,7 @@ async function getCart(input) {
             'products.shipcard': "$shipcards._id",
             'products.providerId': "$products.vendor",
             'products.type': "$cats.type",
+            'products.productPrices': "$productPrices._id",
           }
         },
           {
@@ -720,6 +721,7 @@ async function getCart(input) {
               '_id.quantity': 1,
               '_id.shipcard': 1,
               '_id.type': 1,
+              '_id.productPrices': 1,
               '_id.providerId': 1,
               '_id.price.initialPrice': 1,
               '_id.price.reducedPrice': 1,

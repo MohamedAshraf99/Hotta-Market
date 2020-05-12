@@ -143,7 +143,7 @@ async function getProductDetails(input) {
             },
                 {
                 '$lookup': {
-                  'from': 'productPrices', 
+                  'from': 'productprices', 
                   'localField': '_id', 
                   'foreignField': 'product', 
                   'as': 'productPrices'
@@ -230,7 +230,7 @@ async function getProductDetails(input) {
         },
             {
             '$lookup': {
-              'from': 'productPrices', 
+              'from': 'productprices', 
               'localField': '_id', 
               'foreignField': 'product', 
               'as': 'productPrices'
@@ -258,7 +258,7 @@ async function getProductDetails(input) {
           },
           {
             '$lookup': {
-              'from': 'shipItems', 
+              'from': 'shipitems', 
               'localField': 'productPrices._id', 
               'foreignField': 'product.productPrice', 
               'as': 'shipItems'

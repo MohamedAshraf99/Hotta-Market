@@ -10,6 +10,20 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
+    location: {
+        area: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Area",
+            required: true,
+        },
+        lat: String,
+        lng: String,
+        desc: String
+    },
+    number: {
+        type: Number,
+        unique: true,
+      },
     log: [{
         date: {
             type: Date,
@@ -43,6 +57,10 @@ const validateAddOrder = (body) => {
         client: Joi.string().length(24).required(),
         log: Joi.array().optional(),
         completed: Joi.bool().optional(),
+        orderShip: Joi.array().required(),
+        location: Joi.object().required(),
+        price: Joi.number().required(),
+        method: Joi.string().required(),
     };
 
     return Joi.validate(body, schema);
@@ -50,59 +68,64 @@ const validateAddOrder = (body) => {
 
 const addOrder = async (input) => {
 
-    let {body} = input,
-    productPrices = body.productPrices || [{}],
-    productBody = _.omit(body, ['productPrices']);
-
-
-    const { error } = validateAdd(productBody);
+    const { error } = validateAddOrder(input.body);
     if (error) return (error.details[0]);
+    
+    let client = input.body.client;
+    let orderShips = input.body.orderShip || [{}];
+    let location = input.body.location;
+    let test = input.body.orderShip;
+    let price = input.body.price;
+    let method = input.body.method;
+    let orderBody = {client:client,log:[{}],location:location};
 
-    for (let i = 0; i < productPrices.length; i++) {
-      const { error } = productPriceValidateAdd(productPrices[i]);
-      if (error) return (error.details[0]);
+    let maxNumber = await Order.findOne({}, { number: 1 }).sort({ number: -1 });
+    if (maxNumber == null)
+    maxNumber = 1 ;
+
+    orderBody.number = maxNumber.number ? maxNumber.number + 1 : 1;
+
+    let newOrder = new Order(orderBody);
+    newOrder = await newOrder.save();
+
+    if(newOrder._id) {
+        let orderId = newOrder._id.toString();
+    
+        const { error } = validateAddPaymentTransaction({method:method,price:price,order:orderId});
+        if (error) return (error.details[0]);
+        let paymentTransaction = new PaymentTransaction({method:method,price:price,order:orderId});
+
+        paymentTransaction = await paymentTransaction.save();
+    orderShips = orderShips.map(pp=>({...pp, order: orderId,log:[{}]}))
+    for (let i = 0; i < orderShips.length; i++) {
+        const { error } = validateAddOrderShip(orderShips[i]);
+        if (error) return (error.details[0]);
+      }
+      orderShips = await orderShip.create(orderShips);
+      orderShipsId = orderShips.map(id=>{return id._id.toString()});
+      if(orderShipsId) {
+          let ship =[]
+        for (let i = 0; i < test.length; i++) {
+            for (let j = 0; j < test[i].shipItems.length; j++) {
+                test[i].shipItems[j].orderShips = orderShipsId[i];
+                const { error } = validateAddShipItems(test[i].shipItems[j]);
+                if (error) return (error.details[0]);
+                ship.push(test[i].shipItems[j]);
+            }
+        }
+        ship = await shipItems.create(ship);
+
+
+        return {
+            paymentTransaction,
+            test,
+            ...newOrder.toObject()
+          }
     }
-
-    let newProduct = {},
-        productPricesArr = body.productPrices;
-
-    //transaction guaranted 
-    const session = await mongoose.startSession()
-    session.startTransaction()
-    try {
-        //start code
-
-        newProduct = await Product.insertMany([_.omit(body, ['productPrices'])], {session})
-        // newProduct = await newProduct.save({session})
-
-        // if (newProduct._id) {
-        //     productPricesArr = productPricesArr
-        //         .map(pp => ({ ...pp, product: newProduct._id }));
-
-        //         // throw new Error("message");
-
-        //     productPricesArr = await ProductPrice
-        //         .insertMany(productPricesArr, { session });
-
-        //     newProduct.productPrices = productPricesArr;
-        // }
-
-        //start end
-        await session.commitTransaction()
-        session.endSession()
-    } catch (err) {
-        console.log(err);
-        await session.abortTransaction()
-        session.endSession()
-    }
-    //end transaction
-
-    return newProduct;
+ }
 }
 
 module.exports = {
     Order,
     addOrder
 }
-
-

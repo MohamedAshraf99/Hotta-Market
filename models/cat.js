@@ -371,7 +371,7 @@ async function getsubCategories(input) {
           },
             {
             '$lookup': {
-              'from': 'productPrices', 
+              'from': 'productprices', 
               'localField': 'products._id', 
               'foreignField': 'product', 
               'as': 'productPrices'
@@ -385,7 +385,7 @@ async function getsubCategories(input) {
           },
           {
             '$lookup': {
-              'from': 'shipItems', 
+              'from': 'shipitems', 
               'localField': 'productPrices._id', 
               'foreignField': 'product.productPrice', 
               'as': 'shipItems'
