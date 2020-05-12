@@ -80,6 +80,8 @@ const userSchema = new mongoose.Schema({
     lng: Number,
     lat: Number
   },
+  openingTime: String,
+  closingTime: String,
   latestActivationCode: String,
   connectionId: {
     type: String,
@@ -113,6 +115,8 @@ const validateRegister = (body) => {
       commercialName: Joi.string().optional(),
       commercialNumber: Joi.string().optional(),
       desc: Joi.string().optional(),
+      openingTime: Joi.string().optional(),
+      closingTime: Joi.string().optional(),
       phone: Joi.string().required(),
       contacts: Joi.array().optional(),
       email: Joi.string().required(),
@@ -134,6 +138,8 @@ const validateUpdate = (body) => {
     commercialName: Joi.string().optional(),
     commercialNumber: Joi.string().optional(),
     desc: Joi.string().optional(),
+    openingTime: Joi.string().optional(),
+    closingTime: Joi.string().optional(),
     phone: Joi.string().optional(),
     contacts: Joi.array().optional(),
     email: Joi.string().optional(),

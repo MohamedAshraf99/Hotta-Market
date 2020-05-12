@@ -20,6 +20,14 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    prepaireDurationType: {
+      type: String,
+      enum: ['day', 'hour']
+    },
+    prepaireDurationValue: {
+      type: Number,
+      min: .1,
+    },
     nameEn: {
         type: String,
         required: true,
@@ -68,6 +76,8 @@ const validateAdd = (body) => {
         desc: Joi.string().optional(),
         avatar: Joi.string().required(),
         available: Joi.bool().optional(),
+        prepaireDurationType: Joi.string().optional(),
+        prepaireDurationValue: Joi.number().optional(),
         productPrices: Joi.array().required(),
     };
 
