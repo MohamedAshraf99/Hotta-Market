@@ -470,19 +470,25 @@
                                         ]
                                     },
                                     "bodyType": "Text",
-                                    "textBody": "{\n}"
+                                    "textBody": ""
                                 },
                                 "uri": {
                                     "query": {
                                         "delimiter": "&",
-                                        "items": []
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "userId",
+                                                "value": "5e942c2fe84697001c5974b2"
+                                            }
+                                        ]
                                     },
                                     "scheme": {
                                         "name": "http",
                                         "version": "V11"
                                     },
                                     "host": "localhost:8000",
-                                    "path": "/api/favouriteProducts/add/5e771cdbea9ad71020bf4a9c"
+                                    "path": "/api/favouriteProducts/add/5eba7cc17fef9d3c34ab48cf"
                                 },
                                 "id": "30960dcf-8361-4b3b-9581-388cd091d8be",
                                 "name": "add",
@@ -532,14 +538,20 @@
                                 "uri": {
                                     "query": {
                                         "delimiter": "&",
-                                        "items": []
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "userId",
+                                                "value": "5e942c2fe84697001c5974b2"
+                                            }
+                                        ]
                                     },
                                     "scheme": {
                                         "name": "http",
                                         "version": "V11"
                                     },
                                     "host": "localhost:8000",
-                                    "path": "/api/favouriteProducts/toggle/5e771cdbea9ad71020bf4a9c"
+                                    "path": "/api/favouriteProducts/toggle/5eba7cc17fef9d3c34ab48cf"
                                 },
                                 "id": "f529a22b-d8fb-4aa7-888b-56b3b0e168fb",
                                 "name": "toggle",
@@ -809,12 +821,12 @@
                                             {
                                                 "enabled": true,
                                                 "name": "userId",
-                                                "value": "5e94333ae2d033010e7eac50"
+                                                "value": "5e942c2fe84697001c5974b2"
                                             },
                                             {
                                                 "enabled": true,
                                                 "name": "type",
-                                                "value": "admin"
+                                                "value": "vendor"
                                             }
                                         ]
                                     },
@@ -822,8 +834,8 @@
                                         "name": "http",
                                         "version": "V11"
                                     },
-                                    "host": "173.212.224.29:8000",
-                                    "path": "/api/products/getProductDetails/5ea83ead1312560d24ea3a74"
+                                    "host": "localhost:8000",
+                                    "path": "/api/products/getProductDetails/5eb90d665b32183204375e5b"
                                 },
                                 "id": "22580865-3c64-4541-96cc-1ba9171c4ea9",
                                 "name": "getProducts",
@@ -839,6 +851,44 @@
                         "name": "shipItems"
                     },
                     "children": [
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "userId",
+                                                "value": "5e94333ae2d033010e7eac50"
+                                            }
+                                        ]
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/shipItems/getBestReviews"
+                                },
+                                "id": "66e3e7fe-d35e-4f1e-a75c-fc0b1d637e15",
+                                "name": "getBestReviews",
+                                "headers": []
+                            }
+                        },
                         {
                             "entity": {
                                 "type": "Request",
