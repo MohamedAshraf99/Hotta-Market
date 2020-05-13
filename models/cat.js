@@ -201,6 +201,47 @@ const getCats = async (input) => {
                 }
             }
         }, {
+            '$lookup': {
+                'from': 'products', 
+                'let': {
+                    'catId': '$_id'
+                }, 
+                'pipeline': [
+                    {
+                        '$match': {
+                            '$expr': {
+                                '$and': [
+                                    {
+                                        '$in': [
+                                            '$$catId', '$cats'
+                                        ]
+                                    }, {
+                                        'isNeglected': false
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ], 
+                'as': 'hasProducts'
+            }
+        }, {
+            '$addFields': {
+                'hasProducts': {
+                    '$cond': {
+                        'if': {
+                            '$eq': [
+                                {
+                                    '$size': '$hasProducts'
+                                }, 0
+                            ]
+                        }, 
+                        'then': false, 
+                        'else': true
+                    }
+                }
+            }
+        }, {
             '$sort': {
                 _id: 1
             }
