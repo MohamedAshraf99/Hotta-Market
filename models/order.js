@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const {orderShip,validateAddOrderShip} = require('./orderShip');
 const {shipItems,validateAddShipItems} = require('./shipItems');
 const {PaymentTransaction,validateAddPaymentTransaction} = require('./paymentTransaction');
+const {User} = require('./user');
 
 const orderSchema = new mongoose.Schema({
     client: {
@@ -66,6 +67,14 @@ const validateAddOrder = (body) => {
     return Joi.validate(body, schema);
 }
 
+const validateUpdate = (body) => {
+  let schema = {
+      date:Joi.date().required(),
+      state:Joi.string().required()
+  };
+
+  return Joi.validate(body, schema);
+}
 const addOrder = async (input) => {
 
     const { error } = validateAddOrder(input.body);
@@ -125,7 +134,273 @@ const addOrder = async (input) => {
  }
 }
 
+
+async function getOrders(input) {
+    let startId = input.params.id;
+    
+    console.log(startId)
+    let aggr = [
+        {
+          '$match': {
+            '_id': mongoose.Types.ObjectId(startId),
+            'isNeglected': false
+  
+          }
+        },
+        {
+            '$lookup': {
+              'from': 'orders', 
+              'localField': '_id', 
+              'foreignField': 'client', 
+              'as': 'orders'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$orders',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+            {
+            '$lookup': {
+              'from': 'paymenttransactions', 
+              'localField': 'orders._id', 
+              'foreignField': 'order', 
+              'as': 'paymentTransactions'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$paymentTransactions',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+        {
+            '$addFields': {
+              'orders.price': "$paymentTransactions.price",
+              'orders.log':{'$arrayElemAt': [ "$orders.log", -1 ]}
+            }
+          },
+            {
+              '$group': {
+               '_id': '$orders',
+               }
+           },
+           {
+            '$project': {
+                '_id._id': 1,
+                '_id.number': 1,
+                '_id.log.state': 1,
+                '_id.dateCreate': 1,
+                '_id.price': 1,
+            }
+           }, 
+           
+      ];
+      let getOrders = await User.aggregate(aggr);
+      return (getOrders);
+  }
+  
+
+
+
+  async function getOrderDetails(input) {
+    let startId = input.params.id;
+
+        let aggr = [
+            {
+              '$match': {
+                '_id': mongoose.Types.ObjectId(startId),
+                'isNeglected': false,
+              }
+            },
+                {
+                '$lookup': {
+                  'from': 'paymenttransactions', 
+                  'localField': '_id', 
+                  'foreignField': 'order', 
+                  'as': 'paymentTransactions'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$paymentTransactions',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'areas', 
+                  'localField': 'location.area', 
+                  'foreignField': '_id', 
+                  'as': 'area'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$area',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'cities', 
+                  'localField': 'area.city', 
+                  'foreignField': '_id', 
+                  'as': 'cities'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$cities',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+             
+              {
+                '$lookup': {
+                  'from': 'orderships', 
+                  'localField': '_id', 
+                  'foreignField': 'order', 
+                  'as': 'orderships'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$orderships',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'shipitems', 
+                  'localField': 'orderships._id', 
+                  'foreignField': 'orderShips', 
+                  'as': 'shipitems'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$shipitems',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'productprices', 
+                  'localField': 'shipitems.product.productPrice', 
+                  'foreignField': '_id', 
+                  'as': 'productprices'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$productprices',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'products', 
+                  'localField': 'productprices.product', 
+                  'foreignField': '_id', 
+                  'as': 'products'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$products',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+            {
+                '$addFields': {
+                  'location.cityAr': "$cities.nameAr",
+                  'location.cityEn': "$cities.nameEn",
+                  'location.areaAr': "$area.nameAr",
+                  'location.areaEn': "$area.nameEn",
+                  'price': "$paymentTransactions.price",
+                  'log':{'$arrayElemAt': [ "$log", -1 ]},
+                  'shipitems.product.nameAr': "$products.nameAr",
+                  'shipitems.product.nameEn': "$products.nameEn",
+                  'shipitems.product.avatar': "$products.avatar",
+                }
+              },
+                {
+                  '$group': {
+                   '_id': '$_id',
+                   'shipitems': {
+                    '$addToSet': '$shipitems.product'
+                    },
+                    'number': {
+                        '$first': '$number'
+                    },
+                    'state': {
+                        '$first': '$log.state'
+                    },
+                    'dateCreate': {
+                        '$first': '$dateCreate'
+                    },
+                    'price': {
+                        '$first': '$price'
+                    },
+                    'location': {
+                        '$first': '$location'
+                    },
+                    'paymentMethod': {
+                      '$first': '$paymentTransactions.method'
+                    },
+                   }
+               },
+               {
+                '$project': {
+                    '_id': 1,
+                    'shipitems': 1,
+                    'number': 1,
+                    'dateCreate': 1,
+                    'state': 1,
+                    'price':1,
+                    'location':1,
+                    'paymentMethod': 1,
+                }
+               }, 
+               
+          ];
+          let getOrder = await Order.aggregate(aggr);
+          if(getOrder)
+            {
+                getOrder[0].shipitems = getOrder[0].shipitems.map(product => {
+                product.avatar = input.app.get('defaultAvatar')(input, 'host') + product.avatar;
+                product.totalPrice = product.quantity * product.price;
+                    return product;
+                })
+            }
+          return (getOrder);
+     
+  }
+
+  const updateOrder = async (input) => {
+
+    let {id} = input.params;
+    let body = input.body;
+
+    const { error } = validateUpdate(body);
+    if (error) return (error.details[0]);
+
+    let updatedOrder = await Order.findByIdAndUpdate(
+      id,
+      { $addToSet: {log:body} },
+      { new: true }
+  );
+
+    return updatedOrder;
+}
+
+
 module.exports = {
     Order,
-    addOrder
+    addOrder,
+    getOrders,
+    getOrderDetails,
+    updateOrder,
 }

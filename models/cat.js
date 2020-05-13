@@ -477,7 +477,11 @@ async function getsubCategories(input) {
            
       ];
       let subCategories = await Cat.aggregate(aggr);
+      if(subCategories[0]._id.avatar == null && subCategories[0]._id.rate == null &&subCategories[0]._id.icon == null)
+      {return subCategories = []; }
+      else{
       return (subCategories);
+      }
     }
     else{
         let aggr = [
@@ -544,7 +548,11 @@ async function getsubCategories(input) {
                
           ];
           let subCategories = await Cat.aggregate(aggr);
+          if(subCategories[0]._id.avatar == null)
+          {return subCategories =[];}
+          else{
           return (subCategories);
+          }
     }
 
 
