@@ -212,10 +212,7 @@ async function getProductDetails(input) {
           let getProducts = await Product.aggregate(aggr);
           if(getProducts.length != 0)
             {
-                getProducts[0].avatar = getProducts[0].avatar.map(product => {
-                product = input.app.get('defaultAvatar')(input, 'host') + product
-                    return product;
-                })
+              getProducts[0].avatar = input.app.get('defaultAvatar')(input, 'host') + getProducts[0].avatar;
             }
           return (getProducts);
     }
@@ -331,7 +328,7 @@ async function getProductDetails(input) {
                     '$first': '$description'
                 },
                 'price': {
-                    '$first': '$productPrices.prices'
+                    '$first': '$productPrices.price'
                 },
                 'productPrices': {
                   '$addToSet': '$productPrices'
@@ -372,11 +369,7 @@ async function getProductDetails(input) {
       if(getProducts.length != 0)
       {
         getProducts[0].totalRates = getProducts[0].totalRates.length;
-        console.log(getProducts[0]);
-        getProducts[0].avatar = getProducts[0].avatar.map(product => {
-        product = input.app.get('defaultAvatar')(input, 'host') + product
-            return product;
-        })
+        getProducts[0].avatar = input.app.get('defaultAvatar')(input, 'host') + getProducts[0].avatar;
      }
       return (getProducts);
     }

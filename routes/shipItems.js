@@ -1,6 +1,6 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
 const { General } = require('../models/general');
-const { shipItems, getBestSelling,getTrending } = require('../models/shipItems');
+const { shipItems, getBestSelling,getTrending,getBestReviews } = require('../models/shipItems');
 const express = require('express');
 const router = express.Router();
 
@@ -23,4 +23,13 @@ router.get('/getTrending', async (req, res) => {
     res.send(trending);
 });
 
+router.get('/getBestReviews', async (req, res) => {
+
+    let bestReviews = await getBestReviews(req);
+
+    if (bestReviews.message && bestReviews.path && bestReviews.type && bestReviews.context)
+        return res.status(400).send(bestReviews.message)
+
+    res.send(bestReviews);
+});
 module.exports = router; 

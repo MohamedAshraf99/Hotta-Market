@@ -76,10 +76,10 @@ const toggleFavouriteProduct = async (input) => {
     const { error } = validateAdd(input.body);
     if (error) return (error.details[0]);
 
-    let count = await FavouriteProduct.find({user: input.body.user}).count()
+    let count = await FavouriteProduct.find({user: input.body.user,product:input.body.product}).count()
 
     if(count) {
-        let deletedFavouriteProduct = await FavouriteProduct.findOneAndDelete({user: input.body.user})
+        let deletedFavouriteProduct = await FavouriteProduct.findOneAndDelete({user: input.body.user,product:input.body.product})
         if(deletedFavouriteProduct) return {}
     } else {
         let newFavouriteProduct = new FavouriteProduct(input.body)

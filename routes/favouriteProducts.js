@@ -12,11 +12,11 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/add/:product', testableAuthnMW, async (req, res) => {
-
+router.post('/add/:product', async (req, res) => {
+    
     req.body = {
         ...req.body,
-        user: req.user._id,
+        user: req.query.userId,
         product: req.params.product
     }
     
@@ -29,11 +29,11 @@ router.post('/add/:product', testableAuthnMW, async (req, res) => {
 });
 
 
-router.post('/toggle/:product', testableAuthnMW, async (req, res) => {
+router.post('/toggle/:product', async (req, res) => {
 
     req.body = {
         ...req.body,
-        user: req.user._id,
+        user: req.query.userId,
         product: req.params.product
     }
     
