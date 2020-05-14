@@ -477,11 +477,11 @@ async function getsubCategories(input) {
            
       ];
       let subCategories = await Cat.aggregate(aggr);
-    //   if(subCategories[0]._id.avatar == null && subCategories[0]._id.rate == null &&subCategories[0]._id.icon == null)
-    //   {return subCategories = []; }
-    //   else{
+      if(subCategories[0]._id.avatar == null && subCategories[0]._id.rate == null &&subCategories[0]._id.icon == null)
+      {return subCategories = []; }
+      else{
       return (subCategories);
-      //}
+      }
     }
     else{
         let aggr = [
@@ -495,7 +495,7 @@ async function getsubCategories(input) {
                 '$lookup': {
                   'from': 'products', 
                   'localField': '_id', 
-                  'foreignField': 'cat', 
+                  'foreignField': 'cats', 
                   'as': 'products'
                 }
             },
@@ -508,7 +508,7 @@ async function getsubCategories(input) {
               {
                 '$lookup': {
                   'from': 'users', 
-                  'localField': 'products.vendor', 
+                  'localField': 'products.provider', 
                   'foreignField': '_id', 
                   'as': 'vendor'
                 }

@@ -700,9 +700,10 @@ async function getCart(input) {
             'products.price': "$productPrices.price",
             'products.quantity': "$shipcards.quantity",
             'products.shipcard': "$shipcards._id",
-            'products.providerId': "$products.vendor",
+            'products.providerId': "$products.provider",
             'products.type': "$cats.type",
             'products.productPrices': "$productPrices._id",
+            'products.provider': "$productPrices._id",
           }
         },
           {
@@ -727,9 +728,11 @@ async function getCart(input) {
               '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
           }
          },
+         {'$sort':{'_id.shipcard':1}}
     ];
      let getProducts = await User.aggregate(aggr);
-    if(getProducts[0]._id.newPrice != null){
+     console.log(getProducts);
+    if(getProducts[0]){
     getProducts = getProducts.map(product => {
       product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
       return product;
