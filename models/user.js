@@ -684,7 +684,7 @@ async function getCart(input) {
         {
           '$lookup': {
             'from': 'cats', 
-            'localField': 'products.cat', 
+            'localField': 'products.cats  ', 
             'foreignField': '_id', 
             'as': 'cats'
           }
@@ -697,7 +697,7 @@ async function getCart(input) {
         },
       {
           '$addFields': {
-            'products.price': "$productPrices.prices",
+            'products.price': "$productPrices.price",
             'products.quantity': "$shipcards.quantity",
             'products.shipcard': "$shipcards._id",
             'products.providerId': "$products.vendor",
@@ -731,7 +731,7 @@ async function getCart(input) {
      let getProducts = await User.aggregate(aggr);
     if(getProducts[0]._id.newPrice != null){
     getProducts = getProducts.map(product => {
-      product._id.avatar = product._id.avatar.map(avatar=>{avatar= input.app.get('defaultAvatar')(input, 'host') + avatar ;return avatar })
+      product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
       return product;
   });
   let sum = 0;
@@ -741,9 +741,10 @@ async function getCart(input) {
   getProducts[0]._id.totalPrice = totalPrice[totalPrice.length-1];
   return (getProducts);
   }
-  else {getProducts = [];
-    return (getProducts);
-  }
+  else {
+    getProducts = [];
+     return (getProducts);
+   }
 }
 module.exports = {
   User,
