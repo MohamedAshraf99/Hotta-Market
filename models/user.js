@@ -556,7 +556,7 @@ async function getProducts(input) {
           '$lookup': {
             'from': 'products', 
             'localField': '_id', 
-            'foreignField': 'vendor', 
+            'foreignField': 'provider', 
             'as': 'products'
           }
       },
@@ -618,9 +618,9 @@ async function getProducts(input) {
          }, 
          
     ];
-    let getProducts = await User.aggregate(aggr);
+     let getProducts = await User.aggregate(aggr);
     getProducts = getProducts.map(product => {
-      product._id.avatar = product._id.avatar.map(avatar=>{avatar= input.app.get('defaultAvatar')(input, 'host') + avatar ;return avatar })
+      product._id.avatar =  input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
       return product;
   })
     return (getProducts);
