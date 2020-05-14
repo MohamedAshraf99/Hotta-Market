@@ -12,6 +12,47 @@
                 {
                     "entity": {
                         "type": "Service",
+                        "id": "38d360ef-1bc5-419a-b830-b00beb9a13a2",
+                        "name": "announcement"
+                    },
+                    "children": [
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/announcements/getAnnouncements"
+                                },
+                                "id": "422c91d1-578b-40f7-af71-887008461004",
+                                "name": "getAnnouncements",
+                                "headers": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity": {
+                        "type": "Service",
                         "description": "",
                         "id": "d218dea0-70cb-432c-bb67-b3b921bef19b",
                         "name": "cart"
@@ -127,6 +168,51 @@
                                 "id": "55be4614-eab1-4448-abdb-a03e511dc426",
                                 "name": "getCartProducts",
                                 "headers": []
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "userId",
+                                                "value": "5e944dd2ba94c4013e22789f"
+                                            }
+                                        ]
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/shipCards/toggle/5ea176bf22dcd0367c24335d"
+                                },
+                                "id": "29bca09e-9be7-447c-a7f2-f1f3ed1aae58",
+                                "name": "toggleCart",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ]
                             }
                         }
                     ]
@@ -504,6 +590,38 @@
                                         "value": "application/json"
                                     }
                                 ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8000",
+                                    "path": "/api/favouriteProducts/"
+                                },
+                                "id": "63400b63-be55-4bd3-ae51-30deffd0fb5a",
+                                "name": "getFavouriteProducts",
+                                "headers": []
                             }
                         },
                         {

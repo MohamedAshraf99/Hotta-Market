@@ -31,6 +31,14 @@ const validateAdd = (body) => {
 
     return Joi.validate(body, schema);
 }
+const validateToggle = (body) => {
+    let schema = {
+        productPrice: Joi.string().length(24).required(),
+        client: Joi.string().length(24).required(),
+    };
+
+    return Joi.validate(body, schema);
+}
 
 const addCart = async (input) => {
 
@@ -48,6 +56,24 @@ const addCart = async (input) => {
     return newCart;
 }
 
+const toggleCart = async (input) => {
+
+    const { error } = validateToggle(input.body);
+    if (error) return (error.details[0]);
+
+    let count = await ShipCard.find({client: input.body.client,productPrice:input.body.productPrice}).count()
+
+    if(count) {
+        let deletedCart = await ShipCard.findOneAndDelete({client: input.body.client,productPrice:input.body.productPrice})
+        if(deletedCart) return {}
+    } else {
+        let newCart = new ShipCard(input.body)
+        newCart = await newCart.save();
+        if(newCart._id) return newCart;
+    }
+}
+
+
 const deleteCart = async (input) => {
 
     let ids = input.body.ids;
@@ -57,7 +83,8 @@ const deleteCart = async (input) => {
 module.exports = {
     ShipCard,
     addCart,
-    deleteCart
+    deleteCart,
+    toggleCart,
 }
 
 

@@ -331,7 +331,7 @@ async function getsubCategories(input) {
             '$lookup': {
               'from': 'products', 
               'localField': '_id', 
-              'foreignField': 'cat', 
+              'foreignField': 'cats', 
               'as': 'products'
             }
         },
@@ -344,7 +344,7 @@ async function getsubCategories(input) {
           {
             '$lookup': {
               'from': 'users', 
-              'localField': 'products.vendor', 
+              'localField': 'products.provider', 
               'foreignField': '_id', 
               'as': 'vendor'
             }
@@ -468,7 +468,7 @@ async function getsubCategories(input) {
                 '$lookup': {
                   'from': 'products', 
                   'localField': '_id', 
-                  'foreignField': 'cat', 
+                  'foreignField': 'cats', 
                   'as': 'products'
                 }
             },
@@ -481,7 +481,7 @@ async function getsubCategories(input) {
               {
                 '$lookup': {
                   'from': 'users', 
-                  'localField': 'products.vendor', 
+                  'localField': 'products.provider', 
                   'foreignField': '_id', 
                   'as': 'vendor'
                 }
