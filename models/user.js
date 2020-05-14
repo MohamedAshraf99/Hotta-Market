@@ -582,7 +582,7 @@ async function getProducts(input) {
         },
       {
           '$addFields': {
-            'products.price': "$productPrices.prices",
+            'products.price': "$productPrices.price",
           }
         },
         {
