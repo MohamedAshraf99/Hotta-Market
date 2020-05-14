@@ -86,33 +86,6 @@ const validateToggleNeglectCats = (body) => {
 }
 
 
-const getCats_OldWithoutHasChildren = async (input) => {
-
-    let { startId = false, limit = 10, all = false } = input.query;
-
-    startId = (!startId || startId == "false") ? false: startId
-
-    startId = (all || !startId) ? {} : { '_id': { '$gt': startId } };
-    limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
-                    
-
-    let cats = await Cat.find({...startId, }).limit(limit);
-
-    if (cats.length)
-        cats = cats.map(cat => {
-            ['avatar', 'icon'].map(field => {
-                if (cat[field]) cat[field] = input.app.get('defaultAvatar')(input, 'host') + cat[field]
-                else cat[field] = input.app.get('defaultAvatar')(input)
-            })
-
-            let lang = (input.headers["accept-language"]).split('-')[0] == 'en'? "En": "Ar"
-            
-            return {...cat._doc, name: cat[`name${lang}`]};
-        });
-
-    return cats
-}
-
 
 const getCats = async (input) => {
 
