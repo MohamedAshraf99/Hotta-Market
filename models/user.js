@@ -216,7 +216,6 @@ const getUsers = async (input) => {
   fields = Object.keys(fields)
     .reduce((ac, f) => `${ac} ${fields[f] == "1" ? "" : "-"}${f}`, '')
 
-
   let users = await User
   .find({ ...startId, ...JSON.parse(filter) })
   .select(fields)
