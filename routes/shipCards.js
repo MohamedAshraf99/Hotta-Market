@@ -1,5 +1,5 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { ShipCard,addCart,deleteCart } = require('../models/shipCard');
+const { ShipCard,addCart,deleteCart,toggleCart } = require('../models/shipCard');
 const express = require('express');
 const router = express.Router();
 
@@ -12,6 +12,23 @@ router.post('/add', async (req, res) => {
 
         res.send(newCart);
     });
+
+    router.post('/toggle/:product', async (req, res) => {
+
+        req.body = {
+            ...req.body,
+            client: req.query.userId,
+            productPrice: req.params.product
+        }
+        
+        let toggle = await toggleCart(req);
+    
+        if (toggle.message && toggle.path && toggle.type && toggle.context)
+            return res.status(400).send(toggle.message)
+    
+        res.send(toggle);
+    });
+    
 
     router.post('/delete', async (req, res) => {
 

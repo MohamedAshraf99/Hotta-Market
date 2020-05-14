@@ -136,7 +136,8 @@ async function getBestSelling(input) {
             '$addFields': {
                 'products.cart': {
                     '$and': [ { '$eq': [ "$shipCards.client", mongoose.Types.ObjectId(userId) ] }, { '$eq': [ "$productPrices._id", "$shipCards.productPrice" ] } ]
-                }
+                },
+                'products.productPrices':'$productPrices._id'
             }
         },
             {
@@ -157,6 +158,7 @@ async function getBestSelling(input) {
             '$project': {
                 '_id._id': 1,
                 '_id.avatar': 1,
+                '_id.productPrices': 1,
                 '_id.nameAr': 1,
                 '_id.nameEn': 1,
                 '_id.price.initialPrice': 1,
@@ -262,7 +264,8 @@ async function getBestSelling(input) {
             '$addFields': {
                 'products.cart': {
                     '$and': [ { '$eq': [ "$shipCards.client", mongoose.Types.ObjectId(userId) ] }, { '$eq': [ "$productPrices._id", "$shipCards.productPrice" ] } ]
-                }
+                },
+                'products.productPrices':'$productPrices._id'
             }
         },
             {
@@ -283,6 +286,7 @@ async function getBestSelling(input) {
             '$project': {
                 '_id._id': 1,
                 '_id.avatar': 1,
+                '_id.productPrices': 1,
                 '_id.nameAr': 1,
                 '_id.nameEn': 1,
                 '_id.price.initialPrice': 1,
@@ -390,6 +394,7 @@ async function getBestReviews(input) {
               'products.cart': {
                   '$and': [ { '$eq': [ "$shipCards.client", mongoose.Types.ObjectId(userId) ] }, { '$eq': [ "$productPrices._id", "$shipCards.productPrice" ] } ]
               },
+              'products.productPrices':'$productPrices._id'
           }
       },
           {
@@ -412,6 +417,7 @@ async function getBestReviews(input) {
           '$project': {
               '_id._id': 1,
               '_id.avatar': 1,
+              '_id.productPrices': 1,
               '_id.nameAr': 1,
               '_id.nameEn': 1,
               '_id.price.initialPrice': 1,

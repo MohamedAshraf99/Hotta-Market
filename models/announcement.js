@@ -34,15 +34,73 @@ const announcementSchema = new mongoose.Schema({
     dateCreate: {
         type: Date,
         default: Date.now
-    }
+    },
+    isNeglected: {
+        type: Boolean,
+        default: false
+    },
 });
 
 
 const Announcement = mongoose.model('Announcement', announcementSchema);
 
 
+
+async function getAnnouncements(input) {
+
+    let aggr = [
+        {
+          '$match': {
+            'isNeglected': false,
+          }
+        },
+            {
+            '$lookup': {
+              'from': 'announcementplans', 
+              'localField': 'announcementPlan', 
+              'foreignField': '_id', 
+              'as': 'announcementPlans'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$announcementPlans',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$addFields': {
+              'avatars._id': "$_id",
+            }
+          },
+      ];
+      let getAnnouncements = await Announcement.aggregate(aggr);
+      if(getAnnouncements.length != 0)
+      {
+        let Announcements = [];
+        let currentDate = new Date();
+        getAnnouncements = getAnnouncements.map(announce=>{
+            if(announce.announcementPlans.fromDate<= currentDate && currentDate <= announce.announcementPlans.toDate ){
+            return announce.avatars.map(avatar=>{
+                avatar.avatar = input.app.get('defaultAvatar')(input, 'host') + avatar.avatar;
+                Announcements.push(avatar);
+                return avatar;
+            });
+            }
+        })
+        return (Announcements);
+     }
+    
+     
+  }
+
+
+
+
+
 module.exports = {
-    Announcement
+    Announcement,
+    getAnnouncements,
 }
 
 
