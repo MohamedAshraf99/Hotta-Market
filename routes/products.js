@@ -1,5 +1,5 @@
 const {authnMW, authrMW,} = require('../RBAC_Auth/models/auth');
-const { Product, addProduct,getProductDetails } = require('../models/product');
+const { Product, addProduct,getProductDetails, getProductsForAdmin } = require('../models/product');
 const { upload } = require('../services/helper')
 const express = require('express');
 const router = express.Router();
@@ -54,5 +54,15 @@ router.get('/getProductDetails/:id', async (req, res) => {
     res.send(ProductDetails);
 });
 
+
+router.get('/getProductsForAdmin', async (req, res) => {
+
+    let products = await getProductsForAdmin(req);
+
+    if (products.message && products.path && products.type && products.context)
+        return res.status(400).send(products.message)
+
+    res.send(products);
+});
 
 module.exports = router; 

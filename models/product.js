@@ -1,63 +1,63 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const {ProductPrice, validateAdd:productPriceValidateAdd} = require('./productPrice')
+const { ProductPrice, validateAdd: productPriceValidateAdd } = require('./productPrice')
 const _ = require('lodash')
 
 
 
 const productSchema = new mongoose.Schema({
-    provider: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-    cats: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: "Cat",
-        required: true,
-    },   
-    nameAr: {
-        type: String,
-        required: true,
-    },
-    prepaireDurationType: {
-      type: String,
-      enum: ['day', 'hour']
-    },
-    prepaireDurationValue: {
-      type: Number,
-      min: .1,
-    },
-    nameEn: {
-        type: String,
-        required: true,
-    },
-    code: {
-        type: String,
-        unique: true,
-        required: true,
-    },
-    tax: {
-        type: Number,
-        default: 0,
-    },
-    avatar: {
-      type: String,
-      required: true,
-    },
-    desc: String,
-    available: {
-        type: Boolean,
-        default: true,
-    },    
-    isNeglected: {
-        type: Boolean,
-        default: false
-    },
-    dateCreate: {
-        type: Date,
-        default: Date.now
-    },
+  provider: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  cats: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cat",
+    required: true,
+  }],
+  nameAr: {
+    type: String,
+    required: true,
+  },
+  prepaireDurationType: {
+    type: String,
+    enum: ['day', 'hour']
+  },
+  prepaireDurationValue: {
+    type: Number,
+    min: .1,
+  },
+  nameEn: {
+    type: String,
+    required: true,
+  },
+  code: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  tax: {
+    type: Number,
+    default: 0,
+  },
+  avatar: {
+    type: String,
+    required: true,
+  },
+  desc: String,
+  available: {
+    type: Boolean,
+    default: true,
+  },
+  isNeglected: {
+    type: Boolean,
+    default: false
+  },
+  dateCreate: {
+    type: Date,
+    default: Date.now
+  },
 });
 
 
@@ -66,22 +66,22 @@ const Product = mongoose.model('Product', productSchema);
 
 
 const validateAdd = (body) => {
-    let schema = {
-        provider: Joi.string().length(24).required(),
-        cats: Joi.array().required(),
-        nameAr: Joi.string().required(),
-        nameEn: Joi.string().required(),
-        code: Joi.string().required(),
-        tax: Joi.number().optional(),
-        desc: Joi.string().optional(),
-        avatar: Joi.string().required(),
-        available: Joi.bool().optional(),
-        prepaireDurationType: Joi.string().optional(),
-        prepaireDurationValue: Joi.number().optional(),
-        productPrices: Joi.array().required(),
-    };
+  let schema = {
+    provider: Joi.string().length(24).required(),
+    cats: Joi.array().required(),
+    nameAr: Joi.string().required(),
+    nameEn: Joi.string().required(),
+    code: Joi.string().required(),
+    tax: Joi.number().optional(),
+    desc: Joi.string().optional(),
+    avatar: Joi.string().required(),
+    available: Joi.bool().optional(),
+    prepaireDurationType: Joi.string().optional(),
+    prepaireDurationValue: Joi.number().optional(),
+    productPrices: Joi.array().required(),
+  };
 
-    return Joi.validate(body, schema);
+  return Joi.validate(body, schema);
 }
 
 const addProduct = async (input) => {
@@ -89,298 +89,405 @@ const addProduct = async (input) => {
   const { error } = validateAdd(input.body);
   if (error) return (error.details[0]);
 
-    let {body} = input,
+  let { body } = input,
     productPrices = body.productPrices,
     productBody = _.omit(body, ['productPrices']);
 
-    for (let i = 0; i < productPrices.length; i++) {
-      const { error } = productPriceValidateAdd(productPrices[i], true);
-      if (error) return (error.details[0]);
-    }
+  for (let i = 0; i < productPrices.length; i++) {
+    const { error } = productPriceValidateAdd(productPrices[i], true);
+    if (error) return (error.details[0]);
+  }
 
-    let newProduct = new Product(productBody);
-    newProduct = await newProduct.save();
+  let newProduct = new Product(productBody)
 
-    if(newProduct._id) {
-      let productId = newProduct._id;
+  newProduct = await newProduct.save();
 
-      productPrices = productPrices.map(pp=>({...pp, product: productId}))
+  if (newProduct._id) {
 
-      if (newProduct.avatar) newProduct.avatar = input.app.get('defaultAvatar')(input, 'host',newProduct.avatar) 
-      else newProduct.avatar = input.app.get('defaultAvatar')(input)
+    newProduct = await Product
+      .findOne({ _id: newProduct._id })
+      .populate('cats', 'nameAr nameEn')
+      .populate('provider', '_id name')
 
-      productPrices = await ProductPrice.create(productPrices)
+    let productId = newProduct._id;
 
-      if(productPrices) {
+    productPrices = productPrices.map(pp => ({ ...pp, product: productId }))
 
-        productPrices = productPrices.map(pp=>({
-          ...pp.toObject(),
-          avatars: pp.toObject().avatars.map(av=>input.app.get('defaultAvatar')(input, 'host',av))
-        }))
+    if (newProduct.avatar) newProduct.avatar = input.app.get('defaultAvatar')(input, 'host', newProduct.avatar)
+    else newProduct.avatar = input.app.get('defaultAvatar')(input)
 
-        return {
-          productPrices,
-          ...newProduct.toObject()
-        }
+    productPrices = await ProductPrice.create(productPrices)
+
+    if (productPrices) {
+
+      productPrices = productPrices.map(pp => ({
+        ...pp.toObject(),
+        avatars: pp.toObject().avatars.map(av => input.app.get('defaultAvatar')(input, 'host', av))
+      }))
+
+      return {
+        productPrices,
+        ...newProduct.toObject()
       }
     }
+  }
 
 }
 
 
-async function getProductDetails(input) {
-    let startId = input.params.id;
-    let userId = input.query.userId;
-    let type = input.query.type;
-    if(type =="admin"){
-        let aggr = [
-            {
-              '$match': {
-                '_id': mongoose.Types.ObjectId(startId),
-                'isNeglected': false,
-                'available': true
-              }
-            },
-                {
-                '$lookup': {
-                  'from': 'productprices', 
-                  'localField': '_id', 
-                  'foreignField': 'product', 
-                  'as': 'productPrices'
-                }
-            },
-            {
-                '$unwind': {
-                  'path': '$productPrices',
-                  'preserveNullAndEmptyArrays': true
-                }
-              },
-              {
-                '$lookup': {
-                  'from': 'users', 
-                  'localField': 'provider', 
-                  'foreignField': '_id', 
-                  'as': 'provider'
-                }
-            },
-            {
-                '$unwind': {
-                  'path': '$provider',
-                  'preserveNullAndEmptyArrays': true
-                }
-              },
-                {
-                  '$group': {
-                   '_id': '$_id',
-                   'avatar': {
-                    '$first': '$avatar'
-                    },
-                    'nameAr': {
-                        '$first': '$nameAr'
-                    },
-                    'nameEn': {
-                        '$first': '$nameEn'
-                    },
-                    'phoneNumber': {
-                        '$first': '$provider.phone'
-                    },
-                    'description': {
-                        '$first': '$description'
-                    },
-                    'price': {
-                        '$first': '$productPrices.prices'
-                    },
-                    'productPrices': {
-                      '$addToSet': '$productPrices'
-                    },
-                   }
-               },
-               {
-                '$project': {
-                    '_id': 1,
-                    'avatar': 1,
-                    'nameAr': 1,
-                    'nameEn': 1,
-                    'description': 1,
-                    'phoneNumber':1,
-                    'productPrices':1,
-                    'price.initialPrice': 1,
-                }
-               }, 
-               
-          ];
-          let getProducts = await Product.aggregate(aggr);
-          if(getProducts.length != 0)
-            {
-              getProducts[0].avatar = input.app.get('defaultAvatar')(input, 'host') + getProducts[0].avatar;
-            }
-          return (getProducts);
-    }
-    else{
-    let aggr = [
-        {
-          '$match': {
-            '_id': mongoose.Types.ObjectId(startId),
-            'isNeglected': false,
-            'available': true
-          }
-        },
-            {
-            '$lookup': {
-              'from': 'productprices', 
-              'localField': '_id', 
-              'foreignField': 'product', 
-              'as': 'productPrices'
-            }
-        },
-        {
-            '$unwind': {
-              'path': '$productPrices',
-              'preserveNullAndEmptyArrays': true
-            }
-          },
-          {
-            '$lookup': {
-              'from': 'users', 
-              'localField': 'provider', 
-              'foreignField': '_id', 
-              'as': 'provider'
-            }
-        },
-        {
-            '$unwind': {
-              'path': '$provider',
-              'preserveNullAndEmptyArrays': true
-            }
-          },
-          {
-            '$lookup': {
-              'from': 'shipitems', 
-              'localField': 'productPrices._id', 
-              'foreignField': 'product.productPrice', 
-              'as': 'shipItems'
-            }
-        },
-                {
-            '$unwind': {
-              'path': '$shipItems',
-              'preserveNullAndEmptyArrays': true
-            }
-          },
-          {
-            '$lookup': {
-              'from': 'favouriteProducts', 
-              'localField': '_id', 
-              'foreignField': 'product', 
-              'as': 'favouriteProducts'
-            }
-        },
-                {
-            '$unwind': {
-              'path': '$favouriteProducts',
-              'preserveNullAndEmptyArrays': true
-            }
-          },
-          {
-            '$lookup': {
-              'from': 'shipcards', 
-              'localField': 'productPrices._id', 
-              'foreignField': 'productPrice', 
-              'as': 'shipCards'
-            }
-        },
-                {
-            '$unwind': {
-              'path': '$shipCards',
-              'preserveNullAndEmptyArrays': true
-            }
-          },
-          {
-            '$addFields': {
-                'favourite': {
-                    '$and': [ { '$eq': [ "$favouriteProducts.user", mongoose.Types.ObjectId(userId) ] }, { '$eq': [ "$favouriteProducts.product", "$_id" ] } ]
-                }
-            }
-        },
-        {
-            '$addFields': {
-                'cart': {
-                    '$and': [ { '$eq': [ "$shipCards.client", mongoose.Types.ObjectId(userId) ] }, { '$eq': [ "$productPrices._id", "$shipCards.productPrice" ] } ]
-                }
-            }
-        },
-            {
-              '$group': {
-               '_id': '$_id',
-               'avatar': {
-                '$first': '$avatar'
-                },
-                'nameAr': {
-                    '$first': '$nameAr'
-                },
-                'nameEn': {
-                    '$first': '$nameEn'
-                },
-                'shopName': {
-                    '$first': '$provider.commercialName'
-                },
-                'description': {
-                    '$first': '$description'
-                },
-                'price': {
-                    '$first': '$productPrices.price'
-                },
-                'productPrices': {
-                  '$addToSet': '$productPrices'
-                },
-                'favourite': {
-                    '$first': '$favourite'
-                },
-                'cart': {
-                    '$first': '$cart'
-                },
-                'totalRates':{ '$addToSet': '$shipItems.rate.rate' },
-                'rate': {
-                    '$avg': "$shipItems.rate.rate" 
-            },
-               }
-           },
-           {
-            '$project': {
-                '_id': 1,
-                'avatar': 1,
-                'nameAr': 1,
-                'nameEn': 1,
-                'shopName': 1,
-                'description': 1,
-                'productPrices':1,
-                'price.initialPrice': 1,
-                'price.reducedPrice': 1,
-                'favourite': 1,
-                'cart': 1,
-                'totalRates': 1,
-                'rate': 1,
-                'newPrice': { "$subtract": ['$price.initialPrice',{"$multiply": [ { "$divide": ["$price.reducedPrice",100] }, '$price.initialPrice' ]}]},
-            }
-           }, 
-           
-      ];
-      let getProducts = await Product.aggregate(aggr);
-      if(getProducts.length != 0)
-      {
-        getProducts[0].totalRates = getProducts[0].totalRates.length;
-        getProducts[0].avatar = input.app.get('defaultAvatar')(input, 'host') + getProducts[0].avatar;
-     }
-      return (getProducts);
-    }
-     
+const getProductsForAdmin = async (input) => {
+
+  let { startId = false, limit = 10, all = false } = input.query;
+
+  startId = (!startId || startId == "false") ? false : startId
+
+  startId = (all || !startId) ? {} : { '_id': { '$gt': mongoose.Types.ObjectId(startId) } };
+  limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+
+
+  let provider = {}
+
+  if (input.query.provider) {
+    if (input.query.provider == "false" || !input.query.provider) provider = {}
+    else provider = { provider: mongoose.Types.ObjectId(input.query.provider) }
   }
 
 
+  let type = Object.keys(provider).length ? {} :
+    { "provider.type": input.query.type || "vendor" };
+
+
+  let products = await Product.aggregate([
+    {
+      '$match': startId
+    }, {
+      '$match': {
+        'isNeglected': false,
+        ...provider
+      }
+    }, {
+      '$lookup': {
+        'from': 'users',
+        'localField': 'provider',
+        'foreignField': '_id',
+        'as': 'provider'
+      }
+    }, {
+      '$addFields': {
+        'provider': {
+          '$map': {
+            'input': '$provider',
+            'as': 'p',
+            'in': {
+              'name': '$$p.name',
+              'type': '$$p.type',
+              '_id': '$$p._id'
+            }
+          }
+        }
+      }
+    }, {
+      '$addFields': {
+        'provider': {
+          '$arrayElemAt': [
+            '$provider', 0
+          ]
+        }
+      }
+    }, {
+      '$match': { ...type }
+    }, {
+      '$lookup': {
+        'from': 'cats',
+        'localField': 'cats',
+        'foreignField': '_id',
+        'as': 'cats'
+      }
+    }, {
+      '$addFields': {
+        'cats': {
+          '$map': {
+            'input': '$cats',
+            'as': 'cat',
+            'in': {
+              'nameAr': '$$cat.nameAr',
+              'nameEn': '$$cat.nameEn'
+            }
+          }
+        }
+      }
+    }, {
+      '$sort': {
+          _id: 1
+      }
+  },{
+      '$limit': limit? limit: Infinity
+  }
+  ]);
+
+  if (products.length)
+    products = products.map(product => {
+      if (product.avatar) product.avatar = input.app.get('defaultAvatar')(input, 'host', product.avatar)
+      else product.avatar = input.app.get('defaultAvatar')(input)
+      return product
+    });
+
+  return products
+}
+
+
+async function getProductDetails(input) {
+  let startId = input.params.id;
+  let userId = input.query.userId;
+  let type = input.query.type;
+  if (type == "admin") {
+    let aggr = [
+      {
+        '$match': {
+          '_id': mongoose.Types.ObjectId(startId),
+          'isNeglected': false,
+          'available': true
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'productprices',
+          'localField': '_id',
+          'foreignField': 'product',
+          'as': 'productPrices'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$productPrices',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'users',
+          'localField': 'provider',
+          'foreignField': '_id',
+          'as': 'provider'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$provider',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$group': {
+          '_id': '$_id',
+          'avatar': {
+            '$first': '$avatar'
+          },
+          'nameAr': {
+            '$first': '$nameAr'
+          },
+          'nameEn': {
+            '$first': '$nameEn'
+          },
+          'phoneNumber': {
+            '$first': '$provider.phone'
+          },
+          'description': {
+            '$first': '$description'
+          },
+          'price': {
+            '$first': '$productPrices.prices'
+          },
+          'productPrices': {
+            '$addToSet': '$productPrices'
+          },
+        }
+      },
+      {
+        '$project': {
+          '_id': 1,
+          'avatar': 1,
+          'nameAr': 1,
+          'nameEn': 1,
+          'description': 1,
+          'phoneNumber': 1,
+          'productPrices': 1,
+          'price.initialPrice': 1,
+        }
+      },
+
+    ];
+    let getProducts = await Product.aggregate(aggr);
+    if (getProducts.length != 0) {
+      getProducts[0].avatar = input.app.get('defaultAvatar')(input, 'host') + getProducts[0].avatar;
+    }
+    return (getProducts);
+  }
+  else {
+    let aggr = [
+      {
+        '$match': {
+          '_id': mongoose.Types.ObjectId(startId),
+          'isNeglected': false,
+          'available': true
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'productprices',
+          'localField': '_id',
+          'foreignField': 'product',
+          'as': 'productPrices'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$productPrices',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'users',
+          'localField': 'provider',
+          'foreignField': '_id',
+          'as': 'provider'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$provider',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'shipitems',
+          'localField': 'productPrices._id',
+          'foreignField': 'product.productPrice',
+          'as': 'shipItems'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$shipItems',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'favouriteProducts',
+          'localField': '_id',
+          'foreignField': 'product',
+          'as': 'favouriteProducts'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$favouriteProducts',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'shipcards',
+          'localField': 'productPrices._id',
+          'foreignField': 'productPrice',
+          'as': 'shipCards'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$shipCards',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$addFields': {
+          'favourite': {
+            '$and': [{ '$eq': ["$favouriteProducts.user", mongoose.Types.ObjectId(userId)] }, { '$eq': ["$favouriteProducts.product", "$_id"] }]
+          }
+        }
+      },
+      {
+        '$addFields': {
+          'cart': {
+            '$and': [{ '$eq': ["$shipCards.client", mongoose.Types.ObjectId(userId)] }, { '$eq': ["$productPrices._id", "$shipCards.productPrice"] }]
+          }
+        }
+      },
+      {
+        '$group': {
+          '_id': '$_id',
+          'avatar': {
+            '$first': '$avatar'
+          },
+          'nameAr': {
+            '$first': '$nameAr'
+          },
+          'nameEn': {
+            '$first': '$nameEn'
+          },
+          'shopName': {
+            '$first': '$provider.commercialName'
+          },
+          'description': {
+            '$first': '$description'
+          },
+          'price': {
+            '$first': '$productPrices.price'
+          },
+          'productPrices': {
+            '$addToSet': '$productPrices'
+          },
+          'favourite': {
+            '$first': '$favourite'
+          },
+          'cart': {
+            '$first': '$cart'
+          },
+          'totalRates': { '$addToSet': '$shipItems.rate.rate' },
+          'rate': {
+            '$avg': "$shipItems.rate.rate"
+          },
+        }
+      },
+      {
+        '$project': {
+          '_id': 1,
+          'avatar': 1,
+          'nameAr': 1,
+          'nameEn': 1,
+          'shopName': 1,
+          'description': 1,
+          'productPrices': 1,
+          'price.initialPrice': 1,
+          'price.reducedPrice': 1,
+          'favourite': 1,
+          'cart': 1,
+          'totalRates': 1,
+          'rate': 1,
+          'newPrice': { "$subtract": ['$price.initialPrice', { "$multiply": [{ "$divide": ["$price.reducedPrice", 100] }, '$price.initialPrice'] }] },
+        }
+      },
+
+    ];
+    let getProducts = await Product.aggregate(aggr);
+    if (getProducts.length != 0) {
+      getProducts[0].totalRates = getProducts[0].totalRates.length;
+      getProducts[0].avatar = input.app.get('defaultAvatar')(input, 'host') + getProducts[0].avatar;
+    }
+    return (getProducts);
+  }
+
+}
+
+
 module.exports = {
-    Product,
-    addProduct,
-    getProductDetails,
+  Product,
+  addProduct,
+  getProductDetails,
+  getProductsForAdmin
 }
 
 
