@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const {orderShip,validateAddOrderShip} = require('./orderShip');
 const {shipItems,validateAddShipItems} = require('./shipItems');
 const {PaymentTransaction,validateAddPaymentTransaction} = require('./paymentTransaction');
+const {ShipCard} = require('./shipCard');
 const {User} = require('./user');
 
 const orderSchema = new mongoose.Schema({
@@ -93,7 +94,7 @@ const addOrder = async (input) => {
     maxNumber = 1 ;
 
     orderBody.number = maxNumber.number ? maxNumber.number + 1 : 1;
-
+    await ShipCard.findOneAndDelete({client: client})
     let newOrder = new Order(orderBody);
     newOrder = await newOrder.save();
 
