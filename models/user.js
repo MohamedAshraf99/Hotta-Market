@@ -717,6 +717,8 @@ async function getCart(input) {
               '_id._id': 1,
               '_id.nameAr': 1,
               '_id.nameEn': 1,
+              '_id.prepaireDurationType': 1,
+              '_id.prepaireDurationValue': 1,
               '_id.avatar': 1,
               '_id.quantity': 1,
               '_id.shipcard': 1,

@@ -425,6 +425,12 @@ async function getProductDetails(input) {
           'nameAr': {
             '$first': '$nameAr'
           },
+          'prepaireDurationValue': {
+            '$first': '$prepaireDurationValue'
+          },
+          'prepaireDurationType': {
+            '$first': '$prepaireDurationType'
+          },
           'nameEn': {
             '$first': '$nameEn'
           },
@@ -458,6 +464,8 @@ async function getProductDetails(input) {
           'avatar': 1,
           'nameAr': 1,
           'nameEn': 1,
+          'prepaireDurationValue': 1,
+          'prepaireDurationType': 1,
           'shopName': 1,
           'description': 1,
           'productPrices': 1,
