@@ -73,7 +73,11 @@ const addNewSubscription = async (input) => {
 
     newSubscription = await newSubscription.save();
 
-    return newSubscription;
+    let ret = await ProviderSubscription
+    .findOne({_id:newSubscription._id})
+    .populate("providerSubscriptionPlan")
+    
+    return ret;
 }
 
 
