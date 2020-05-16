@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const {orderShip,validateAddOrderShip} = require('./orderShip');
 const {shipItems,validateAddShipItems} = require('./shipItems');
 const {PaymentTransaction,validateAddPaymentTransaction} = require('./paymentTransaction');
-const {ShipCard} = require('./shipCard');
 const {User} = require('./user');
 
 const orderSchema = new mongoose.Schema({
@@ -94,7 +93,6 @@ const addOrder = async (input) => {
     maxNumber = 1 ;
 
     orderBody.number = maxNumber.number ? maxNumber.number + 1 : 1;
-    await ShipCard.findOneAndDelete({client: client})
     let newOrder = new Order(orderBody);
     newOrder = await newOrder.save();
 
@@ -328,15 +326,19 @@ async function getOrders(input) {
                   'location.areaAr': "$area.nameAr",
                   'location.areaEn': "$area.nameEn",
                   'price': "$paymentTransactions.price",
-                  'log':{'$arrayElemAt': [ "$log", -1 ]},
+                  'orderState':{'$arrayElemAt': [ "$log.state", -1 ]},
                   'shipitems.product.nameAr': "$products.nameAr",
                   'shipitems.product.nameEn': "$products.nameEn",
                   'shipitems.product.avatar': "$products.avatar",
+                  'shipitems.product.prepaireDurationType': "$products.prepaireDurationType",
+                  'shipitems.product.prepaireDurationValue': "$products.prepaireDurationValue",
+                  'shipitems.product.provider': "$orderships.provider",
+                  'shipitems.product.providerState': {'$arrayElemAt': [ "$orderships.log.state", -1 ]},
                 }
               },
                 {
                   '$group': {
-                   '_id': '$_id',
+                   '_id': '$shipitems.product.provider',
                    'shipitems': {
                     '$addToSet': '$shipitems.product'
                     },
@@ -344,7 +346,7 @@ async function getOrders(input) {
                         '$first': '$number'
                     },
                     'state': {
-                        '$first': '$log.state'
+                        '$first': '$orderState'
                     },
                     'dateCreate': {
                         '$first': '$dateCreate'
@@ -377,14 +379,18 @@ async function getOrders(input) {
           let getOrder = await Order.aggregate(aggr);
           if(getOrder)
             {
-                getOrder[0].shipitems = getOrder[0].shipitems.map(product => {
-                product.avatar = input.app.get('defaultAvatar')(input, 'host') + product.avatar;
-                product.totalPrice = product.quantity * product.price;
-                    return product;
-                })
+              let ship = [];
+               getOrder.map(order=>{
+                 ship.push({state:order.shipitems[0].providerState,provider:order._id,shipItem:order.shipitems})
+                 order.shipitems.map(item=>{
+                  item.avatar = input.app.get('defaultAvatar')(input, 'host') + item.avatar;
+                  item.totalPrice = item.quantity * item.price;
+                  return item
+                 })
+               })
+               getOrder[0].shipitems = ship;
+               return (getOrder[0]);
             }
-          return (getOrder);
-     
   }
 
   const updateOrder = async (input) => {
