@@ -27,6 +27,7 @@ const productPrices = require('../routes/productPrices');
 const productSubProps = require('../routes/productSubProps');
 const products = require('../routes/products');
 const providerSubscriptionPlans = require('../routes/providerSubscriptionPlans');
+const providerSubscriptions = require('../routes/providerSubscriptions');
 const linkedProducts = require('../routes/linkedProducts');
 const cards = require('../routes/cards');
 const users = require('../routes/users');
@@ -99,6 +100,7 @@ module.exports = function (app, io) {
   app.use('/api/productMainProps', productMainProps);
   app.use('/api/productPrices', productPrices);
   app.use('/api/providerSubscriptionPlans', providerSubscriptionPlans);
+  app.use('/api/providerSubscriptions', providerSubscriptions);
   app.use('/api/productSubProps', productSubProps);
   app.use('/api/products', products);
   app.use('/api/linkedProducts', linkedProducts);

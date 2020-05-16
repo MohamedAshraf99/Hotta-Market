@@ -1,39 +1,39 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { ProviderSubscriptionPlan, addNewPlan, deletePlan,
-    getPlans, updatePlan } = require('../models/providerSubscriptionPlan');
+const { ProviderSubscription, addNewSubscription, deleteSubscription,
+        getSubscriptions, updateSubscription } = require('../models/providerSubscription');
 const express = require('express');
 const router = express.Router();
 
 
 router.get('/', async (req, res) => {
-    let plans = await getPlans();
-    res.send(plans);
+    let subs = await getSubscriptions(req);
+    res.send(subs);
 });
 
 
 router.post('/add', async (req, res) => {
-    let newPlan = await addNewPlan(req);
+    let newSub = await addNewSubscription(req);
     
-    if (newPlan.message && newPlan.path && newPlan.type && newPlan.context)
-        return res.status(400).send(newPlan.message)
+    if (newSub.message && newSub.path && newSub.type && newSub.context)
+        return res.status(400).send(newSub.message)
 
-    res.send(newPlan);
+    res.send(newSub);
 });
 
 
 router.put('/edit/:id', async (req, res) => {
-    let updatedPlan = await updatePlan(req);
+    let updatedSub = await updateSubscription(req);
 
-    if(updatedPlan.message && updatedPlan.path && updatedPlan.type && updatedPlan.context)
-        return res.status(400).send(updatedPlan.message)
+    if(updatedSub.message && updatedSub.path && updatedSub.type && updatedSub.context)
+        return res.status(400).send(updatedSub.message)
 
-    res.send(updatedPlan);
+    res.send(updatedSub);
 });
 
 
 router.delete('/delete/:id', async (req, res) => {
-    let deletedPlan = await deletePlan(req);
-    res.send(deletedPlan);
+    let deletedSub = await deleteSubscription(req);
+    res.send(deletedSub);
 });
 
 
