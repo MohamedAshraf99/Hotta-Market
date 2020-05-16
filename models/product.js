@@ -437,6 +437,12 @@ async function getProductDetails(input) {
           'shopName': {
             '$first': '$provider.commercialName'
           },
+          'openingTime': {
+            '$first': '$provider.openingTime'
+          },
+          'closingTime': {
+            '$first': '$provider.closingTime'
+          },
           'description': {
             '$first': '$description'
           },
@@ -467,6 +473,8 @@ async function getProductDetails(input) {
           'prepaireDurationValue': 1,
           'prepaireDurationType': 1,
           'shopName': 1,
+          'openingTime': 1,
+          'closingTime': 1,
           'description': 1,
           'productPrices': 1,
           'price.initialPrice': 1,

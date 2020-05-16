@@ -683,6 +683,20 @@ async function getCart(input) {
         },
         {
           '$lookup': {
+            'from': 'users', 
+            'localField': 'products.provider', 
+            'foreignField': '_id', 
+            'as': 'provider'
+          }
+      },
+      {
+          '$unwind': {
+            'path': '$provider',
+            'preserveNullAndEmptyArrays': true
+          }
+        },
+        {
+          '$lookup': {
             'from': 'cats', 
             'localField': 'products.cats', 
             'foreignField': '_id', 
@@ -704,6 +718,8 @@ async function getCart(input) {
             'products.type': "$cats.type",
             'products.productPrices': "$productPrices._id",
             'products.provider': "$productPrices._id",
+            'products.openingTime': "$provider.openingTime",
+            'products.closingTime': "$provider.closingTime",
           }
         },
           {
@@ -719,6 +735,8 @@ async function getCart(input) {
               '_id.nameEn': 1,
               '_id.prepaireDurationType': 1,
               '_id.prepaireDurationValue': 1,
+              '_id.openingTime': 1,
+              '_id.closingTime': 1,
               '_id.avatar': 1,
               '_id.quantity': 1,
               '_id.shipcard': 1,
@@ -732,7 +750,7 @@ async function getCart(input) {
          },
          {'$sort':{'_id.shipcard':1}}
     ];
-     let getProducts = await User.aggregate(aggr);
+      let getProducts = await User.aggregate(aggr);
      console.log(getProducts);
     if(getProducts[0]._id.shipcard){
     getProducts = getProducts.map(product => {
