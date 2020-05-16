@@ -687,7 +687,7 @@ async function getCart(input) {
         {
           '$lookup': {
             'from': 'cats', 
-            'localField': 'products.cats  ', 
+            'localField': 'products.cats', 
             'foreignField': '_id', 
             'as': 'cats'
           }
@@ -720,6 +720,8 @@ async function getCart(input) {
               '_id._id': 1,
               '_id.nameAr': 1,
               '_id.nameEn': 1,
+              '_id.prepaireDurationType': 1,
+              '_id.prepaireDurationValue': 1,
               '_id.avatar': 1,
               '_id.quantity': 1,
               '_id.shipcard': 1,
@@ -735,7 +737,7 @@ async function getCart(input) {
     ];
      let getProducts = await User.aggregate(aggr);
      console.log(getProducts);
-    if(getProducts[0]){
+    if(getProducts[0]._id.shipcard){
     getProducts = getProducts.map(product => {
       product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
       return product;
