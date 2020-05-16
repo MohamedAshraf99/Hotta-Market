@@ -155,8 +155,7 @@ const getProductsForAdmin = async (input) => {
 
   let type = Object.keys(provider).length ? {} :
     { "provider.type": input.query.type || "vendor" };
-
-
+    
   let products = await Product.aggregate([
     {
       '$match': startId

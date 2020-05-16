@@ -18,7 +18,7 @@ const providerSubscriptionSchema = new mongoose.Schema({
     default: Date.now
   },
   to: Date,
-  price: Number,
+  percentage: Number,
   status: {
     type: Boolean,
     default: true
@@ -38,7 +38,7 @@ const validateAdd = (body) => {
         providerSubscriptionPlan: Joi.string().length(24).optional(),
         from: Joi.date().optional(), 
         to: Joi.date().optional(), 
-        price: Joi.number().optional(),
+        percentage: Joi.number().optional(),
     };
 
     return Joi.validate(body, schema);
@@ -54,9 +54,12 @@ const validateUpdate = (body) => {
 
 
 const getSubscriptions = async (input) => {
+
+  let provider = input.query.provider || "";
+
     return await ProviderSubscription
-    .find()
-    .populate("provider");
+    .find({provider})
+    .populate("providerSubscriptionPlan");
 }
 
 const addNewSubscription = async (input) => {

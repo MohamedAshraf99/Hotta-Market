@@ -31,7 +31,10 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   commercialName: String,
-  commercialNumber: String,
+  commercialNumber: {
+    type: String,
+    unique: true,
+  },
   desc: String,
   icon: String,
   phone: {
