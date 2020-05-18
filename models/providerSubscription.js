@@ -117,5 +117,3 @@ module.exports = {
     deleteSubscription,
     checkAllStatus
 }
-
-
