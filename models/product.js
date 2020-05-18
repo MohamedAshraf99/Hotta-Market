@@ -424,6 +424,9 @@ async function getProductDetails(input) {
           'nameAr': {
             '$first': '$nameAr'
           },
+          'tax': {
+            '$first': '$tax'
+          },
           'prepaireDurationValue': {
             '$first': '$prepaireDurationValue'
           },
@@ -467,6 +470,7 @@ async function getProductDetails(input) {
         '$project': {
           '_id': 1,
           'avatar': 1,
+          'tax': 1,
           'nameAr': 1,
           'nameEn': 1,
           'prepaireDurationValue': 1,
