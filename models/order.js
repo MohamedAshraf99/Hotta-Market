@@ -319,6 +319,20 @@ async function getOrders(input) {
                   'preserveNullAndEmptyArrays': true
                 }
               },
+              {
+                '$lookup': {
+                  'from': 'users', 
+                  'localField': 'orderships.provider', 
+                  'foreignField': '_id', 
+                  'as': 'users'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$users',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
             {
                 '$addFields': {
                   'location.cityAr': "$cities.nameAr",
@@ -328,11 +342,13 @@ async function getOrders(input) {
                   'price': "$paymentTransactions.price",
                   'orderState':{'$arrayElemAt': [ "$log.state", -1 ]},
                   'shipitems.product.nameAr': "$products.nameAr",
+                  'shipitems.product.tax': "$products.tax",
                   'shipitems.product.nameEn': "$products.nameEn",
                   'shipitems.product.avatar': "$products.avatar",
                   'shipitems.product.prepaireDurationType': "$products.prepaireDurationType",
                   'shipitems.product.prepaireDurationValue': "$products.prepaireDurationValue",
                   'shipitems.product.provider': "$orderships.provider",
+                  'shipitems.product.providerName': "$users.commercialName",
                   'shipitems.product.providerState': {'$arrayElemAt': [ "$orderships.log.state", -1 ]},
                 }
               },
@@ -381,7 +397,7 @@ async function getOrders(input) {
             {
               let ship = [];
                getOrder.map(order=>{
-                 ship.push({state:order.shipitems[0].providerState,provider:order._id,shipItem:order.shipitems})
+                 ship.push({state:order.shipitems[0].providerState,provider:order._id,providerName:order.shipitems[0].providerName,shipItem:order.shipitems})
                  order.shipitems.map(item=>{
                   item.avatar = input.app.get('defaultAvatar')(input, 'host') + item.avatar;
                   item.totalPrice = item.quantity * item.price;
@@ -390,7 +406,7 @@ async function getOrders(input) {
                })
                getOrder[0].shipitems = ship;
                return (getOrder[0]);
-            }
+           }
   }
 
   const updateOrder = async (input) => {

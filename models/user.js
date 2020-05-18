@@ -741,6 +741,7 @@ async function getCart(input) {
               '_id.openingTime': 1,
               '_id.closingTime': 1,
               '_id.avatar': 1,
+              '_id.tax': 1,
               '_id.quantity': 1,
               '_id.shipcard': 1,
               '_id.type': 1,
