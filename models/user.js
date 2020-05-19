@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const Joi = require('joi');
 const _ = require("lodash")
 const {t2} = require("../services/langs")
-
+const { AppSettings } = require('./appSettings')
 const {getHashPassword, sendMessage, randomString} = require('../services/helper')
 
 
@@ -633,7 +633,8 @@ async function getProducts(input) {
 
 async function getCart(input) {
   let startId = input.params.id;
-  
+  let appSettings = await AppSettings.findOne();
+  let generalTax = appSettings.generalTax;
   console.log(startId)
   let aggr = [
       {
@@ -716,6 +717,7 @@ async function getCart(input) {
           '$addFields': {
             'products.price': "$productPrices.price",
             'products.quantity': "$shipcards.quantity",
+            'products.generalTax': generalTax,
             'products.shipcard': "$shipcards._id",
             'products.providerId': "$products.provider",
             'products.type': "$cats.type",
@@ -742,6 +744,7 @@ async function getCart(input) {
               '_id.closingTime': 1,
               '_id.avatar': 1,
               '_id.tax': 1,
+              '_id.generalTax':1,
               '_id.quantity': 1,
               '_id.shipcard': 1,
               '_id.type': 1,

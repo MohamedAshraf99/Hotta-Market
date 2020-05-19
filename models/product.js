@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const { ProductPrice, validateAdd: productPriceValidateAdd } = require('./productPrice')
+const { AppSettings } = require('./appSettings')
 const _ = require('lodash')
 
 
@@ -323,6 +324,8 @@ async function getProductDetails(input) {
     return (getProducts);
   }
   else {
+    let appSettings = await AppSettings.findOne();
+    let generalTax = appSettings.generalTax;
     let aggr = [
       {
         '$match': {
@@ -412,7 +415,8 @@ async function getProductDetails(input) {
         '$addFields': {
           'cart': {
             '$and': [{ '$eq': ["$shipCards.client", mongoose.Types.ObjectId(userId)] }, { '$eq': ["$productPrices._id", "$shipCards.productPrice"] }]
-          }
+          },
+          'generalTax':generalTax
         }
       },
       {
@@ -426,6 +430,9 @@ async function getProductDetails(input) {
           },
           'tax': {
             '$first': '$tax'
+          },
+          'generalTax': {
+            '$first': '$generalTax'
           },
           'prepaireDurationValue': {
             '$first': '$prepaireDurationValue'
@@ -471,6 +478,7 @@ async function getProductDetails(input) {
           '_id': 1,
           'avatar': 1,
           'tax': 1,
+          'generalTax':1,
           'nameAr': 1,
           'nameEn': 1,
           'prepaireDurationValue': 1,
@@ -491,6 +499,8 @@ async function getProductDetails(input) {
       },
 
     ];
+    
+    console.log(generalTax);
     let getProducts = await Product.aggregate(aggr);
     if (getProducts.length != 0) {
       getProducts[0].totalRates = getProducts[0].totalRates.length;
