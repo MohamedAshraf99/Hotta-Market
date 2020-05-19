@@ -2,6 +2,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const {orderShip,validateAddOrderShip} = require('./orderShip');
 const {shipItems,validateAddShipItems} = require('./shipItems');
+const { AppSettings } = require('./appSettings')
 const {PaymentTransaction,validateAddPaymentTransaction} = require('./paymentTransaction');
 const {User} = require('./user');
 
@@ -212,7 +213,8 @@ async function getOrders(input) {
 
   async function getOrderDetails(input) {
     let startId = input.params.id;
-
+    let appSettings = await AppSettings.findOne();
+    let generalTax = appSettings.generalTax;
         let aggr = [
             {
               '$match': {
@@ -343,6 +345,7 @@ async function getOrders(input) {
                   'orderState':{'$arrayElemAt': [ "$log.state", -1 ]},
                   'shipitems.product.nameAr': "$products.nameAr",
                   'shipitems.product.tax': "$products.tax",
+                  'shipitems.product.generalTax': generalTax,
                   'shipitems.product.nameEn': "$products.nameEn",
                   'shipitems.product.avatar': "$products.avatar",
                   'shipitems.product.prepaireDurationType': "$products.prepaireDurationType",
