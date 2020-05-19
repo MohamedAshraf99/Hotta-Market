@@ -1,5 +1,5 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { Order,addOrder,getOrders,getOrderDetails,updateOrder } = require('../models/order');
+const { Order,addOrder,getOrders,getOrderDetails,updateOrder, getOrdersForAdmin } = require('../models/order');
 const express = require('express');
 const router = express.Router();
 
@@ -17,6 +17,16 @@ router.post('/add', async (req, res) => {
 router.get('/getOrders/:id', async (req, res) => {
 
     let orders = await getOrders(req);
+
+    if (orders.message && orders.path && orders.type && orders.context)
+        return res.status(400).send(orders.message)
+
+    res.send(orders);
+});
+
+router.get('/getOrdersForAdmin', async (req, res) => {
+
+    let orders = await getOrdersForAdmin(req);
 
     if (orders.message && orders.path && orders.type && orders.context)
         return res.status(400).send(orders.message)
