@@ -2,6 +2,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const {orderShip,validateAddOrderShip} = require('./orderShip');
 const {shipItems,validateAddShipItems} = require('./shipItems');
+const {ShipCard} = require('./shipCard');
 const { AppSettings } = require('./appSettings')
 const {PaymentTransaction,validateAddPaymentTransaction} = require('./paymentTransaction');
 const {User} = require('./user');
@@ -92,7 +93,7 @@ const addOrder = async (input) => {
     let maxNumber = await Order.findOne({}, { number: 1 }).sort({ number: -1 });
     if (maxNumber == null)
     maxNumber = 1 ;
-
+    await ShipCard.findOneAndDelete({client: client})
     orderBody.number = maxNumber.number ? maxNumber.number + 1 : 1;
     let newOrder = new Order(orderBody);
     newOrder = await newOrder.save();
