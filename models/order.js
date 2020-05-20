@@ -139,7 +139,6 @@ const addOrder = async (input) => {
 async function getOrders(input) {
     let startId = input.params.id;
     
-    console.log(startId)
     let aggr = [
         {
           '$match': {
@@ -432,37 +431,61 @@ async function getOrders(input) {
 const getOrdersForAdmin = async (input) => {
 
   let { startId = false, limit = 10, all = false } = input.query;
-
+  
   startId = (!startId || startId == "false") ? false : startId
 
   startId = (all || !startId) ? {} : { '_id': { '$gt': mongoose.Types.ObjectId(startId) } };
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
+  
 
-    let provider = (input.query.provider)?
+  let checkThenAssign = (variable, fieldName, fieldValue) => {
+    (variable)?
     (
-      (input.query.provider == "false" || !input.query.provider)? {}:
-      {"provider._id": mongoose.Types.ObjectId(input.query.provider)}
+      (variable == "false" || !variable)? {}:
+      {[fieldName]: fieldValue}
     ): {}
+  }
 
-    let client = (input.query.client)?
-    (
-      (input.query.client == "false" || !input.query.client)? {}:
-      {"client._id": mongoose.Types.ObjectId(input.query.client)}
-    ): {}
+  let provider = checkThenAssign(
+    input.query.provider,
+    "providers.provider",
+    mongoose.Types.ObjectId(input.query.provider)
+  )
 
-    let area = (input.query.area)?
-    (
-      (input.query.area == "false" || !input.query.area)? {}:
-      {"location.areaId": mongoose.Types.ObjectId(input.query.area)}
-    ): {}
+  let client = checkThenAssign(
+    input.query.client,
+    "client._id",
+    mongoose.Types.ObjectId(input.query.client)
+  )
 
-    let state = (input.query.state)?
-    (
-      (input.query.state == "false" || !input.query.state)? {}:
-      {"log.state": input.query.state}
-    ): {}
-    
+  
+  let area = checkThenAssign(
+    input.query.area,
+    "location.areaId",
+    mongoose.Types.ObjectId(input.query.area)
+  )
+
+
+  let state = checkThenAssign(
+    input.query.state,
+    "log.state",
+    input.query.state
+  )
+
+
+  let startDate = checkThenAssign(
+    input.query.startDate,
+    "dateCreate",
+    { "$gte": new Date((new Date(parseInt(input.query.startDate))).toISOString()) }
+  )
+
+
+  let endDate = checkThenAssign(
+    input.query.endDate,
+    "dateCreate",
+    { "$lte": new Date((new Date(parseInt(input.query.endDate))).toISOString()) }
+  )
 
     
   let orders = await Order.aggregate([
@@ -551,6 +574,10 @@ const getOrdersForAdmin = async (input) => {
         'path': '$providers'
       }
     }, {
+      '$match': {
+        ...provider,
+      }
+    }, {
       '$lookup': {
         'from': 'users', 
         'let': {
@@ -630,10 +657,11 @@ const getOrdersForAdmin = async (input) => {
     }, {
       '$match': {
         // 'isNeglected': false,
-        ...provider,
         ...client,
         ...area,
         ...state,
+        ...startDate,
+        ...endDate
       }
     }, {
       '$sort': {
