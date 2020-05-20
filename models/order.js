@@ -437,55 +437,24 @@ const getOrdersForAdmin = async (input) => {
   startId = (all || !startId) ? {} : { '_id': { '$gt': mongoose.Types.ObjectId(startId) } };
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
-  
 
-  let checkThenAssign = (variable, fieldName, fieldValue) => {
-    (variable)?
-    (
-      (variable == "false" || !variable)? {}:
-      {[fieldName]: fieldValue}
-    ): {}
-  }
+  let provider = (input.query.provider && input.query.provider != "false") ?
+    { "providers.provider": mongoose.Types.ObjectId(input.query.provider) } : {},
 
-  let provider = checkThenAssign(
-    input.query.provider,
-    "providers.provider",
-    mongoose.Types.ObjectId(input.query.provider)
-  )
+    client = (input.query.client && input.query.client != "false") ?
+      { "client._id": mongoose.Types.ObjectId(input.query.client) } : {},
 
-  let client = checkThenAssign(
-    input.query.client,
-    "client._id",
-    mongoose.Types.ObjectId(input.query.client)
-  )
+    area = (input.query.area && input.query.area != "false") ?
+      { "location.areaId": mongoose.Types.ObjectId(input.query.area) } : {},
 
-  
-  let area = checkThenAssign(
-    input.query.area,
-    "location.areaId",
-    mongoose.Types.ObjectId(input.query.area)
-  )
+    state = (input.query.state && input.query.state != "false") ?
+      { "log.state": nput.query.stat } : {},
 
+    startDate = (input.query.startDate && input.query.startDate != "false") ?
+      { "dateCreate": { "$gte": new Date(parseInt(input.query.startDate)) } } : {},
 
-  let state = checkThenAssign(
-    input.query.state,
-    "log.state",
-    input.query.state
-  )
-
-
-  let startDate = checkThenAssign(
-    input.query.startDate,
-    "dateCreate",
-    { "$gte": new Date((new Date(parseInt(input.query.startDate))).toISOString()) }
-  )
-
-
-  let endDate = checkThenAssign(
-    input.query.endDate,
-    "dateCreate",
-    { "$lte": new Date((new Date(parseInt(input.query.endDate))).toISOString()) }
-  )
+    endDate = (input.query.endDate && input.query.endDate != "false") ?
+      { "dateCreate": { "$lte": new Date(parseInt(input.query.endDate)) } } : {}
 
     
   let orders = await Order.aggregate([

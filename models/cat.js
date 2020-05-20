@@ -74,7 +74,7 @@ const validateUpdate = (body) => {
     let schema = {
         nameAr: Joi.string().min(3).optional(),
         nameEn: Joi.string().min(3).optional(),
-        desc: Joi.string().required(),
+        desc: Joi.string().optional(),
         parent: Joi.string().optional(),
         isNeglected: Joi.bool().optional(),
         avatar: Joi.string().optional(),
