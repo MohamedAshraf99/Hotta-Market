@@ -19,7 +19,15 @@ const catSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    desc: {
+        type: String,
+        required: true,
+    },
     avatar: {
+        type: String,
+        required: true
+    },
+    icon: {
         type: String,
         required: true
     },
@@ -50,6 +58,7 @@ const validateAdd = (body) => {
     let schema = {
         nameAr: Joi.string().min(3).required(),
         nameEn: Joi.string().min(3).required(),
+        desc: Joi.string().required(),
         parent: Joi.string().optional(),
         type: Joi.string().required(),
         isNeglected: Joi.bool().optional(),
@@ -65,6 +74,7 @@ const validateUpdate = (body) => {
     let schema = {
         nameAr: Joi.string().min(3).optional(),
         nameEn: Joi.string().min(3).optional(),
+        desc: Joi.string().required(),
         parent: Joi.string().optional(),
         isNeglected: Joi.bool().optional(),
         avatar: Joi.string().optional(),

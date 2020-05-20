@@ -139,7 +139,6 @@ const addOrder = async (input) => {
 async function getOrders(input) {
     let startId = input.params.id;
     
-    console.log(startId)
     let aggr = [
         {
           '$match': {
@@ -208,8 +207,6 @@ async function getOrders(input) {
       }
       
   }
-  
-
 
 
   async function getOrderDetails(input) {
@@ -431,10 +428,259 @@ async function getOrders(input) {
 }
 
 
+const getOrdersForAdmin = async (input) => {
+
+  let { startId = false, limit = 10, all = false } = input.query;
+  
+  startId = (!startId || startId == "false") ? false : startId
+
+  startId = (all || !startId) ? {} : { '_id': { '$gt': mongoose.Types.ObjectId(startId) } };
+  limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+
+  
+
+  let checkThenAssign = (variable, fieldName, fieldValue) => {
+    (variable)?
+    (
+      (variable == "false" || !variable)? {}:
+      {[fieldName]: fieldValue}
+    ): {}
+  }
+
+  let provider = checkThenAssign(
+    input.query.provider,
+    "providers.provider",
+    mongoose.Types.ObjectId(input.query.provider)
+  )
+
+  let client = checkThenAssign(
+    input.query.client,
+    "client._id",
+    mongoose.Types.ObjectId(input.query.client)
+  )
+
+  
+  let area = checkThenAssign(
+    input.query.area,
+    "location.areaId",
+    mongoose.Types.ObjectId(input.query.area)
+  )
+
+
+  let state = checkThenAssign(
+    input.query.state,
+    "log.state",
+    input.query.state
+  )
+
+
+  let startDate = checkThenAssign(
+    input.query.startDate,
+    "dateCreate",
+    { "$gte": new Date((new Date(parseInt(input.query.startDate))).toISOString()) }
+  )
+
+
+  let endDate = checkThenAssign(
+    input.query.endDate,
+    "dateCreate",
+    { "$lte": new Date((new Date(parseInt(input.query.endDate))).toISOString()) }
+  )
+
+    
+  let orders = await Order.aggregate([
+    {
+      '$match': startId
+    }, {
+      '$lookup': {
+        'from': 'areas', 
+        'localField': 'location.area', 
+        'foreignField': '_id', 
+        'as': 'location.area'
+      }
+    }, {
+      '$addFields': {
+        'location.area': {
+          '$arrayElemAt': [
+            '$location.area', 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'cities', 
+        'localField': 'location.area.city', 
+        'foreignField': '_id', 
+        'as': 'location.area.city'
+      }
+    }, {
+      '$addFields': {
+        'location.area.city': {
+          '$arrayElemAt': [
+            '$location.area.city', 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'countries', 
+        'localField': 'location.area.city.country', 
+        'foreignField': '_id', 
+        'as': 'location.area.city.country'
+      }
+    }, {
+      '$addFields': {
+        'location.area.city.country': {
+          '$arrayElemAt': [
+            '$location.area.city.country', 0
+          ]
+        }
+      }
+    }, {
+      '$addFields': {
+        'log': {
+          '$arrayElemAt': [
+            '$log', -1
+          ]
+        }, 
+        'location': {
+          'area': '$location.area.nameEn', 
+          'city': '$location.area.city.nameEn', 
+          'country': '$location.area.city.country.nameEn', 
+          'areaId': '$location.area._id'
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'orderships', 
+        'localField': '_id', 
+        'foreignField': 'order', 
+        'as': 'providers'
+      }
+    }, {
+      '$addFields': {
+        'providers': {
+          '$map': {
+            'input': '$providers', 
+            'as': 'p', 
+            'in': {
+              'provider': '$$p.provider'
+            }
+          }
+        }
+      }
+    }, {
+      '$unwind': {
+        'path': '$providers'
+      }
+    }, {
+      '$match': {
+        ...provider,
+      }
+    }, {
+      '$lookup': {
+        'from': 'users', 
+        'let': {
+          'provider': '$providers.provider'
+        }, 
+        'pipeline': [
+          {
+            '$match': {
+              '$expr': {
+                '$eq': [
+                  '$_id', '$$provider'
+                ]
+              }
+            }
+          }, {
+            '$project': {
+              'name': 1
+            }
+          }
+        ], 
+        'as': 'providers'
+      }
+    }, {
+      '$lookup': {
+        'from': 'users', 
+        'let': {
+          'client': '$client'
+        }, 
+        'pipeline': [
+          {
+            '$match': {
+              '$expr': {
+                '$eq': [
+                  '$_id', '$$client'
+                ]
+              }
+            }
+          }, {
+            '$project': {
+              'name': 1
+            }
+          }
+        ], 
+        'as': 'client'
+      }
+    }, {
+      '$addFields': {
+        'providers': {
+          '$arrayElemAt': [
+            '$providers', 0
+          ]
+        }, 
+        'client': {
+          '$arrayElemAt': [
+            '$client', 0
+          ]
+        }
+      }
+    }, {
+      '$group': {
+        '_id': '$_id', 
+        'doc': {
+          '$first': '$$ROOT'
+        }, 
+        'providers': {
+          '$push': '$providers'
+        }
+      }
+    }, {
+      '$addFields': {
+        'doc.providers': '$providers'
+      }
+    }, {
+      '$replaceRoot': {
+        'newRoot': '$doc'
+      }
+    }, {
+      '$match': {
+        // 'isNeglected': false,
+        ...client,
+        ...area,
+        ...state,
+        ...startDate,
+        ...endDate
+      }
+    }, {
+      '$sort': {
+          _id: 1
+      }
+  },{
+      '$limit': limit? limit: Infinity
+  }
+  ]);
+  
+  return orders
+}
+
+
 module.exports = {
     Order,
     addOrder,
     getOrders,
     getOrderDetails,
     updateOrder,
+    getOrdersForAdmin
 }
