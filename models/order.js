@@ -455,8 +455,7 @@ const getOrdersForAdmin = async (input) => {
 
     endDate = (input.query.endDate && input.query.endDate != "false") ?
       { "dateCreate": { "$lte": new Date(parseInt(input.query.endDate)) } } : {}
-    
-      console.log(state);
+
       
   let orders = await Order.aggregate([
     {
