@@ -436,7 +436,7 @@ const getOrdersForAdmin = async (input) => {
 
   startId = (all || !startId) ? {} : { '_id': { '$gt': mongoose.Types.ObjectId(startId) } };
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
-
+  
 
   let provider = (input.query.provider && input.query.provider != "false") ?
     { "providers.provider": mongoose.Types.ObjectId(input.query.provider) } : {},
@@ -448,15 +448,16 @@ const getOrdersForAdmin = async (input) => {
       { "location.areaId": mongoose.Types.ObjectId(input.query.area) } : {},
 
     state = (input.query.state && input.query.state != "false") ?
-      { "log.state": nput.query.stat } : {},
+      { "log.state": input.query.state } : {},
 
     startDate = (input.query.startDate && input.query.startDate != "false") ?
       { "dateCreate": { "$gte": new Date(parseInt(input.query.startDate)) } } : {},
 
     endDate = (input.query.endDate && input.query.endDate != "false") ?
       { "dateCreate": { "$lte": new Date(parseInt(input.query.endDate)) } } : {}
-
     
+      console.log(state);
+      
   let orders = await Order.aggregate([
     {
       '$match': startId
