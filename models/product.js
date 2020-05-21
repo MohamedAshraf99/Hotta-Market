@@ -293,7 +293,7 @@ async function getProductDetails(input) {
             '$first': '$provider.phone'
           },
           'description': {
-            '$first': '$description'
+            '$first': '$desc'
           },
           'price': {
             '$first': '$productPrices.prices'
@@ -453,7 +453,7 @@ async function getProductDetails(input) {
             '$first': '$provider.closingTime'
           },
           'description': {
-            '$first': '$description'
+            '$first': '$desc'
           },
           'price': {
             '$first': '$productPrices.price'
