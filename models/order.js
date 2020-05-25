@@ -410,6 +410,7 @@ async function getOrders(input) {
            }
   }
 
+
   const updateOrder = async (input) => {
 
     let {id} = input.params;
@@ -645,11 +646,278 @@ const getOrdersForAdmin = async (input) => {
 }
 
 
+const getOrderDetailsForAdmin = async (input) => {
+
+  let { id="" } = input.params;
+
+  let order = await Order.aggregate([
+    {
+      '$match': {
+        '_id': mongoose.Types.ObjectId(id)
+      }
+    }, {
+      '$lookup': {
+        'from': 'appsettings', 
+        'pipeline': [
+          {
+            '$match': {}
+          }
+        ], 
+        'as': 'appSettings'
+      }
+    }, {
+      '$addFields': {
+        'appSettings': {
+          '$arrayElemAt': [
+            '$appSettings', -1
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'paymenttransactions', 
+        'localField': '_id', 
+        'foreignField': 'order', 
+        'as': 'paymentTransactions'
+      }
+    }, {
+      '$addFields': {
+        'paymentTransactions': {
+          '$arrayElemAt': [
+            '$paymentTransactions', 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'areas', 
+        'localField': 'location.area', 
+        'foreignField': '_id', 
+        'as': 'location.area'
+      }
+    }, {
+      '$addFields': {
+        'location.area': {
+          '$arrayElemAt': [
+            {
+              '$map': {
+                'input': '$location.area', 
+                'as': 'o', 
+                'in': {
+                  '_id': '$$o._id', 
+                  'nameAr': '$$o.nameAr', 
+                  'nameEn': '$$o.nameEn', 
+                  'city': '$$o.city'
+                }
+              }
+            }, 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'cities', 
+        'localField': 'location.area.city', 
+        'foreignField': '_id', 
+        'as': 'location.area.city'
+      }
+    }, {
+      '$addFields': {
+        'location.area.city': {
+          '$arrayElemAt': [
+            {
+              '$map': {
+                'input': '$location.area.city', 
+                'as': 'o', 
+                'in': {
+                  '_id': '$$o._id', 
+                  'nameAr': '$$o.nameAr', 
+                  'nameEn': '$$o.nameEn', 
+                  'country': '$$o.country'
+                }
+              }
+            }, 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'users', 
+        'localField': 'client', 
+        'foreignField': '_id', 
+        'as': 'client'
+      }
+    }, {
+      '$addFields': {
+        'client': {
+          '$arrayElemAt': [
+            {
+              '$map': {
+                'input': '$client', 
+                'as': 'o', 
+                'in': {
+                  '_id': '$$o._id', 
+                  'name': '$$o.name'
+                }
+              }
+            }, 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'orderships', 
+        'localField': '_id', 
+        'foreignField': 'order', 
+        'as': 'orderShips'
+      }
+    }, {
+      '$unwind': {
+        'path': '$orderShips', 
+        'preserveNullAndEmptyArrays': true
+      }
+    }, {
+      '$lookup': {
+        'from': 'users', 
+        'localField': 'orderShips.provider', 
+        'foreignField': '_id', 
+        'as': 'orderShips.provider'
+      }
+    }, {
+      '$addFields': {
+        'orderShips.provider': {
+          '$arrayElemAt': [
+            {
+              '$map': {
+                'input': '$orderShips.provider', 
+                'as': 'o', 
+                'in': {
+                  '_id': '$$o._id', 
+                  'name': '$$o.name'
+                }
+              }
+            }, 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'shipitems', 
+        'localField': 'orderShips._id', 
+        'foreignField': 'orderShips', 
+        'as': 'orderShips.shipItems'
+      }
+    }, {
+      '$unwind': {
+        'path': '$orderShips.shipItems', 
+        'preserveNullAndEmptyArrays': true
+      }
+    }, {
+      '$lookup': {
+        'from': 'productprices', 
+        'localField': 'orderShips.shipItems.product.productPrice', 
+        'foreignField': '_id', 
+        'as': 'orderShips.shipItems.product.productPrice'
+      }
+    }, {
+      '$addFields': {
+        'orderShips.shipItems.product.productPrice': {
+          '$arrayElemAt': [
+            {
+              '$map': {
+                'input': '$orderShips.shipItems.product.productPrice', 
+                'as': 'o', 
+                'in': {
+                  '_id': '$$o._id', 
+                  'price': '$$o.price', 
+                  'product': '$$o.product'
+                }
+              }
+            }, 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'products', 
+        'localField': 'orderShips.shipItems.product.productPrice.product', 
+        'foreignField': '_id', 
+        'as': 'orderShips.shipItems.product.productPrice.product'
+      }
+    }, {
+      '$addFields': {
+        'orderShips.shipItems.product.productPrice.product': {
+          '$arrayElemAt': [
+            {
+              '$map': {
+                'input': '$orderShips.shipItems.product.productPrice.product', 
+                'as': 'o', 
+                'in': {
+                  '_id': '$$o._id', 
+                  'nameEn': '$$o.nameEn', 
+                  'nameAr': '$$o.nameAr', 
+                  'tax': '$$o.tax'
+                }
+              }
+            }, 0
+          ]
+        }
+      }
+    }, {
+      '$group': {
+        '_id': {
+          '_id': '$_id', 
+          'orderShipsId': '$orderShips._id'
+        }, 
+        'doc': {
+          '$first': '$$ROOT'
+        }, 
+        'orderItems': {
+          '$push': '$orderShips.shipItems'
+        }
+      }
+    }, {
+      '$addFields': {
+        'doc.orderShips.shipItems': '$orderItems'
+      }
+    }, {
+      '$replaceRoot': {
+        'newRoot': '$doc'
+      }
+    }, {
+      '$group': {
+        '_id': '$_id', 
+        'doc': {
+          '$first': '$$ROOT'
+        }, 
+        'orderShips': {
+          '$push': '$orderShips'
+        }
+      }
+    }, {
+      '$addFields': {
+        'doc.orderShips': '$orderShips'
+      }
+    }, {
+      '$project': {
+        'orderShips': 0
+      }
+    }, {
+      '$replaceRoot': {
+        'newRoot': '$doc'
+      }
+    }
+  ]);
+  
+  return order
+}
+
 module.exports = {
     Order,
     addOrder,
     getOrders,
     getOrderDetails,
+    getOrderDetailsForAdmin,
     updateOrder,
     getOrdersForAdmin
 }
