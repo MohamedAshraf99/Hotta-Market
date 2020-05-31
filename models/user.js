@@ -544,13 +544,18 @@ async function getUser(input) {
 }
 
 async function getProducts(input) {
-  let startId = input.params.id;
-  
-  console.log(startId)
+  let userId = input.params.id;
+  let { startId = false, limit = 10, all = false } = input.query;
+
+  startId = (!startId || startId == "false") ? false : startId
+
+  startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
+  limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+
   let aggr = [
       {
         '$match': {
-          '_id': mongoose.Types.ObjectId(startId),
+          '_id': mongoose.Types.ObjectId(userId),
           'isNeglected': false
 
         }
@@ -619,6 +624,17 @@ async function getProducts(input) {
               '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
           }
          }, 
+         {
+          '$match': startId
+        },
+         {
+          '$sort': {
+              '_id._id': 1
+          }
+      },
+      {
+          '$limit': limit? limit: Infinity
+      }
          
     ];
      let getProducts = await User.aggregate(aggr);
@@ -632,14 +648,21 @@ async function getProducts(input) {
 
 
 async function getCart(input) {
-  let startId = input.params.id;
+  let userId = input.params.id;
   let appSettings = await AppSettings.findOne();
   let generalTax = appSettings.generalTax;
+  let { startId = false, limit = 10, all = false } = input.query;
+
+  startId = (!startId || startId == "false") ? false : startId
+
+  startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
+  limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+
   console.log(startId)
   let aggr = [
       {
         '$match': {
-          '_id': mongoose.Types.ObjectId(startId),
+          '_id': mongoose.Types.ObjectId(userId),
           'isNeglected': false
         }
       },
@@ -755,10 +778,19 @@ async function getCart(input) {
               '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
           }
          },
-         {'$sort':{'_id.shipcard':1}}
+         {
+          '$match': startId
+        },
+         {
+          '$sort': {
+              '_id._id': 1
+          }
+      },
+      {
+          '$limit': limit? limit: Infinity
+      }
     ];
       let getProducts = await User.aggregate(aggr);
-     console.log(getProducts);
     if(getProducts[0]._id.shipcard){
     getProducts = getProducts.map(product => {
       product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;

@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
     let favouriteProducts = await getFavouriteProducts(req);
     res.send(favouriteProducts);
 });

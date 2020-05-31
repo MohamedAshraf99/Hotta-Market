@@ -137,12 +137,19 @@ const addOrder = async (input) => {
 
 
 async function getOrders(input) {
-    let startId = input.params.id;
-    
+    let userId = input.params.id;
+    let { startId = false, limit = 10, all = false } = input.query;
+
+    startId = (!startId || startId == "false") ? false : startId
+
+    startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
+    limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+
+
     let aggr = [
         {
           '$match': {
-            '_id': mongoose.Types.ObjectId(startId),
+            '_id': mongoose.Types.ObjectId(userId),
             'isNeglected': false
   
           }
@@ -195,6 +202,17 @@ async function getOrders(input) {
                 '_id.price': 1,
             }
            }, 
+           {
+            '$match': startId
+          },
+           {
+            '$sort': {
+                '_id._id': 1
+            }
+        },
+        {
+            '$limit': limit? limit: Infinity
+        }
            
       ];
       let getOrders = await User.aggregate(aggr);

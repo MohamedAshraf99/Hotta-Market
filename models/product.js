@@ -350,6 +350,34 @@ async function getProductDetails(input) {
       },
       {
         '$lookup': {
+          'from': 'productsubprops',
+          'localField': 'productPrices.props',
+          'foreignField': '_id',
+          'as': 'productsubprops'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$productsubprops',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'productmainprops',
+          'localField': 'productsubprops.productMainProp',
+          'foreignField': '_id',
+          'as': 'productmainprops'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$productmainprops',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$lookup': {
           'from': 'users',
           'localField': 'provider',
           'foreignField': '_id',
@@ -461,6 +489,12 @@ async function getProductDetails(input) {
           'productPrices': {
             '$addToSet': '$productPrices'
           },
+          'productSubProps': {
+            '$addToSet': '$productsubprops'
+          },
+          'productMainProps': {
+            '$addToSet': '$productmainprops'
+          },
           'favourite': {
             '$first': '$favourite'
           },
@@ -488,6 +522,8 @@ async function getProductDetails(input) {
           'closingTime': 1,
           'description': 1,
           'productPrices': 1,
+          'productSubProps':1,
+          'productMainProps':1,
           'price.initialPrice': 1,
           'price.reducedPrice': 1,
           'favourite': 1,
@@ -500,7 +536,6 @@ async function getProductDetails(input) {
 
     ];
     
-    console.log(generalTax);
     let getProducts = await Product.aggregate(aggr);
     if (getProducts.length != 0) {
       getProducts[0].totalRates = getProducts[0].totalRates.length;

@@ -326,14 +326,21 @@ const toggleNeglectCats = async (input) => {
 }
 
 async function getsubCategories(input) {
-    let startId = input.params.id;
+    let catId = input.params.id;
     let type = input.query.type;
+    let { startId = false, limit = 10, all = false } = input.query;
+
+    startId = (!startId || startId == "false") ? false : startId
+
+    startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
+    limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+
     if(type == "vendor")
     {
     let aggr = [
         {
           '$match': {
-            '_id': mongoose.Types.ObjectId(startId),
+            '_id': mongoose.Types.ObjectId(catId),
             'isNeglected': false
           }
         },
@@ -457,6 +464,17 @@ async function getsubCategories(input) {
                 '_id.cityEn': 1,
             }
            }, 
+           {
+            '$match': startId
+          },
+           {
+            '$sort': {
+                '_id._id': 1
+            }
+        },
+        {
+            '$limit': limit? limit: Infinity
+        }
            
       ];
       let subCategories = await Cat.aggregate(aggr);
@@ -470,7 +488,7 @@ async function getsubCategories(input) {
         let aggr = [
             {
               '$match': {
-                '_id': mongoose.Types.ObjectId(startId),
+                '_id': mongoose.Types.ObjectId(catId),
                 'isNeglected': false
               }
             },
@@ -531,6 +549,17 @@ async function getsubCategories(input) {
                     '_id.desc': 1,
                 }
                }, 
+               {
+                '$match': startId
+              },
+               {
+                '$sort': {
+                    '_id._id': 1
+                }
+            },
+            {
+                '$limit': limit? limit: Infinity
+            }
           ];
           let subCategories = await Cat.aggregate(aggr);
           if(subCategories[0]._id.avatar == null)
