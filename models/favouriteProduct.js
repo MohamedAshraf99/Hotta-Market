@@ -126,7 +126,7 @@ const getFavouriteProducts = async (input) => {
             }
            },
            {
-            '$match': startId
+            '$match': startId 
           },
            {
             '$sort': {
@@ -146,7 +146,6 @@ const getFavouriteProducts = async (input) => {
         })
      }
       return (getProducts);
-     
 }
 
 

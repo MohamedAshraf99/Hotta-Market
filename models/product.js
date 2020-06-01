@@ -353,27 +353,15 @@ async function getProductDetails(input) {
           'from': 'productsubprops',
           'localField': 'productPrices.props',
           'foreignField': '_id',
-          'as': 'productsubprops'
-        }
-      },
-      {
-        '$unwind': {
-          'path': '$productsubprops',
-          'preserveNullAndEmptyArrays': true
+          'as': 'productPrices.productSubProps'
         }
       },
       {
         '$lookup': {
           'from': 'productmainprops',
-          'localField': 'productsubprops.productMainProp',
+          'localField': 'productPrices.productSubProps.productMainProp',
           'foreignField': '_id',
-          'as': 'productmainprops'
-        }
-      },
-      {
-        '$unwind': {
-          'path': '$productmainprops',
-          'preserveNullAndEmptyArrays': true
+          'as': 'productPrices.productMainProp'
         }
       },
       {
@@ -406,7 +394,7 @@ async function getProductDetails(input) {
       },
       {
         '$lookup': {
-          'from': 'favouriteProducts',
+          'from': 'favouriteproducts',
           'localField': '_id',
           'foreignField': 'product',
           'as': 'favouriteProducts'
@@ -489,12 +477,6 @@ async function getProductDetails(input) {
           'productPrices': {
             '$addToSet': '$productPrices'
           },
-          'productSubProps': {
-            '$addToSet': '$productsubprops'
-          },
-          'productMainProps': {
-            '$addToSet': '$productmainprops'
-          },
           'favourite': {
             '$first': '$favourite'
           },
@@ -522,8 +504,6 @@ async function getProductDetails(input) {
           'closingTime': 1,
           'description': 1,
           'productPrices': 1,
-          'productSubProps':1,
-          'productMainProps':1,
           'price.initialPrice': 1,
           'price.reducedPrice': 1,
           'favourite': 1,

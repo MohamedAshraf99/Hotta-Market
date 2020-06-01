@@ -478,7 +478,7 @@ async function getsubCategories(input) {
            
       ];
       let subCategories = await Cat.aggregate(aggr);
-      if(subCategories[0]._id.avatar == null && subCategories[0]._id.rate == null &&subCategories[0]._id.icon == null)
+      if(subCategories.length == 0 || (subCategories[0]._id.avatar == null && subCategories[0]._id.rate == null &&subCategories[0]._id.icon == null))
       {return subCategories = []; }
       else{
       return (subCategories);
@@ -562,7 +562,7 @@ async function getsubCategories(input) {
             }
           ];
           let subCategories = await Cat.aggregate(aggr);
-          if(subCategories[0]._id.avatar == null)
+          if(subCategories.length == 0 || subCategories[0]._id.avatar == null)
           {return subCategories =[];}
           else{
           return (subCategories);

@@ -216,7 +216,8 @@ async function getOrders(input) {
            
       ];
       let getOrders = await User.aggregate(aggr);
-      if (Object.keys(getOrders[0]._id).length === 0 && getOrders[0]._id.constructor === Object)
+     
+      if (getOrders.length == 0 || (Object.keys(getOrders[0]._id).length === 0 && getOrders[0]._id.constructor === Object)  )
       {
         return getOrders = [];
       }

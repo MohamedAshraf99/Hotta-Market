@@ -638,11 +638,14 @@ async function getProducts(input) {
          
     ];
      let getProducts = await User.aggregate(aggr);
+     if(getProducts.length == 0) return getProducts;
+     else{
     getProducts = getProducts.map(product => {
       product._id.avatar =  input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
       return product;
   })
     return (getProducts);
+ }
 }
 
 
@@ -791,7 +794,8 @@ async function getCart(input) {
       }
     ];
       let getProducts = await User.aggregate(aggr);
-    if(getProducts[0]._id.shipcard){
+      if (getProducts.length == 0) return (getProducts);
+    else if(getProducts[0]._id.shipcard){
     getProducts = getProducts.map(product => {
       product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
       return product;
