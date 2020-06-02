@@ -53,9 +53,44 @@ const validateAddOrderShip = (body) => {
     return Joi.validate(body, schema);
 }
 
+const validateUpdateForAdmin = (body) => {
+    let schema = {
+        state:Joi.string().optional(),
+        isNeglected:Joi.bool().optional(),
+        completed:Joi.bool().optional(),
+    };
+  
+    return Joi.validate(body, schema);
+  }
+
+  const updateOrderShipForAdmin = async (input) => {
+  
+    const { error } = validateUpdateForAdmin(input.body);
+    if (error) return (error.details[0]);
+  
+    let body = input.body,
+        {id} = input.params
+  
+    let state = body.state || false
+  
+  
+    let updatedOrder = await orderShip.findByIdAndUpdate(
+      id,
+      {
+        ...(state && {$push: {log: {state}}}),
+        ..._.omit(body, ['state'])
+      },
+      { new: true }
+    )
+  
+    return updatedOrder
+  
+  }
+
 module.exports = {
     orderShip,
     validateAddOrderShip,
+    updateOrderShipForAdmin
 }
 
 

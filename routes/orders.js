@@ -1,6 +1,6 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
 const { Order,addOrder,getOrders,getOrderDetails,updateOrder,
-     getOrdersForAdmin, getOrderDetailsForAdmin } = require('../models/order');
+     getOrdersForAdmin, getOrderDetailsForAdmin, updateOrderForAdmin } = require('../models/order');
 const express = require('express');
 const router = express.Router();
 
@@ -64,4 +64,16 @@ router.put('/edit/:id', async (req, res) => {
 
     res.send(updatedOrder);
 });
+
+
+router.put('/editOrderForAdmin/:id', async (req, res) => {
+    let updatedOrder = await updateOrderForAdmin(req);
+
+    if(updatedOrder.message && updatedOrder.path && updatedOrder.type && updatedOrder.context)
+        return res.status(400).send(updatedOrder.message)
+
+    res.send(updatedOrder);
+});
+
+
 module.exports = router; 

@@ -6,6 +6,7 @@ const {ShipCard} = require('./shipCard');
 const { AppSettings } = require('./appSettings')
 const {PaymentTransaction,validateAddPaymentTransaction} = require('./paymentTransaction');
 const {User} = require('./user');
+const _ = require("lodash")
 
 const orderSchema = new mongoose.Schema({
     client: {
@@ -30,7 +31,7 @@ const orderSchema = new mongoose.Schema({
     log: [{
         date: {
             type: Date,
-            default: Date.now()
+            default: Date.now
         },
         state: {
             type: String,
@@ -74,9 +75,18 @@ const validateUpdate = (body) => {
       date:Joi.date().required(),
       state:Joi.string().required()
   };
+}
+
+const validateUpdateOrderForAdmin = (body) => {
+  let schema = {
+      state:Joi.string().optional(),
+      isNeglected:Joi.bool().optional(),
+      completed:Joi.bool().optional(),
+  };
 
   return Joi.validate(body, schema);
 }
+
 const addOrder = async (input) => {
 
     const { error } = validateAddOrder(input.body);
@@ -133,6 +143,30 @@ const addOrder = async (input) => {
           }
     }
  }
+}
+
+const updateOrderForAdmin = async (input) => {
+
+  const { error } = validateUpdateOrderForAdmin(input.body);
+  if (error) return (error.details[0]);
+
+  let body = input.body,
+      {id} = input.params
+
+  let state = body.state || false
+
+
+  let updatedOrder = await Order.findByIdAndUpdate(
+    id,
+    {
+      ...(state && {$push: {log: {state}}}),
+      ..._.omit(body, ['state'])
+    },
+    { new: true }
+  )
+
+  return _.omit(updatedOrder.toObject(), ['client', 'location'])
+
 }
 
 
@@ -742,6 +776,32 @@ const getOrderDetailsForAdmin = async (input) => {
       }
     }, {
       '$lookup': {
+        from: 'countries',
+        localField: 'location.area.city.country',
+        foreignField: '_id',
+        as: 'location.area.city.country'
+      }
+    }, {
+      '$addFields': {
+        'location.area.city.country': {
+          '$arrayElemAt': [
+            {
+          '$map': {
+            'input': '$location.area.city.country', 
+            'as': 'o', 
+            'in': {
+              '_id': '$$o._id',
+              'nameAr': '$$o.nameAr',
+              'nameEn': '$$o.nameEn',
+            }
+          }
+        }
+        
+        ,0]
+        }
+      }
+    }, {
+      '$lookup': {
         'from': 'users', 
         'localField': 'client', 
         'foreignField': '_id', 
@@ -829,7 +889,7 @@ const getOrderDetailsForAdmin = async (input) => {
                 'as': 'o', 
                 'in': {
                   '_id': '$$o._id', 
-                  'price': '$$o.price', 
+                  // 'price': '$$o.price', 
                   'product': '$$o.product'
                 }
               }
@@ -908,13 +968,16 @@ const getOrderDetailsForAdmin = async (input) => {
       }
     }
   ]);
+
   
-  return order
+  
+  return order.length? order[0]: {}
 }
 
 module.exports = {
     Order,
     addOrder,
+    updateOrderForAdmin,
     getOrders,
     getOrderDetails,
     getOrderDetailsForAdmin,

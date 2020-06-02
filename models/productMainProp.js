@@ -30,8 +30,8 @@ const ProductMainProp = mongoose.model('ProductMainProp', productMainPropSchema)
 
 const validateAdd = (body) => {
     let schema = {
-        nameAr: Joi.string().min(3).required(),
-        nameEn: Joi.string().min(3).required(),   
+        nameAr: Joi.string().min(1).required(),
+        nameEn: Joi.string().min(1).required(),   
     };
 
     return Joi.validate(body, schema);
@@ -39,8 +39,8 @@ const validateAdd = (body) => {
 
 const validateUpdate = (body) => {
     let schema = {
-        nameAr: Joi.string().min(3).optional(),
-        nameEn: Joi.string().min(3).optional(),
+        nameAr: Joi.string().min(1).optional(),
+        nameEn: Joi.string().min(1).optional(),
         isNeglected: Joi.bool().optional(),
     };
 
