@@ -356,6 +356,7 @@ async function getOrders(input) {
                 '$addFields': {
                   'location.cityAr': "$cities.nameAr",
                   'location.cityEn': "$cities.nameEn",
+                  'location.shippingFees': "$cities.shippingFees",
                   'location.areaAr': "$area.nameAr",
                   'location.areaEn': "$area.nameEn",
                   'price': "$paymentTransactions.price",
