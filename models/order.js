@@ -171,12 +171,19 @@ const updateOrderForAdmin = async (input) => {
 
 
 async function getOrders(input) {
-    let startId = input.params.id;
-    
+    let userId = input.params.id;
+    let { startId = false, limit = 10, all = false } = input.query;
+
+    startId = (!startId || startId == "false") ? false : startId
+
+    startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
+    limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+
+
     let aggr = [
         {
           '$match': {
-            '_id': mongoose.Types.ObjectId(startId),
+            '_id': mongoose.Types.ObjectId(userId),
             'isNeglected': false
   
           }
@@ -229,10 +236,22 @@ async function getOrders(input) {
                 '_id.price': 1,
             }
            }, 
+           {
+            '$match': startId
+          },
+           {
+            '$sort': {
+                '_id._id': 1
+            }
+        },
+        {
+            '$limit': limit? limit: Infinity
+        }
            
       ];
       let getOrders = await User.aggregate(aggr);
-      if (Object.keys(getOrders[0]._id).length === 0 && getOrders[0]._id.constructor === Object)
+     
+      if (getOrders.length == 0 || (Object.keys(getOrders[0]._id).length === 0 && getOrders[0]._id.constructor === Object)  )
       {
         return getOrders = [];
       }

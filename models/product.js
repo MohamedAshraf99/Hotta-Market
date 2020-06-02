@@ -350,6 +350,22 @@ async function getProductDetails(input) {
       },
       {
         '$lookup': {
+          'from': 'productsubprops',
+          'localField': 'productPrices.props',
+          'foreignField': '_id',
+          'as': 'productPrices.productSubProps'
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'productmainprops',
+          'localField': 'productPrices.productSubProps.productMainProp',
+          'foreignField': '_id',
+          'as': 'productPrices.productMainProp'
+        }
+      },
+      {
+        '$lookup': {
           'from': 'users',
           'localField': 'provider',
           'foreignField': '_id',
@@ -378,7 +394,7 @@ async function getProductDetails(input) {
       },
       {
         '$lookup': {
-          'from': 'favouriteProducts',
+          'from': 'favouriteproducts',
           'localField': '_id',
           'foreignField': 'product',
           'as': 'favouriteProducts'
@@ -500,7 +516,6 @@ async function getProductDetails(input) {
 
     ];
     
-    console.log(generalTax);
     let getProducts = await Product.aggregate(aggr);
     if (getProducts.length != 0) {
       getProducts[0].totalRates = getProducts[0].totalRates.length;
