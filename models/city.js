@@ -8,6 +8,10 @@ const citySchema = new mongoose.Schema({
         ref: 'Country',
         required: true
     },
+    shippingFees: {
+        type: Number,
+        required: true
+    },
     nameAr: {
         type: String,
         required: true
@@ -34,7 +38,8 @@ const validateAdd = (body) => {
     let schema = {
         nameAr: Joi.string().min(3).required(),
         nameEn: Joi.string().min(3).required(),
-        country: Joi.string().length(24).required(),       
+        country: Joi.string().length(24).required(),    
+        shippingFees: Joi.number().required(),   
     };
 
     return Joi.validate(body, schema);
@@ -45,6 +50,7 @@ const validateUpdate = (body) => {
         nameAr: Joi.string().min(3).optional(),
         nameEn: Joi.string().min(3).optional(),
         isNeglected: Joi.bool().optional(),
+        shippingFees: Joi.number().optional(),
     };
 
     return Joi.validate(body, schema);
