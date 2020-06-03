@@ -40,10 +40,6 @@ const orderShipSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    completed: {
-        type: Boolean,
-        default: false
-    },
     dateCreate: {
         type: Date,
         default: Date.now
