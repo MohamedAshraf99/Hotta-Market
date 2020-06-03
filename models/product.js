@@ -136,6 +136,154 @@ const addProduct = async (input) => {
 }
 
 
+const getProductForAdmin = async (input) => {
+
+  let {id = ""} = input.params
+
+  let product = await Product.aggregate([
+    {
+      '$match': {
+        '_id': mongoose.Types.ObjectId(id)
+      }
+    }, {
+      '$lookup': {
+        'from': 'cats', 
+        'localField': 'cats', 
+        'foreignField': '_id', 
+        'as': 'cats'
+      }
+    }, {
+      '$lookup': {
+        'from': 'productprices', 
+        'localField': '_id', 
+        'foreignField': 'product', 
+        'as': 'productPrices'
+      }
+    }, {
+      '$unwind': {
+        'path': '$productPrices'
+      }
+    }, {
+      '$lookup': {
+        'from': 'productsubprops', 
+        'localField': 'productPrices.props', 
+        'foreignField': '_id', 
+        'as': 'productPrices.props'
+      }
+    }, {
+      '$unwind': {
+        'path': '$productPrices.props'
+      }
+    }, {
+      '$lookup': {
+        'from': 'productmainprops', 
+        'localField': 'productPrices.props.productMainProp', 
+        'foreignField': '_id', 
+        'as': 'productPrices.props.productMainProp'
+      }
+    }, {
+      '$addFields': {
+        'productPrices.props.productMainProp': {
+          '$arrayElemAt': [
+            '$productPrices.props.productMainProp', 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'users', 
+        'localField': 'provider', 
+        'foreignField': '_id', 
+        'as': 'provider'
+      }
+    }, {
+      '$addFields': {
+        'provider': {
+          '$arrayElemAt': [
+            {
+              '$map': {
+                'input': '$provider', 
+                'as': 'o', 
+                'in': {
+                  '_id': '$$o._id', 
+                  'name': '$$o.name'
+                }
+              }
+            }, 0
+          ]
+        }
+      }
+    }, {
+      '$group': {
+        '_id': {
+          '_id': '$_id', 
+          'productPrices': '$productPrices._id'
+        }, 
+        'doc': {
+          '$first': '$$ROOT'
+        }, 
+        'props': {
+          '$push': '$productPrices.props'
+        }
+      }
+    }, {
+      '$addFields': {
+        'doc.productPrices.props': '$props'
+      }
+    }, {
+      '$replaceRoot': {
+        'newRoot': '$doc'
+      }
+    }, {
+      '$group': {
+        '_id': '$_id', 
+        'doc': {
+          '$first': '$$ROOT'
+        }, 
+        'productPrices': {
+          '$push': '$productPrices'
+        }
+      }
+    }, {
+      '$addFields': {
+        'doc.productPrices': '$productPrices'
+      }
+    }, {
+      '$project': {
+        'productPrices': 0
+      }
+    }, {
+      '$replaceRoot': {
+        'newRoot': '$doc'
+      }
+    }
+  ])
+
+  product = product.length? product[0]: {}
+
+  if (product._id) {
+
+    if (product.avatar) product.avatar = input.app.get('defaultAvatar')(input, 'host', product.avatar)
+    else product.avatar = input.app.get('defaultAvatar')(input)
+
+
+  let productPrices = product.productPrices.map(pp => {
+    let avatars = pp.avatars;
+
+    avatars = avatars.map(avatar => input.app.get('defaultAvatar')(input, 'host', avatar))
+
+    return {...pp, avatars};
+  });
+
+  product.productPrices = productPrices
+
+}
+
+return product
+
+}
+
+
 const getProductsForAdmin = async (input) => {
 
   let { startId = false, limit = 10, all = false } = input.query;
@@ -531,7 +679,8 @@ module.exports = {
   Product,
   addProduct,
   getProductDetails,
-  getProductsForAdmin
+  getProductsForAdmin,
+  getProductForAdmin
 }
 
 
