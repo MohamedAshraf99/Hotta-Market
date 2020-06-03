@@ -36,7 +36,7 @@ const orderSchema = new mongoose.Schema({
         state: {
             type: String,
             default: "new",
-            enum: ['new', 'progress','complete', 'canceled']
+            enum: ['new','completed', 'canceled']
         }
     }],
     isNeglected: {
@@ -120,6 +120,7 @@ const addOrder = async (input) => {
     for (let i = 0; i < orderShips.length; i++) {
         const { error } = validateAddOrderShip(orderShips[i]);
         if (error) return (error.details[0]);
+        orderShips[i].number = `${orderBody.number}-${i+1}`;
       }
       orderShips = await orderShip.create(orderShips);
       orderShipsId = orderShips.map(id=>{return id._id.toString()});
@@ -260,6 +261,151 @@ async function getOrders(input) {
       }
       
   }
+
+
+  async function getVendorOrders(input) {
+    let userId = input.params.id;
+    let state = input.query.state
+    let { startId = false, limit = 10, all = false } = input.query;
+
+    startId = (!startId || startId == "false") ? false : startId
+
+    startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
+    limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+
+
+    let aggr = [
+      {
+        '$lookup': {
+          'from': 'paymenttransactions', 
+          'localField': '_id', 
+          'foreignField': 'order', 
+          'as': 'paymentTransactions'
+        }
+    },
+    {
+        '$unwind': {
+          'path': '$paymentTransactions',
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+        {
+            '$lookup': {
+              'from': 'orderships', 
+              'localField': '_id', 
+              'foreignField': 'order', 
+              'as': 'orderships'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$orderships',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            '$addFields': {
+              'orderShipState':{'$arrayElemAt': [ "$orderships.log", -1 ]}
+            }
+          },
+          {
+            '$match': {
+              'orderships.provider': mongoose.Types.ObjectId(userId),
+              'isNeglected': false,
+              'orderShipState.state': state
+              
+            }
+          },
+        //     {
+        //     '$lookup': {
+        //       'from': 'paymenttransactions', 
+        //       'localField': 'orders._id', 
+        //       'foreignField': 'order', 
+        //       'as': 'paymentTransactions'
+        //     }
+        // },
+        // {
+        //     '$unwind': {
+        //       'path': '$paymentTransactions',
+        //       'preserveNullAndEmptyArrays': true
+        //     }
+        //   },
+        // {
+        //     '$addFields': {
+        //       'orders.price': "$paymentTransactions.price",
+        //       'orders.log':{'$arrayElemAt': [ "$orders.log", -1 ]}
+        //     }
+        //   },
+        //     {
+        //       '$group': {
+        //        '_id': '$orders',
+        //        }
+        //    },
+        //    {
+        //     '$project': {
+        //         '_id._id': 1,
+        //         '_id.number': 1,
+        //         '_id.log.state': 1,
+        //         '_id.dateCreate': 1,
+        //         '_id.price': 1,
+        //     }
+        //    }, 
+        //    {
+        //     '$match': startId
+        //   },
+        //    {
+        //     '$sort': {
+        //         '_id._id': 1
+        //     }
+        // },
+        // {
+        //     '$limit': limit? limit: Infinity
+        // }
+           
+      ];
+      let getOrders = await Order.aggregate(aggr);
+     
+      // if (getOrders.length == 0 || (Object.keys(getOrders[0]._id).length === 0 && getOrders[0]._id.constructor === Object)  )
+      // {
+      //   return getOrders = [];
+      // }
+      // else{
+        return getOrders;
+      // }
+      
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   async function getOrderDetails(input) {
@@ -998,6 +1144,7 @@ module.exports = {
     Order,
     addOrder,
     updateOrderForAdmin,
+    getVendorOrders,
     getOrders,
     getOrderDetails,
     getOrderDetailsForAdmin,
