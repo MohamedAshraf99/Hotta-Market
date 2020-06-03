@@ -13,6 +13,18 @@ const orderShipSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     }, 
+    shippingFees: {
+        type: Number,
+        required: true
+    },
+    number: {
+        type: String,
+      },
+    shipmentStatus : {
+        type: String,
+        default: "new",
+        enum: ['new', 'completed','canceled','returned']
+    },
     log: [{
         date: {
             type: Date,
@@ -21,14 +33,10 @@ const orderShipSchema = new mongoose.Schema({
         state: {
             type: String,
             default: "new",
-            enum: ['new', 'progress','complete', 'canceled']
+            enum: ['new', 'progress','onWay','delivered', 'canceled','returned']
         }
     }],
     isNeglected: {
-        type: Boolean,
-        default: false
-    },
-    completed: {
         type: Boolean,
         default: false
     },
