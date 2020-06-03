@@ -13,6 +13,10 @@ const orderShipSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     }, 
+    shippingFees: {
+        type: Number,
+        required: true
+    },
     number: {
         type: String,
       },
