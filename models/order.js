@@ -380,38 +380,6 @@ async function getOrders(input) {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   async function getOrderDetails(input) {
     let startId = input.params.id;
     let appSettings = await AppSettings.findOne();
