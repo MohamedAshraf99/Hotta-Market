@@ -261,6 +261,10 @@ async function getOrders(input) {
       
   }
 
+  async function getAllNumbers(input) {
+    return await Order.find({},{ _id: 1, number: 1 })
+  }
+
 
   async function getOrderDetails(input) {
     let startId = input.params.id;
@@ -787,6 +791,7 @@ const getOrderDetailsForAdmin = async (input) => {
                   '_id': '$$o._id', 
                   'nameAr': '$$o.nameAr', 
                   'nameEn': '$$o.nameEn', 
+                  'shippingFees': '$$o.shippingFees', 
                   'country': '$$o.country'
                 }
               }
@@ -1001,6 +1006,7 @@ module.exports = {
     getOrders,
     getOrderDetails,
     getOrderDetailsForAdmin,
+    getAllNumbers,
     updateOrder,
     getOrdersForAdmin
 }
