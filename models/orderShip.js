@@ -64,8 +64,8 @@ const validateAddOrderShip = (body) => {
 const validateUpdateForAdmin = (body) => {
     let schema = {
         state:Joi.string().optional(),
+        shipmentStatus:Joi.string().optional(),
         isNeglected:Joi.bool().optional(),
-        completed:Joi.bool().optional(),
     };
   
     return Joi.validate(body, schema);
