@@ -1054,7 +1054,8 @@ const getOrderDetailsForAdmin = async (input) => {
                 'in': {
                   '_id': '$$o._id', 
                   'nameEn': '$$o.nameEn', 
-                  'nameAr': '$$o.nameAr', 
+                  'nameAr': '$$o.nameAr',
+                  'avatar': { $ifNull: [{ $concat: [ input.app.get('defaultAvatar')(input, 'host'), '$$o.avatar'] }, input.app.get('defaultAvatar')(input, 'host')] },
                   'tax': '$$o.tax'
                 }
               }
