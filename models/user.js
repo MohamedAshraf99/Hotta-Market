@@ -54,10 +54,6 @@ const userSchema = new mongoose.Schema({
       default: false
     }
   }],
-  deliveryMethod: {
-    type: String,
-    enum: ['vendor','admin']
-},
   email: {
     type: String,
     required: true,

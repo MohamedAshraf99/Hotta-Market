@@ -40,7 +40,7 @@ const orderShipSchema = new mongoose.Schema({
     },
     deliveryMethod: {
         type: String,
-        enum: ['vendor','admin']
+        enum: ['provider','admin']
     },
     totalAdminBalance: {
         type: Number,
