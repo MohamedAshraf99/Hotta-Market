@@ -7,6 +7,11 @@ const appSettingsSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    ProfitCalcMethod: {
+        type: String,
+        required: true,
+        enum: ["cats", "provider"]
+    },
     isNeglected: {
         type: Boolean,
         default: false
