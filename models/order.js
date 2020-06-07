@@ -36,14 +36,10 @@ const orderSchema = new mongoose.Schema({
         state: {
             type: String,
             default: "new",
-            enum: ['new','completed', 'canceled']
+            enum: ['new','completed', 'canceled','returned']
         }
     }],
     isNeglected: {
-        type: Boolean,
-        default: false
-    },
-    completed: {
         type: Boolean,
         default: false
     },

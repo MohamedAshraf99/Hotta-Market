@@ -22,7 +22,31 @@ const shipItemsSchema = new mongoose.Schema({
             type: Number,
             required: true,
         },
+        total: {
+          type: Number,
+          required: true,
+      },
+        reducedPrice: {
+          type: Number,
+          required: true,
+      },
+        discountPrecentage: {
+          type: Number,
+          required: true,
+      },
     },  
+  dtlsProfitPercentage: {
+    type: Number,
+    required: true,
+  },
+  dtlsProfitValue: {
+    type: Number,
+    required: true,
+  },
+  adminBalance: {
+    type: Number,
+    required: true,
+  },
     requiredDateTime: Date,
     rate:{
         positive: {
@@ -162,13 +186,17 @@ async function getBestSelling(input) {
                 '_id.nameAr': 1,
                 '_id.nameEn': 1,
                 '_id.price.initialPrice': 1,
-                '_id.price.reducedPrice': 1,
+                '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
                 '_id.favourite': 1,
                 '_id.cart': 1,
                 'count': 1,
-                '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
             }
            }, 
+           {
+            '$addFields': {
+              '_id.discountPrecentage': { "$multiply": [100,{"$divide": [ { "$subtract": ["$_id.price.initialPrice","$_id.price.reducedPrice"] }, '$_id.price.initialPrice' ]}]},
+            }
+          },
            { '$sort' : { 'count' : -1} },
            { '$limit' : 30 }
       ];
@@ -290,13 +318,17 @@ async function getBestSelling(input) {
                 '_id.nameAr': 1,
                 '_id.nameEn': 1,
                 '_id.price.initialPrice': 1,
-                '_id.price.reducedPrice': 1,
+                '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
                 '_id.favourite': 1,
                 '_id.cart': 1,
                 'count': 1,
-                '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
             }
            }, 
+           {
+            '$addFields': {
+              '_id.discountPrecentage': { "$multiply": [100,{"$divide": [ { "$subtract": ["$_id.price.initialPrice","$_id.price.reducedPrice"] }, '$_id.price.initialPrice' ]}]},
+            }
+          },
            { '$sort' : { 'count' : -1} },
            { '$limit' : 30 }
       ];
@@ -421,13 +453,17 @@ async function getBestReviews(input) {
               '_id.nameAr': 1,
               '_id.nameEn': 1,
               '_id.price.initialPrice': 1,
-              '_id.price.reducedPrice': 1,
+              '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
               '_id.favourite': 1,
               '_id.cart': 1,
               'rate': 1,
-              '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
           }
          }, 
+         {
+          '$addFields': {
+            '_id.discountPrecentage': { "$multiply": [100,{"$divide": [ { "$subtract": ["$_id.price.initialPrice","$_id.price.reducedPrice"] }, '$_id.price.initialPrice' ]}]},
+          }
+        },
          { '$sort' : { 'rate' : -1} },
          { '$limit' : 30 }
     ];

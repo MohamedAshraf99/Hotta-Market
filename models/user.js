@@ -50,6 +50,10 @@ const userSchema = new mongoose.Schema({
       default: false
     }
   }],
+  deliveryMethod: {
+    type: String,
+    enum: ['vendor','admin']
+},
   email: {
     type: String,
     required: true,
@@ -620,10 +624,15 @@ async function getProducts(input) {
               '_id.avatar': 1,
               '_id.type': 1,
               '_id.price.initialPrice': 1,
-              '_id.price.reducedPrice': 1,
-              '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
+              '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
+
           }
          }, 
+         {
+          '$addFields': {
+            '_id.discountPrecentage': { "$multiply": [100,{"$divide": [ { "$subtract": ["$_id.price.initialPrice","$_id.price.reducedPrice"] }, '$_id.price.initialPrice' ]}]},
+          }
+        },
          {
           '$match': startId
         },
@@ -777,10 +786,14 @@ async function getCart(input) {
               '_id.productPrices': 1,
               '_id.providerId': 1,
               '_id.price.initialPrice': 1,
-              '_id.price.reducedPrice': 1,
-              '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
+              '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
           }
          },
+         {
+          '$addFields': {
+            '_id.discountPrecentage': { "$multiply": [100,{"$divide": [ { "$subtract": ["$_id.price.initialPrice","$_id.price.reducedPrice"] }, '$_id.price.initialPrice' ]}]},
+          }
+        },
          {
           '$match': startId
         },
@@ -802,7 +815,7 @@ async function getCart(input) {
   });
   let sum = 0;
   let totalPrice = getProducts.map((product)=>{
-    sum+=product._id.newPrice;return sum ;
+    sum+=product._id.price.reducedPrice;return sum ;
   })
   getProducts[0]._id.totalPrice = totalPrice[totalPrice.length-1];
   return (getProducts);

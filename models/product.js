@@ -4,8 +4,6 @@ const { ProductPrice, validateAdd: productPriceValidateAdd } = require('./produc
 const { AppSettings } = require('./appSettings')
 const _ = require('lodash')
 
-
-
 const productSchema = new mongoose.Schema({
   provider: {
     type: mongoose.Schema.Types.ObjectId,
@@ -653,12 +651,16 @@ async function getProductDetails(input) {
           'description': 1,
           'productPrices': 1,
           'price.initialPrice': 1,
-          'price.reducedPrice': 1,
+          'price.reducedPrice': { "$ifNull": [ "$price.reducedPrice", "$price.initialPrice" ] },
           'favourite': 1,
           'cart': 1,
           'totalRates': 1,
           'rate': 1,
-          'newPrice': { "$subtract": ['$price.initialPrice', { "$multiply": [{ "$divide": ["$price.reducedPrice", 100] }, '$price.initialPrice'] }] },
+        }
+      },
+      {
+        '$addFields': {
+          'discountPrecentage': { "$multiply": [100,{"$divide": [ { "$subtract": ["$price.initialPrice","$price.reducedPrice"] }, '$price.initialPrice' ]}]},
         }
       },
 

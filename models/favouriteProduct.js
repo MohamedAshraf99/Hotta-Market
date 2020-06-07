@@ -111,6 +111,7 @@ const getFavouriteProducts = async (input) => {
               '_id.price': "$productPrices.price",
             }
           },
+          
            {
             '$project': {
                 '_id._id': 1,
@@ -119,12 +120,16 @@ const getFavouriteProducts = async (input) => {
                 '_id.nameAr': 1,
                 '_id.nameEn': 1,
                 '_id.price.initialPrice': 1,
-                '_id.price.reducedPrice': 1,
+                '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
                 '_id.favourite': 1,
-                '_id.cart': 1,
-                '_id.newPrice': { "$subtract": ['$_id.price.initialPrice',{"$multiply": [ { "$divide": ["$_id.price.reducedPrice",100] }, '$_id.price.initialPrice' ]}]},
+                '_id.cart': 1, 
             }
            },
+           {
+            '$addFields': {
+              '_id.discountPrecentage': { "$multiply": [100,{"$divide": [ { "$subtract": ["$_id.price.initialPrice","$_id.price.reducedPrice"] }, '$_id.price.initialPrice' ]}]},
+            }
+          },
            {
             '$match': startId 
           },
