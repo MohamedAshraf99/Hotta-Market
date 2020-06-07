@@ -31,6 +31,7 @@ const providerSubscriptions = require('../routes/providerSubscriptions');
 const linkedProducts = require('../routes/linkedProducts');
 const cards = require('../routes/cards');
 const users = require('../routes/users');
+const deliveryPersons = require('../routes/deliveryPersons');
 
 
 const cors = require('cors');
@@ -108,6 +109,7 @@ module.exports = function (app, io) {
   app.use('/api/favouriteProducts', favouriteProducts);
   app.use('/api/cards', cards);
   app.use('/api/users', users);
+  app.use('/api/deliveryPersons', deliveryPersons);
 
   app.use(error);
 }

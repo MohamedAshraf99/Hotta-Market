@@ -258,6 +258,10 @@ async function getOrders(input) {
       
   }
 
+  async function getAllNumbers(input) {
+    return await Order.find({},{ _id: 1, number: 1 })
+  }
+
 
   async function getVendorOrders(input) {
     let userId = input.params.id;
@@ -370,38 +374,6 @@ async function getOrders(input) {
       // }
       
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   async function getOrderDetails(input) {
@@ -929,6 +901,7 @@ const getOrderDetailsForAdmin = async (input) => {
                   '_id': '$$o._id', 
                   'nameAr': '$$o.nameAr', 
                   'nameEn': '$$o.nameEn', 
+                  'shippingFees': '$$o.shippingFees', 
                   'country': '$$o.country'
                 }
               }
@@ -1077,7 +1050,8 @@ const getOrderDetailsForAdmin = async (input) => {
                 'in': {
                   '_id': '$$o._id', 
                   'nameEn': '$$o.nameEn', 
-                  'nameAr': '$$o.nameAr', 
+                  'nameAr': '$$o.nameAr',
+                  'avatar': { $ifNull: [{ $concat: [ input.app.get('defaultAvatar')(input, 'host'), '$$o.avatar'] }, input.app.get('defaultAvatar')(input, 'host')] },
                   'tax': '$$o.tax'
                 }
               }
@@ -1144,6 +1118,7 @@ module.exports = {
     getOrders,
     getOrderDetails,
     getOrderDetailsForAdmin,
+    getAllNumbers,
     updateOrder,
     getOrdersForAdmin
 }

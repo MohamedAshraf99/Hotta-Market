@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  deliveryMethod: {
+    type: String,
+    enum: ['admin', 'provider']
+  },
   commercialName: String,
   commercialNumber: {
     type: String,
@@ -124,6 +128,7 @@ const validateRegister = (body) => {
       desc: Joi.string().optional(),
       openingTime: Joi.string().optional(),
       closingTime: Joi.string().optional(),
+      deliveryMethod: Joi.string().optional(),
       phone: Joi.string().required(),
       contacts: Joi.array().optional(),
       email: Joi.string().required(),
@@ -147,6 +152,7 @@ const validateUpdate = (body) => {
     desc: Joi.string().optional(),
     openingTime: Joi.string().optional(),
     closingTime: Joi.string().optional(),
+    deliveryMethod: Joi.string().optional(),
     phone: Joi.string().optional(),
     contacts: Joi.array().optional(),
     email: Joi.string().optional(),
