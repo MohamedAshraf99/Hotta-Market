@@ -164,7 +164,7 @@ const updateOrderForAdmin = async (input) => {
   if (updatedOrder._id && state) {
     let shipLogState = state == "completed" ? "delivered" : state
 
-    await orderShip.update(
+    await orderShip.updateMany(
       { order: updatedOrder._id },
       {
         ...(state && { $push: { log: { state: shipLogState } } }),
@@ -1091,6 +1091,10 @@ const getOrderDetailsForAdmin = async (input) => {
     }, {
       '$replaceRoot': {
         'newRoot': '$doc'
+      }
+    }, {
+      '$sort': {
+        "orderShips._id": 1
       }
     }, {
       '$group': {
