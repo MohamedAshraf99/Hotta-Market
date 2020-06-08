@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+// const {Order} = require("./order")
 const _ = require("lodash")
 
 
@@ -112,18 +113,32 @@ const validateUpdateForAdmin = (body) => {
     let state = body.state || false
   
   
-    let updatedOrder = await orderShip.findByIdAndUpdate(
-      id,
-      {
-        ...(state && {$push: {log: {state}}}),
-        ..._.omit(body, ['state'])
+      let updatedOrderShip = await orderShip.findByIdAndUpdate(id, {
+          ...(state && { $push: { log: { state } } }),
+          ..._.omit(body, ['state'])
       },
-      { new: true }
-    )
+          { new: true })
+
+
+      if (updatedOrderShip._id) {
+          let allShipsStatus = await orderShip
+              .find({ order: updatedOrderShip.order }, { shipmentStatus: 1 })
+
+          let orderLogState =
+              allShipsStatus.some(s => s.shipmentStatus == "completed") ? "completed" :
+                  allShipsStatus.some(s => s.shipmentStatus == "new") ? "new" :
+                      allShipsStatus.some(s => s.shipmentStatus == "returned") ? "returned" : "canceled"
+                       
+          await mongoose.model("Order")
+              .findByIdAndUpdate(updatedOrderShip.order,
+                  { $push: { log: { state: orderLogState } } })
+
+      }
   
-    return updatedOrder
-  
+    return updatedOrderShip
   }
+
+
 
 module.exports = {
     orderShip,
