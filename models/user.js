@@ -814,7 +814,7 @@ async function getCart(input) {
     else if(getProducts[0]._id.shipcard){
     getProducts = getProducts.map((product) => {
       if(ProfitCalcMethod == "provider"){
-        let providerSubscription = await ProviderSubscription.find({provider: product._id.providerId});
+        let providerSubscription = ProviderSubscription.find({provider: product._id.providerId});
         if(providerSubscription[providerSubscription.length-1].percentage == undefined){
         providerSubscription[providerSubscription.length-1].percentage = 0;
       }
