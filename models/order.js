@@ -99,7 +99,7 @@ const addOrder = async (input) => {
     let maxNumber = await Order.findOne({}, { number: 1 }).sort({ number: -1 });
     if (maxNumber == null)
     maxNumber = 1 ;
-    await ShipCard.findOneAndDelete({client: client})
+    await ShipCard.deleteMany({client: client})
     orderBody.number = maxNumber.number ? maxNumber.number + 1 : 1;
     let newOrder = new Order(orderBody);
     newOrder = await newOrder.save();
@@ -578,7 +578,7 @@ async function getOrders(input) {
             {
               let ship = [];
                getOrder.map(order=>{
-                 ship.push({state:order.shipitems[0].providerState,provider:order._id,providerName:order.shipitems[0].providerName,shipItem:order.shipitems})
+                 ship.push({generalTax:order.shipitems[0].generalTax,state:order.shipitems[0].providerState,provider:order._id,providerName:order.shipitems[0].providerName,shipItem:order.shipitems})
                  order.shipitems.map(item=>{
                   item.avatar = input.app.get('defaultAvatar')(input, 'host') + item.avatar;
                   item.totalPrice = item.quantity * item.price;
