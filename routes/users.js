@@ -129,12 +129,8 @@ router.get('/getCatProducts/:id', async (req, res) => {
 });
 router.get('/getCartProducts/:id', async (req, res) => {
 
-    let CartProducts = await getCart(req);
+     await getCart(req,res);
 
-    if (CartProducts.message && CartProducts.path && CartProducts.type && CartProducts.context)
-        return res.status(400).send(CartProducts.message)
-
-    res.send(CartProducts);
 });
 
 
