@@ -20,7 +20,7 @@ const orderShipSchema = new mongoose.Schema({
     },
     profitCalcMethod : {
         type: String,
-        enum: ['vendor','cat']
+        enum: ['provider','cat']
     },
     profitPercentage: {
         type: Number,
@@ -81,11 +81,18 @@ const orderShip = mongoose.model('orderShip', orderShipSchema);
 const validateAddOrderShip = (body) => {
     let schema = {
         shippingFees:Joi.number().required(),
+        profitPercentage:Joi.number().required(),
+        profitValue:Joi.number().required(),
+        totalAdminBalance:Joi.number().required(),
+        taxPercentage:Joi.number().required(),
+        taxValue:Joi.number().required(),
+        deliveryMethod:Joi.string().required(),
+        profitCalcMethod:Joi.string().required(),
         provider: Joi.string().length(24).required(),
         order: Joi.string().length(24).required(),
         shipItems: Joi.array().required(),
         log: Joi.array().optional(),
-        completed: Joi.bool().optional(),
+        shipmentStatus:Joi.string().optional(),
     };
 
     return Joi.validate(body, schema);

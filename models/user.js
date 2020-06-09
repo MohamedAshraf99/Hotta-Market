@@ -6,6 +6,7 @@ const Joi = require('joi');
 const _ = require("lodash")
 const {t2} = require("../services/langs")
 const { AppSettings } = require('./appSettings')
+const { ProviderSubscription } = require('./providerSubscription')
 const {getHashPassword, sendMessage, randomString} = require('../services/helper')
 
 
@@ -665,6 +666,7 @@ async function getCart(input) {
   let userId = input.params.id;
   let appSettings = await AppSettings.findOne();
   let generalTax = appSettings.generalTax;
+  let ProfitCalcMethod = appSettings.profitCalcMethod;
   let { startId = false, limit = 10, all = false } = input.query;
 
   startId = (!startId || startId == "false") ? false : startId
@@ -672,7 +674,6 @@ async function getCart(input) {
   startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
-  console.log(startId)
   let aggr = [
       {
         '$match': {
@@ -809,23 +810,35 @@ async function getCart(input) {
       }
     ];
       let getProducts = await User.aggregate(aggr);
-      if (getProducts.length == 0) return (getProducts);
+       if (getProducts.length == 0) return (getProducts);
     else if(getProducts[0]._id.shipcard){
-    getProducts = getProducts.map(product => {
+    getProducts = getProducts.map((product) => {
+      if(ProfitCalcMethod == "provider"){
+        let providerSubscription = await ProviderSubscription.find({provider: product._id.providerId});
+        if(providerSubscription[providerSubscription.length-1].percentage == undefined){
+        providerSubscription[providerSubscription.length-1].percentage = 0;
+      }
+        product._id.dtlsProfitPercentage = providerSubscription[providerSubscription.length-1].percentage;
+        product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
+        return product;
+      }
+      else{
       product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
-      return product;
+      
+       return product;
+      }
   });
-  let sum = 0;
-  let totalPrice = getProducts.map((product)=>{
-    sum+=product._id.price.reducedPrice;return sum ;
-  })
-  getProducts[0]._id.totalPrice = totalPrice[totalPrice.length-1];
-  return (getProducts);
-  }
-  else {
-    getProducts = [];
-     return (getProducts);
+  // let sum = 0;
+  // let totalPrice = getProducts.map((product)=>{
+  //   sum+=product._id.price.reducedPrice;return sum ;
+  // })
+  // getProducts[0]._id.totalPrice = totalPrice[totalPrice.length-1];
+  // return (getProducts);
    }
+  // else {
+  //   getProducts = [];
+     return (getProducts);
+  //  }
 }
 module.exports = {
   User,

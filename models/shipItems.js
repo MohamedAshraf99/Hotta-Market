@@ -73,6 +73,9 @@ const shipItemsSchema = new mongoose.Schema({
 const shipItems = mongoose.model('shipItems', shipItemsSchema);
 const validateAddShipItems = (body) => {
     let schema = {
+        dtlsProfitPercentage:Joi.number().required(),
+        dtlsProfitValue:Joi.number().required(),
+        adminBalance:Joi.number().required(),
         orderShips: Joi.string().length(24).required(),
         requiredDateTime: Joi.date().required(),
         rate: Joi.object().optional(),
