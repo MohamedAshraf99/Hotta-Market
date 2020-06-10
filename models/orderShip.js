@@ -102,7 +102,13 @@ const validateAddOrderShip = (body) => {
 
     return Joi.validate(body, schema);
 }
-
+const validateUpdate = (body) => {
+    let schema = {
+        date:Joi.date().required(),
+        state:Joi.string().required()
+    };
+    return Joi.validate(body, schema);
+  }
 const validateUpdateForAdmin = (body) => {
     let schema = {
         state:Joi.string().optional(),
@@ -150,11 +156,27 @@ const validateUpdateForAdmin = (body) => {
   }
 
 
+  const updateOrderShip = async (input) => {
+
+    let {id} = input.params;
+    let body = input.body;
+    const { error } = validateUpdate(body);
+    if (error) return (error.details[0]);
+
+    let updatedOrder = await orderShip.findByIdAndUpdate(
+      id,
+      { $addToSet: {log:body} },
+      { new: true }
+  );
+
+    return updatedOrder;
+}
 
 module.exports = {
     orderShip,
     validateAddOrderShip,
-    updateOrderShipForAdmin
+    updateOrderShipForAdmin,
+    updateOrderShip
 }
 
 

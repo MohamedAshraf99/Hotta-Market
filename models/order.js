@@ -71,6 +71,7 @@ const validateUpdate = (body) => {
       date:Joi.date().required(),
       state:Joi.string().required()
   };
+  return Joi.validate(body, schema);
 }
 
 const validateUpdateOrderForAdmin = (body) => {
@@ -362,7 +363,7 @@ async function getOrders(input) {
            }, 
             {
             '$addFields': {
-              'orderships.valueAfterTax': { '$add': [ "$amount", "$orderships.taxValue","$orderships.shippingFees" ] }
+              'orderships.totalAmount': { '$add': [ "$amount", "$orderships.taxValue","$orderships.shippingFees" ] }
             }
           },
            {
@@ -751,58 +752,55 @@ async function getOrders(input) {
                   'shipitems.product.prepaireDurationValue': "$products.prepaireDurationValue",
                   'shipitems.product.provider': "$orderships.provider",
                   'shipitems.product.shippingFees': "$orderships.shippingFees",
+                  'shipitems.product.orderShipId': "$orderships._id",
                   'shipitems.product.dateCreate': "$orderships.dateCreate",
                   'shipitems.product.number': "$orderships.number",
+                  'shipitems.product.requiredDateTime': "$shipitems.requiredDateTime",
                   'shipitems.product.shipmentStatus': "$orderships.shipmentStatus",
                   'shipitems.product.taxValue': "$orderships.taxValue",
                   'shipitems.product.providerName': "$users.commercialName",
                   'shipitems.product.providerState': {'$arrayElemAt': [ "$orderships.log.state", -1 ]},
                 }
               },
-                {
-                  '$group': {
-                   '_id': '$shipitems.product.provider',
-                   'shipitems': {
-                    '$addToSet': '$shipitems.product'
-                    },
-                    'number': {
-                        '$first': '$number'
-                    },
-                    'state': {
-                        '$first': '$orderState'
-                    },
-                    'dateCreate': {
-                        '$first': '$dateCreate'
-                    },
-                    'price': {
-                        '$first': '$price'
-                    },
-                    'location': {
-                        '$first': '$location'
-                    },
-                    'paymentMethod': {
-                      '$first': '$paymentTransactions.method'
-                    },
-                   }
-               },
-               {
-                '$project': {
-                    '_id': 1,
-                    'shipitems': 1,
-                    'number': 1,
-                    'dateCreate': 1,
-                    'state': 1,
-                    'price':1,
-                    'location':1,
-                    'paymentMethod': 1,
-                    'amount': { '$sum': '$shipitems.shipItem.total'},
-                }
-               }, 
-               {
-                '$addFields': {
-                  'orderships.valueAfterTax': { '$add': [ "$amount", "$shipitems.taxValue","$shipitems.shippingFees" ] }
-                }
-              },
+                  {
+                    '$group': {
+                     '_id': '$shipitems.product.provider',
+                     'shipitems': {
+                      '$addToSet': '$shipitems.product'
+                      },
+                      'number': {
+                          '$first': '$number'
+                      },
+                      'state': {
+                          '$first': '$orderState'
+                      },
+                      'dateCreate': {
+                          '$first': '$dateCreate'
+                      },
+                      'price': {
+                          '$first': '$price'
+                      },
+                      'location': {
+                          '$first': '$location'
+                      },
+                      'paymentMethod': {
+                        '$first': '$paymentTransactions.method'
+                      },
+                     }
+                 },
+                 {
+                  '$project': {
+                      '_id': 1,
+                      'shipitems': 1,
+                      'number': 1,
+                      'dateCreate': 1,
+                      'state': 1,
+                      'price':1,
+                      'location':1,
+                      'paymentMethod': 1,
+                      'amount': { '$sum': '$shipitems.total'},
+                  }
+                 }, 
           ];
           let getOrder = await Order.aggregate(aggr);
           if(getOrder)
@@ -810,7 +808,9 @@ async function getOrders(input) {
               let ship = [];
                getOrder.map(order=>{
                  ship.push({taxValue:order.shipitems[0].taxValue,
+                  totalAmount:order.amount + order.shipitems[0].taxValue + order.shipitems[0].shippingFees,
                   taxPercentage:order.shipitems[0].taxPercentage,
+                  orderShipId:order.shipitems[0].orderShipId,
                   shipmentStatus:order.shipitems[0].shipmentStatus,
                   ordershipsNumber:order.shipitems[0].number,
                   profitValue:order.shipitems[0].profitValue,
