@@ -18,7 +18,6 @@ const orderShipSchema = new mongoose.Schema({
     delivery: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "DeliveryPerson",
-        required: true,
     }, 
     shippingFees: {
         type: Number,

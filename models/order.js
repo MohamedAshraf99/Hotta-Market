@@ -606,6 +606,7 @@ async function getOrders(input) {
   
   async function getVendorOrderDetails(input) {
     let startId = input.params.id;
+    let providerId = input.query.providerId;
         let aggr = [
             {
               '$match': {
@@ -668,6 +669,11 @@ async function getOrders(input) {
                 '$unwind': {
                   'path': '$orderships',
                   'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$match': {
+                  'orderships.provider': mongoose.Types.ObjectId(providerId),
                 }
               },
               {
@@ -748,7 +754,6 @@ async function getOrders(input) {
                   'shipitems.product.dateCreate': "$orderships.dateCreate",
                   'shipitems.product.number': "$orderships.number",
                   'shipitems.product.shipmentStatus': "$orderships.shipmentStatus",
-                  'shipitems.product.shipmentStatus': "$orderships.number",
                   'shipitems.product.taxValue': "$orderships.taxValue",
                   'shipitems.product.providerName': "$users.commercialName",
                   'shipitems.product.providerState': {'$arrayElemAt': [ "$orderships.log.state", -1 ]},
@@ -790,9 +795,14 @@ async function getOrders(input) {
                     'price':1,
                     'location':1,
                     'paymentMethod': 1,
+                    'amount': { '$sum': '$shipitems.shipItem.total'},
                 }
                }, 
-               
+               {
+                '$addFields': {
+                  'orderships.valueAfterTax': { '$add': [ "$amount", "$shipitems.taxValue","$shipitems.shippingFees" ] }
+                }
+              },
           ];
           let getOrder = await Order.aggregate(aggr);
           if(getOrder)
@@ -801,10 +811,11 @@ async function getOrders(input) {
                getOrder.map(order=>{
                  ship.push({taxValue:order.shipitems[0].taxValue,
                   taxPercentage:order.shipitems[0].taxPercentage,
+                  shipmentStatus:order.shipitems[0].shipmentStatus,
                   ordershipsNumber:order.shipitems[0].number,
                   profitValue:order.shipitems[0].profitValue,
                   profitPercentage:order.shipitems[0].profitPercentage,
-                  shippingFees:order.shipitems[0].shippingFees,state:order.shipitems[0].providerState,provider:order._id,providerName:order.shipitems[0].providerName,shipItem:order.shipitems})
+                  shippingFees:order.shipitems[0].shippingFees,orderShipState:order.shipitems[0].providerState,provider:order._id,providerName:order.shipitems[0].providerName,shipItem:order.shipitems})
                  order.shipitems.map(item=>{
                   item.avatar = input.app.get('defaultAvatar')(input, 'host') + item.avatar;
                   item.totalPrice = item.quantity * item.price;
@@ -813,7 +824,7 @@ async function getOrders(input) {
                })
                getOrder[0].shipitems = ship;
                return (getOrder[0]);
-           }
+           }  
   }
 
 
