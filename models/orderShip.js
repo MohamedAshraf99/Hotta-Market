@@ -15,6 +15,11 @@ const orderShipSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     }, 
+    delivery: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "DeliveryPerson",
+        required: true,
+    }, 
     shippingFees: {
         type: Number,
         required: true
