@@ -900,7 +900,7 @@
                     "version": "V11"
                   },
                   "host": "localhost:8000",
-                  "path": "/api/orders/getVendorOrderDetails/5ee105d18df0a8001d983dd4"
+                  "path": "/api/orders/getVendorOrderDetails/5ee10dea8df0a8001d983df7"
                 },
                 "id": "9442dcab-7a38-48fc-8344-48e67aab37ae",
                 "name": "getVendorOrderDetails",
@@ -943,6 +943,55 @@
                 "id": "da7e0891-0746-4067-aa69-fb244d45903b",
                 "name": "getVendorOrders",
                 "headers": []
+              }
+            }
+          ]
+        },
+        {
+          "entity": {
+            "type": "Service",
+            "id": "c94ea51f-0e93-4fd6-aca1-db80890dd471",
+            "name": "orderShip"
+          },
+          "children": [
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+                  "name": "PUT"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n  \"state\":\"new\",\n  \"date\":\"2020-06-03\"\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "localhost:8000",
+                  "path": "/api/orderShips/edit/5ed7bae17bf490001c23e945"
+                },
+                "id": "0a92705e-8851-48cf-a619-32ba4fd0ef35",
+                "name": "updateOrderShip",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
               }
             }
           ]
