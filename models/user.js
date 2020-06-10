@@ -822,8 +822,8 @@ async function getCart(input,res) {
       }
         product._id.deliveryMethod = vendor[0].deliveryMethod;
         product._id.profitCalcMethod = ProfitCalcMethod;
-        product._id.dtlsProfitPercentage = (providerSubscription[providerSubscription.length-1].percentage)/100;
-        product._id.profitPercentage = (product._id.dtlsProfitPercentage)/100;
+        product._id.dtlsProfitPercentage = (providerSubscription[providerSubscription.length-1].percentage);
+        product._id.profitPercentage = (product._id.dtlsProfitPercentage);
         product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
         return product;
       }
