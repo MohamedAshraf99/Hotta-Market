@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-// const {Order} = require("./order")
-const _ = require("lodash")
+const {Order} = require("./order");
+const _ = require("lodash");
 
 
 const orderShipSchema = new mongoose.Schema({
@@ -157,18 +157,74 @@ const validateUpdateForAdmin = (body) => {
 
 
   const updateOrderShip = async (input) => {
-
+  const {Order} = require("./order");
     let {id} = input.params;
+    console.log(typeof(id));
     let body = input.body;
+    let shipState = "";;
     const { error } = validateUpdate(body);
     if (error) return (error.details[0]);
-
+    if(body.state == "new" || body.state =="progress" || body.state =="onWay"){
+       shipState = "new";
+    }
+    else if(body.state == "delivered"){
+        shipState = "completed";
+     }
+    else if (body.state == "canceled"){
+        shipState = "canceled";
+    }
+    else{
+        shipState = "returned";
+    }
     let updatedOrder = await orderShip.findByIdAndUpdate(
       id,
-      { $addToSet: {log:body} },
+      {
+           $addToSet: {log:body},
+           $set: { shipmentStatus:shipState }
+    },
       { new: true }
   );
+    
+    let allOrderShips = await orderShip.find({order:updatedOrder.order});
+    let status =[];
+    allOrderShips.map(orderShip =>{
+      status.push(orderShip.shipmentStatus);
+    });
+    console.log(status);
+    let countnew = 0;
+    let countCancel = 0;
+    let countComplete = 0;
+    let st = status.map(status=>{
+        if(status == "new")
+        {
+            countnew++;
+        }
+        else if(status == "canceled")
+        {
+            countCancel++;
+        }
+        else{
+           countComplete++
+        }
 
+       
+    })
+    console.log(countnew,countCancel,countComplete);
+    if(countnew >=1){
+       st = "new";
+    }
+    else if(countCancel == status.length){
+        st = "canceled";
+    }
+     else{
+         st = "completed";
+     }
+     let orderID = (updatedOrder.order).toString();
+    let order = await Order.findByIdAndUpdate(
+        orderID,
+        {$addToSet: {log:{state:st,date :Date.now()}}},
+        { new: true }
+    );
     return updatedOrder;
 }
 
