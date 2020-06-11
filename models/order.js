@@ -606,7 +606,7 @@ async function getOrders(input) {
                })
                getOrder[0].shipitems = ship;
                return (getOrder[0]);
-           }
+           }  
   }
 
   
@@ -674,6 +674,20 @@ async function getOrders(input) {
             {
                 '$unwind': {
                   'path': '$orderships',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'deliverypeople', 
+                  'localField': 'orderships.delivery', 
+                  'foreignField': '_id', 
+                  'as': 'deliverypeople'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$deliverypeople',
                   'preserveNullAndEmptyArrays': true
                 }
               },
@@ -762,6 +776,8 @@ async function getOrders(input) {
                   'shipitems.product.prepaireDurationValue': "$products.prepaireDurationValue",
                   'shipitems.product.provider': "$orderships.provider",
                   'shipitems.product.shippingFees': "$orderships.shippingFees",
+                  'shipitems.product.deliveryName': "$deliverypeople.name",
+                  'shipitems.product.deliveryId': "$deliverypeople._id",
                   'shipitems.product.orderShipId': "$orderships._id",
                   'shipitems.product.dateCreate': "$orderships.dateCreate",
                   'shipitems.product.number': "$orderships.number",
@@ -821,6 +837,8 @@ async function getOrders(input) {
                   totalAmount:order.amount + order.shipitems[0].taxValue + order.shipitems[0].shippingFees,
                   taxPercentage:order.shipitems[0].taxPercentage,
                   orderShipId:order.shipitems[0].orderShipId,
+                  deliveryName:order.shipitems[0].deliveryName,
+                  deliveryId:order.shipitems[0].deliveryId,
                   shipmentStatus:order.shipitems[0].shipmentStatus,
                   ordershipsNumber:order.shipitems[0].number,
                   profitValue:order.shipitems[0].profitValue,
