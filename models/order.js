@@ -985,6 +985,21 @@ const getOrderDetailsForAdmin = async (input) => {
       }
     }, {
       '$lookup': {
+        'from': 'deliverypeople', 
+        'localField': 'orderShips.deliveryPerson', 
+        'foreignField': '_id', 
+        'as': 'orderShips.deliveryPerson'
+      }
+    }, {
+      '$addFields': {
+        'orderShips.deliveryPerson': {
+          '$arrayElemAt': [
+            '$orderShips.deliveryPerson', 0
+          ]
+        }
+      }
+    }, {
+      '$lookup': {
         'from': 'users', 
         'localField': 'orderShips.provider', 
         'foreignField': '_id', 

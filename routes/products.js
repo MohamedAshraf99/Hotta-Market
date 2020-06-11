@@ -1,5 +1,5 @@
 const {authnMW, authrMW,} = require('../RBAC_Auth/models/auth');
-const { Product, addProduct,getProductDetails,
+const { Product, addProduct,getProductDetails, updateProduct,
     getProductsForAdmin, getProductForAdmin } = require('../models/product');
 const { upload } = require('../services/helper')
 const express = require('express');
@@ -44,6 +44,20 @@ router.post('/add',
         res.send(newProduct);
 });
 
+
+router.put('/edit/:id', upload.single('avatar'), async (req, res) => {
+
+        req.body = JSON.parse(req.body.data || {});
+
+        if (req.file) req.body.avatar = `/uploads/${req.file.filename}`;
+
+        let updatedProduct = await updateProduct(req);
+
+        if (updatedProduct.message && updatedProduct.path && updatedProduct.type && updatedProduct.context)
+            return res.status(400).send(updatedProduct.message)
+
+        res.send(updatedProduct);
+});
 
 router.get('/getProductDetails/:id', async (req, res) => {
 
