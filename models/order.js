@@ -283,7 +283,7 @@ async function getOrders(input) {
 
     startId = (!startId || startId == "false") ? false : startId
 
-    startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
+    startId = (all || !startId) ? {} : { '_id': { '$gt': mongoose.Types.ObjectId(startId) } };
     limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
 
