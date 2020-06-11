@@ -624,6 +624,7 @@ async function getProducts(input) {
               '_id._id': 1,
               '_id.nameAr': 1,
               '_id.nameEn': 1,
+              '_id.available': 1,
               '_id.avatar': 1,
               '_id.type': 1,
               '_id.price.initialPrice': 1,

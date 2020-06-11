@@ -1,6 +1,6 @@
 const {authnMW, authrMW,} = require('../RBAC_Auth/models/auth');
 const { Product, addProduct,getProductDetails,
-    getProductsForAdmin, getProductForAdmin } = require('../models/product');
+    getProductsForAdmin, getProductForAdmin,updateProduct } = require('../models/product');
 const { upload } = require('../services/helper')
 const express = require('express');
 const router = express.Router();
@@ -44,6 +44,14 @@ router.post('/add',
         res.send(newProduct);
 });
 
+router.put('/edit/:id', async (req, res) => {
+    let updatedProduct = await updateProduct(req);
+
+    if(updatedProduct.message && updatedProduct.path && updatedProduct.type && updatedProduct.context)
+        return res.status(400).send(updatedProduct.message)
+
+    res.send(updatedProduct);
+});
 
 router.get('/getProductDetails/:id', async (req, res) => {
 
