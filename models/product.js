@@ -85,7 +85,18 @@ const validateAdd = (body) => {
 
 const validateUpdate = (body) => {
   let schema = {
-    available: Joi.bool().required(),
+    provider: Joi.string().length(24).optional(),
+    cats: Joi.array().optional(),
+    nameAr: Joi.string().optional(),
+    nameEn: Joi.string().optional(),
+    code: Joi.string().optional(),
+    tax: Joi.number().optional(),
+    desc: Joi.string().optional(),
+    avatar: Joi.string().optional(),
+    available: Joi.bool().optional(),
+    isNeglected: Joi.bool().optional(),
+    prepaireDurationType: Joi.string().optional(),
+    prepaireDurationValue: Joi.number().optional(),
   };
 
   return Joi.validate(body, schema);
@@ -155,6 +166,27 @@ const addProduct = async (input) => {
     }
   }
 
+}
+
+
+const updateProduct = async (input) => {
+
+  let body = input.body,
+    id = input.params.id
+
+  const { error } = validateUpdate(body);
+  if (error) return (error.details[0]);
+
+
+  let updatedProduct = await Product.findByIdAndUpdate(
+    id, body, { new: true }
+  )
+
+  if (updatedProduct.avatar)
+    updatedProduct.avatar = input.app.get('defaultAvatar')(input, 'host') + updatedProduct.avatar
+  else updatedProduct.avatar = input.app.get('defaultAvatar')(input)
+
+  return updatedProduct;
 }
 
 
@@ -710,6 +742,7 @@ async function getProductDetails(input) {
 module.exports = {
   Product,
   addProduct,
+  updateProduct,
   getProductDetails,
   getProductsForAdmin,
   getProductForAdmin,
