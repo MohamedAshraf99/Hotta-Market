@@ -138,6 +138,148 @@ const validateUpdateForAdmin = (body) => {
   }
   
 
+  async function getProviderDetails(input) {
+    let providerId = input.params.id;
+    let { startId = false, limit = 10, all = false } = input.query;
+
+    startId = (!startId || startId == "false") ? false : startId
+
+    startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
+    limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+
+
+    let aggr = [
+        {
+          '$match': {
+            'provider': mongoose.Types.ObjectId(providerId),
+            'isNeglected': false    
+  
+          }
+        },
+        {
+            '$lookup': {
+              'from': 'shipitems', 
+              'localField': '_id', 
+              'foreignField': 'orderShips', 
+              'as': 'shipitems'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$shipitems',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+          {
+            $facet: {
+              new: [
+                  {
+                $match: {
+                    shipmentStatus: "new"            
+                }
+              },
+              
+              { $count: "newCount" },
+              ],
+              totalOrderNew: [
+                {
+              $match: {
+                  shipmentStatus: "new"            
+              }
+            },
+            {
+                $bucket: {
+                  groupBy: "$shipmentStatus",
+                  boundaries: [  0, 150, 200, 300, 400 ],
+                  default: "Other",
+                  output: {
+                    "totalOrderNew": { $sum: "$shipitems.product.total" },
+                  }
+                }
+              }
+            ],
+              completed: [
+                {
+                  $match: {
+                    shipmentStatus: "completed"
+                  }
+                },
+                { $count: "completedCount" }
+              ],
+            totalOrderCompleted: [
+                {
+              $match: {
+                  shipmentStatus: "completed"            
+              }
+            },
+            {
+                $bucket: {
+                  groupBy: "$shipmentStatus",
+                  boundaries: [  0, 150, 200, 300, 400 ],
+                  default: "Other",
+                  output: {
+                    "totalProfitValue": { $sum: "$profitValue" },
+                    "totalOrderCompleted": { $sum: "$shipitems.product.total" },
+                  }
+                }
+              }
+            ],
+              canceled: [{
+                $match: {
+                    shipmentStatus: "canceled"
+                }  
+              },
+              { $count: "canceledCount" }
+              ],
+              totalOrderCanceled: [
+                {
+              $match: {
+                  shipmentStatus: "canceled"            
+              }
+            },
+            {
+                $bucket: {
+                  groupBy: "$shipmentStatus",
+                  boundaries: [  0, 150, 200, 300, 400 ],
+                  default: "Other",
+                  output: {
+                    "totalOrderCanceled": { $sum: "$shipitems.product.total" },
+                  }
+                }
+              }
+            ],
+              returned: [{
+                $match: {
+                    shipmentStatus: "returned",
+                }
+              },
+              { $count: "returnedCount" }
+              ],
+              totalOrderReturned: [
+                {
+              $match: {
+                  shipmentStatus: "returned"            
+              }
+            },
+            {
+                $bucket: {
+                  groupBy: "$shipmentStatus",
+                  boundaries: [  0, 150, 200, 300, 400 ],
+                  default: "Other",
+                  output: {
+                    "totalOrderReturned": { $sum: "$shipitems.product.total" },
+                  }
+                }
+              }
+            ],
+            }
+          },
+      ];
+      let providerDetails = await orderShip.aggregate(aggr);
+        return providerDetails[0];
+      
+  }
+
 
 
 
@@ -263,7 +405,8 @@ module.exports = {
     validateAddOrderShip,
     updateOrderShipForAdmin,
     updateOrderShip,
-    updateDelivery
+    updateDelivery,
+    getProviderDetails
 }
 
 

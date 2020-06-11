@@ -102,7 +102,7 @@ const validateUpdate = (body) => {
   return Joi.validate(body, schema);
 }
 
-const updateProduct = async (input) => {
+const updateProducts = async (input) => {
 
   let {id} = input.params;
   let body = input.body;
@@ -746,7 +746,7 @@ module.exports = {
   getProductDetails,
   getProductsForAdmin,
   getProductForAdmin,
-  updateProduct
+  updateProducts
 }
 
 

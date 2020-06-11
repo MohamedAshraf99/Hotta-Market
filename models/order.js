@@ -514,6 +514,11 @@ async function getOrders(input) {
                   'preserveNullAndEmptyArrays': true
                 }
               },
+              {
+                '$match': {
+                  'users.providerStatus': true
+                }
+              },
             {
                 '$addFields': {
                   'location.cityAr': "$cities.nameAr",
@@ -731,6 +736,11 @@ async function getOrders(input) {
                 '$unwind': {
                   'path': '$users',
                   'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$match': {
+                  'users.providerStatus': true
                 }
               },
             {

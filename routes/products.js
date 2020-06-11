@@ -1,6 +1,6 @@
 const {authnMW, authrMW,} = require('../RBAC_Auth/models/auth');
 const { Product, addProduct,getProductDetails, updateProduct,
-    getProductsForAdmin, getProductForAdmin } = require('../models/product');
+    getProductsForAdmin, getProductForAdmin,updateProducts} = require('../models/product');
 const { upload } = require('../services/helper')
 const express = require('express');
 const router = express.Router();
@@ -45,7 +45,7 @@ router.post('/add',
 });
 
 router.put('/edit/:id', async (req, res) => {
-    let updatedProduct = await updateProduct(req);
+    let updatedProduct = await updateProducts(req);
 
     if(updatedProduct.message && updatedProduct.path && updatedProduct.type && updatedProduct.context)
         return res.status(400).send(updatedProduct.message)

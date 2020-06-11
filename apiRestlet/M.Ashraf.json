@@ -404,7 +404,6 @@
                         "value": "vendor"
                       },
                       {
-                        "enabled": true,
                         "name": "startId",
                         "value": "5ec39ff74c49cb2bbc87b483"
                       }
@@ -415,7 +414,7 @@
                     "version": "V11"
                   },
                   "host": "localhost:8000",
-                  "path": "/api/cats/getsubCategories/5ec2713c59023b3e10da486d"
+                  "path": "/api/cats/getsubCategories/5ec27513a89209001c7eff33"
                 },
                 "id": "4ee4b089-f8f7-48e6-a741-339076745394",
                 "name": "getsubCategories",
@@ -994,6 +993,38 @@
             "name": "orderShip"
           },
           "children": [
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "localhost:8000",
+                  "path": "/api/orderShips/getProviderDetails/5e9dbe5801642c001c363c20"
+                },
+                "id": "ed58ccd1-3d90-4629-b064-5ba802d34686",
+                "name": "getProviderDetails",
+                "headers": []
+              }
+            },
             {
               "entity": {
                 "type": "Request",

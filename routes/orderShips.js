@@ -1,7 +1,19 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { orderShip, updateOrderShipForAdmin,updateOrderShip,updateDelivery } = require('../models/orderShip');
+const { orderShip, updateOrderShipForAdmin,updateOrderShip,updateDelivery,getProviderDetails } = require('../models/orderShip');
 const express = require('express');
 const router = express.Router();
+
+
+router.get('/getProviderDetails/:id', async (req, res) => {
+
+    let providerDetails = await getProviderDetails(req);
+
+    if (providerDetails.message && providerDetails.path && providerDetails.type && providerDetails.context)
+        return res.status(400).send(orderDetails.message)
+
+    res.send(providerDetails);
+});
+
 
 
 router.put('/editForAdmin/:id', async (req, res) => {
