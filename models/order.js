@@ -71,6 +71,7 @@ const validateUpdate = (body) => {
       date:Joi.date().required(),
       state:Joi.string().required()
   };
+  return Joi.validate(body, schema);
 }
 
 const validateUpdateOrderForAdmin = (body) => {
@@ -99,7 +100,7 @@ const addOrder = async (input) => {
     let maxNumber = await Order.findOne({}, { number: 1 }).sort({ number: -1 });
     if (maxNumber == null)
     maxNumber = 1 ;
-    await ShipCard.findOneAndDelete({client: client})
+    await ShipCard.deleteMany({client: client})
     orderBody.number = maxNumber.number ? maxNumber.number + 1 : 1;
     let newOrder = new Order(orderBody);
     newOrder = await newOrder.save();
@@ -316,82 +317,83 @@ async function getOrders(input) {
             }
           },
           {
-            '$addFields': {
-              'orderShipState':{'$arrayElemAt': [ "$orderships.log", -1 ]}
-            }
-          },
-          {
             '$match': {
               'orderships.provider': mongoose.Types.ObjectId(userId),
               'isNeglected': false,
-              'orderShipState.state': state
+              'orderships.shipmentStatus': state
               
             }
           },
-        //     {
-        //     '$lookup': {
-        //       'from': 'paymenttransactions', 
-        //       'localField': 'orders._id', 
-        //       'foreignField': 'order', 
-        //       'as': 'paymentTransactions'
-        //     }
-        // },
-        // {
-        //     '$unwind': {
-        //       'path': '$paymentTransactions',
-        //       'preserveNullAndEmptyArrays': true
-        //     }
-        //   },
-        // {
-        //     '$addFields': {
-        //       'orders.price': "$paymentTransactions.price",
-        //       'orders.log':{'$arrayElemAt': [ "$orders.log", -1 ]}
-        //     }
-        //   },
-        //     {
-        //       '$group': {
-        //        '_id': '$orders',
-        //        }
-        //    },
-        //    {
-        //     '$project': {
-        //         '_id._id': 1,
-        //         '_id.number': 1,
-        //         '_id.log.state': 1,
-        //         '_id.dateCreate': 1,
-        //         '_id.price': 1,
-        //     }
-        //    }, 
-        //    {
-        //     '$match': startId
-        //   },
-        //    {
-        //     '$sort': {
-        //         '_id._id': 1
-        //     }
-        // },
-        // {
-        //     '$limit': limit? limit: Infinity
-        // }
+            {
+            '$lookup': {
+              'from': 'shipitems', 
+              'localField': 'orderships._id', 
+              'foreignField': 'orderShips', 
+              'as': 'shipitems'
+            }
+        },
+        {
+            '$unwind': {
+              'path': '$shipitems',
+              'preserveNullAndEmptyArrays': true
+            }
+          },
+            {
+              '$group': {
+               '_id': '$_id',
+               'orderships': {
+                '$first': '$orderships'
+              }, 
+              'shipitems':{
+                '$addToSet':'$shipitems'
+              }
+               }
+           },
+           {
+            '$project': {
+                '_id': 1,
+                'orderships.number': 1,
+                'orderships._id': 1,
+                'orderships.dateCreate': 1,
+                'orderships.shipmentStatus': 1,
+                'orderships.shippingFees': 1,
+                'orderships.taxValue': 1,
+                'amount': { '$sum': '$shipitems.product.total'},
+            }
+           }, 
+            {
+            '$addFields': {
+              'orderships.totalAmount': { '$add': [ "$amount", "$orderships.taxValue","$orderships.shippingFees" ] }
+            }
+          },
+           {
+            '$match': startId
+          },
+           {
+            '$sort': {
+                '_id': 1
+            }
+        },
+        {
+            '$limit': limit? limit: Infinity
+        }
            
       ];
       let getOrders = await Order.aggregate(aggr);
      
-      // if (getOrders.length == 0 || (Object.keys(getOrders[0]._id).length === 0 && getOrders[0]._id.constructor === Object)  )
-      // {
-      //   return getOrders = [];
-      // }
-      // else{
+      if (getOrders.length == 0 || (Object.keys(getOrders[0]._id).length === 0 && getOrders[0]._id.constructor === Object)  )
+      {
+        return getOrders = [];
+      }
+      else{
         return getOrders;
-      // }
+      }
       
   }
 
 
   async function getOrderDetails(input) {
     let startId = input.params.id;
-    let appSettings = await AppSettings.findOne();
-    let generalTax = appSettings.generalTax;
         let aggr = [
             {
               '$match': {
@@ -516,19 +518,26 @@ async function getOrders(input) {
                 '$addFields': {
                   'location.cityAr': "$cities.nameAr",
                   'location.cityEn': "$cities.nameEn",
-                  'location.shippingFees': "$cities.shippingFees",
                   'location.areaAr': "$area.nameAr",
                   'location.areaEn': "$area.nameEn",
                   'price': "$paymentTransactions.price",
                   'orderState':{'$arrayElemAt': [ "$log.state", -1 ]},
                   'shipitems.product.nameAr': "$products.nameAr",
                   'shipitems.product.tax': "$products.tax",
-                  'shipitems.product.generalTax': generalTax,
+                  'shipitems.product.taxPercentage': "$orderships.taxPercentage",
+                  'shipitems.product.profitPercentage': "$orderships.profitPercentage",
+                  'shipitems.product.profitValue': "$orderships.profitValue",
                   'shipitems.product.nameEn': "$products.nameEn",
                   'shipitems.product.avatar': "$products.avatar",
                   'shipitems.product.prepaireDurationType': "$products.prepaireDurationType",
                   'shipitems.product.prepaireDurationValue': "$products.prepaireDurationValue",
                   'shipitems.product.provider': "$orderships.provider",
+                  'shipitems.product.shippingFees': "$orderships.shippingFees",
+                  'shipitems.product.dateCreate': "$orderships.dateCreate",
+                  'shipitems.product.number': "$orderships.number",
+                  'shipitems.product.shipmentStatus': "$orderships.shipmentStatus",
+                  'shipitems.product.shipmentStatus': "$orderships.number",
+                  'shipitems.product.taxValue': "$orderships.taxValue",
                   'shipitems.product.providerName': "$users.commercialName",
                   'shipitems.product.providerState': {'$arrayElemAt': [ "$orderships.log.state", -1 ]},
                 }
@@ -578,7 +587,12 @@ async function getOrders(input) {
             {
               let ship = [];
                getOrder.map(order=>{
-                 ship.push({state:order.shipitems[0].providerState,provider:order._id,providerName:order.shipitems[0].providerName,shipItem:order.shipitems})
+                 ship.push({taxValue:order.shipitems[0].taxValue,
+                  taxPercentage:order.shipitems[0].taxPercentage,
+                  ordershipsNumber:order.shipitems[0].number,
+                  profitValue:order.shipitems[0].profitValue,
+                  profitPercentage:order.shipitems[0].profitPercentage,
+                  shippingFees:order.shipitems[0].shippingFees,state:order.shipitems[0].providerState,provider:order._id,providerName:order.shipitems[0].providerName,shipItem:order.shipitems})
                  order.shipitems.map(item=>{
                   item.avatar = input.app.get('defaultAvatar')(input, 'host') + item.avatar;
                   item.totalPrice = item.quantity * item.price;
@@ -588,6 +602,229 @@ async function getOrders(input) {
                getOrder[0].shipitems = ship;
                return (getOrder[0]);
            }
+  }
+
+  
+  async function getVendorOrderDetails(input) {
+    let startId = input.params.id;
+    let providerId = input.query.providerId;
+        let aggr = [
+            {
+              '$match': {
+                '_id': mongoose.Types.ObjectId(startId),
+                'isNeglected': false,
+              }
+            },
+                {
+                '$lookup': {
+                  'from': 'paymenttransactions', 
+                  'localField': '_id', 
+                  'foreignField': 'order', 
+                  'as': 'paymentTransactions'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$paymentTransactions',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'areas', 
+                  'localField': 'location.area', 
+                  'foreignField': '_id', 
+                  'as': 'area'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$area',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'cities', 
+                  'localField': 'area.city', 
+                  'foreignField': '_id', 
+                  'as': 'cities'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$cities',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+             
+              {
+                '$lookup': {
+                  'from': 'orderships', 
+                  'localField': '_id', 
+                  'foreignField': 'order', 
+                  'as': 'orderships'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$orderships',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$match': {
+                  'orderships.provider': mongoose.Types.ObjectId(providerId),
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'shipitems', 
+                  'localField': 'orderships._id', 
+                  'foreignField': 'orderShips', 
+                  'as': 'shipitems'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$shipitems',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'productprices', 
+                  'localField': 'shipitems.product.productPrice', 
+                  'foreignField': '_id', 
+                  'as': 'productprices'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$productprices',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'products', 
+                  'localField': 'productprices.product', 
+                  'foreignField': '_id', 
+                  'as': 'products'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$products',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$lookup': {
+                  'from': 'users', 
+                  'localField': 'orderships.provider', 
+                  'foreignField': '_id', 
+                  'as': 'users'
+                }
+            },
+            {
+                '$unwind': {
+                  'path': '$users',
+                  'preserveNullAndEmptyArrays': true
+                }
+              },
+            {
+                '$addFields': {
+                  'location.cityAr': "$cities.nameAr",
+                  'location.cityEn': "$cities.nameEn",
+                  'location.areaAr': "$area.nameAr",
+                  'location.areaEn': "$area.nameEn",
+                  'price': "$paymentTransactions.price",
+                  'orderState':{'$arrayElemAt': [ "$log.state", -1 ]},
+                  'shipitems.product.nameAr': "$products.nameAr",
+                  'shipitems.product.tax': "$products.tax",
+                  'shipitems.product.taxPercentage': "$orderships.taxPercentage",
+                  'shipitems.product.profitPercentage': "$orderships.profitPercentage",
+                  'shipitems.product.profitValue': "$orderships.profitValue",
+                  'shipitems.product.nameEn': "$products.nameEn",
+                  'shipitems.product.avatar': "$products.avatar",
+                  'shipitems.product.prepaireDurationType': "$products.prepaireDurationType",
+                  'shipitems.product.prepaireDurationValue': "$products.prepaireDurationValue",
+                  'shipitems.product.provider': "$orderships.provider",
+                  'shipitems.product.shippingFees': "$orderships.shippingFees",
+                  'shipitems.product.orderShipId': "$orderships._id",
+                  'shipitems.product.dateCreate': "$orderships.dateCreate",
+                  'shipitems.product.number': "$orderships.number",
+                  'shipitems.product.requiredDateTime': "$shipitems.requiredDateTime",
+                  'shipitems.product.shipmentStatus': "$orderships.shipmentStatus",
+                  'shipitems.product.taxValue': "$orderships.taxValue",
+                  'shipitems.product.providerName': "$users.commercialName",
+                  'shipitems.product.providerState': {'$arrayElemAt': [ "$orderships.log.state", -1 ]},
+                }
+              },
+                  {
+                    '$group': {
+                     '_id': '$shipitems.product.provider',
+                     'shipitems': {
+                      '$addToSet': '$shipitems.product'
+                      },
+                      'number': {
+                          '$first': '$number'
+                      },
+                      'state': {
+                          '$first': '$orderState'
+                      },
+                      'dateCreate': {
+                          '$first': '$dateCreate'
+                      },
+                      'price': {
+                          '$first': '$price'
+                      },
+                      'location': {
+                          '$first': '$location'
+                      },
+                      'paymentMethod': {
+                        '$first': '$paymentTransactions.method'
+                      },
+                     }
+                 },
+                 {
+                  '$project': {
+                      '_id': 1,
+                      'shipitems': 1,
+                      'number': 1,
+                      'dateCreate': 1,
+                      'state': 1,
+                      'price':1,
+                      'location':1,
+                      'paymentMethod': 1,
+                      'amount': { '$sum': '$shipitems.total'},
+                  }
+                 }, 
+          ];
+          let getOrder = await Order.aggregate(aggr);
+          if(getOrder)
+            {
+              let ship = [];
+               getOrder.map(order=>{
+                 ship.push({taxValue:order.shipitems[0].taxValue,
+                  totalAmount:order.amount + order.shipitems[0].taxValue + order.shipitems[0].shippingFees,
+                  taxPercentage:order.shipitems[0].taxPercentage,
+                  orderShipId:order.shipitems[0].orderShipId,
+                  shipmentStatus:order.shipitems[0].shipmentStatus,
+                  ordershipsNumber:order.shipitems[0].number,
+                  profitValue:order.shipitems[0].profitValue,
+                  profitPercentage:order.shipitems[0].profitPercentage,
+                  shippingFees:order.shipitems[0].shippingFees,orderShipState:order.shipitems[0].providerState,provider:order._id,providerName:order.shipitems[0].providerName,shipItem:order.shipitems})
+                 order.shipitems.map(item=>{
+                  item.avatar = input.app.get('defaultAvatar')(input, 'host') + item.avatar;
+                  item.totalPrice = item.quantity * item.price;
+                  return item
+                 })
+               })
+               getOrder[0].shipitems = ship;
+               return (getOrder[0]);
+           }  
   }
 
 
@@ -1151,5 +1388,6 @@ module.exports = {
     getOrderDetailsForAdmin,
     getAllNumbers,
     updateOrder,
-    getOrdersForAdmin
+    getOrdersForAdmin,
+    getVendorOrderDetails
 }
