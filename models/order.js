@@ -1251,15 +1251,15 @@ const getOrderDetailsForAdmin = async (input) => {
     }, {
       '$lookup': {
         'from': 'deliverypeople', 
-        'localField': 'orderShips.deliveryPerson', 
+        'localField': 'orderShips.delivery', 
         'foreignField': '_id', 
-        'as': 'orderShips.deliveryPerson'
+        'as': 'orderShips.delivery'
       }
     }, {
       '$addFields': {
-        'orderShips.deliveryPerson': {
+        'orderShips.delivery': {
           '$arrayElemAt': [
-            '$orderShips.deliveryPerson', 0
+            '$orderShips.delivery', 0
           ]
         }
       }
