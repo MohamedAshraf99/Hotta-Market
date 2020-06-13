@@ -101,6 +101,11 @@ const getAllProps = async (input) => {
             ]
           }
         }
+      },
+      {
+        '$sort': {
+          _id: 1
+        }
       }
     ]);
 }

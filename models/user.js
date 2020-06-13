@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
   },
   commercialName: String,
   commercialNumber: {
-    type: String,
+    type: Number,
     unique: true,
   },
   desc: String,
@@ -121,7 +121,7 @@ const validateRegister = (body) => {
       avatar: Joi.string().required(),
       icon: Joi.string().optional(),
       commercialName: Joi.string().optional(),
-      commercialNumber: Joi.string().optional(),
+      commercialNumber: Joi.number().optional(),
       desc: Joi.string().optional(),
       openingTime: Joi.string().optional(),
       closingTime: Joi.string().optional(),
@@ -145,7 +145,7 @@ const validateUpdate = (body) => {
     avatar: Joi.string().optional(),
     icon: Joi.string().optional(),
     commercialName: Joi.string().optional(),
-    commercialNumber: Joi.string().optional(),
+    commercialNumber: Joi.number().optional(),
     desc: Joi.string().optional(),
     openingTime: Joi.string().optional(),
     closingTime: Joi.string().optional(),
@@ -173,6 +173,7 @@ const validateLogin = (body) => {
 
   return Joi.validate(body, schema);
 }
+
 
 const validateChangePassword = (body) => {
   let schema = {
@@ -213,13 +214,14 @@ const validateSendActivationCode = (body) => {
 
 const getUsers = async (input) => {
 
-  let { startId = false, limit = 10, all = false, filter="{}", fields="{}", } = input.query;
+  let { startId = false, limit = 10, all = false, filter="{}", fields="{}", sort="{}"} = input.query;
 
   startId = (!startId || startId == "false") ? false: startId
 
   startId = (all || !startId) ? {} : { '_id': { '$gt': startId } };
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
+  sort = JSON.parse(sort)
 
   fields = JSON.parse(fields)
 
@@ -228,6 +230,7 @@ const getUsers = async (input) => {
 
   let users = await User
   .find({ ...startId, ...JSON.parse(filter) })
+  .sort(sort)
   .select(fields)
   .populate("role")
   .limit(limit);
