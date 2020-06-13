@@ -11,8 +11,6 @@ RUN npm install --production
 
 COPY ./ ./
 
-RUN chown 1000:1000 uploads
-
 EXPOSE 8000
 
 USER node
