@@ -102,6 +102,22 @@ const validateUpdate = (body) => {
   return Joi.validate(body, schema);
 }
 
+const updateProducts = async (input) => {
+
+  let {id} = input.params;
+  let body = input.body;
+
+  const { error } = validateUpdate(body);
+  if (error) return (error.details[0]);
+
+  let updatedProduct = await Product.findByIdAndUpdate(id, body, {new: true})
+
+  return updatedProduct;
+}
+
+
+
+
 const addProduct = async (input) => {
 
   const { error } = validateAdd(input.body);
@@ -426,14 +442,20 @@ async function getProductDetails(input) {
   let startId = input.params.id;
   let userId = input.query.userId;
   let type = input.query.type;
+  let filter = input.query.filter;
+  if(filter == "true") {
+    filter = {'_id': mongoose.Types.ObjectId(startId),
+              'isNeglected': false,
+              'available': true}
+  }
+  else {
+    filter = {'_id': mongoose.Types.ObjectId(startId),
+    'isNeglected': false,}
+  }
   if (type == "admin") {
     let aggr = [
       {
-        '$match': {
-          '_id': mongoose.Types.ObjectId(startId),
-          'isNeglected': false,
-          'available': true
-        }
+        '$match': filter
       },
       {
         '$lookup': {
@@ -514,11 +536,7 @@ async function getProductDetails(input) {
     let generalTax = appSettings.generalTax;
     let aggr = [
       {
-        '$match': {
-          '_id': mongoose.Types.ObjectId(startId),
-          'isNeglected': false,
-          'available': true
-        }
+        '$match': filter
       },
       {
         '$lookup': {
@@ -645,6 +663,9 @@ async function getProductDetails(input) {
           'nameEn': {
             '$first': '$nameEn'
           },
+          'available': {
+            '$first': '$available'
+          },
           'shopName': {
             '$first': '$provider.commercialName'
           },
@@ -683,6 +704,7 @@ async function getProductDetails(input) {
           'generalTax':1,
           'nameAr': 1,
           'nameEn': 1,
+          'available': 1,
           'prepaireDurationValue': 1,
           'prepaireDurationType': 1,
           'shopName': 1,
@@ -723,7 +745,8 @@ module.exports = {
   updateProduct,
   getProductDetails,
   getProductsForAdmin,
-  getProductForAdmin
+  getProductForAdmin,
+  updateProducts
 }
 
 

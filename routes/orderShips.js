@@ -1,7 +1,19 @@
 const {authnMW, authrMW} = require('../RBAC_Auth/models/auth');
-const { orderShip, updateOrderShipForAdmin,updateOrderShip } = require('../models/orderShip');
+const { orderShip, updateOrderShipForAdmin,updateOrderShip,updateDelivery,getProviderDetails } = require('../models/orderShip');
 const express = require('express');
 const router = express.Router();
+
+
+router.get('/getProviderDetails/:id', async (req, res) => {
+
+    let providerDetails = await getProviderDetails(req);
+
+    if (providerDetails.message && providerDetails.path && providerDetails.type && providerDetails.context)
+        return res.status(400).send(orderDetails.message)
+
+    res.send(providerDetails);
+});
+
 
 
 router.put('/editForAdmin/:id', async (req, res) => {
@@ -19,6 +31,14 @@ router.put('/edit/:id', async (req, res) => {
         return res.status(400).send(updatedOrder.message)
 
     res.send(updatedOrder);
+});
+router.put('/editDelivery/:id', async (req, res) => {
+    let updatedDelivery = await updateDelivery(req);
+
+    if(updatedDelivery.message && updatedDelivery.path && updatedDelivery.type && updatedDelivery.context)
+        return res.status(400).send(updatedDelivery.message)
+
+    res.send(updatedDelivery);
 });
 
 module.exports = router; 

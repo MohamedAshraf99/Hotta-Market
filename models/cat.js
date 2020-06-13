@@ -373,6 +373,11 @@ async function getsubCategories(input) {
             }
           },
           {
+            '$match': {
+              'vendor.providerStatus': true
+            }
+          },
+          {
             '$lookup': {
               'from': 'areas', 
               'localField': 'vendor.location.area', 
@@ -518,6 +523,11 @@ async function getsubCategories(input) {
                 '$unwind': {
                   'path': '$vendor',
                   'preserveNullAndEmptyArrays': true
+                }
+              },
+              {
+                '$match': {
+                  'vendor.providerStatus': true
                 }
               },
               {
