@@ -1262,7 +1262,7 @@ const getOrderDetailsForAdmin = async (input) => {
             '$orderShips.delivery', 0
           ]
         }
-      }
+      } 
     }, {
       '$lookup': {
         'from': 'users', 
