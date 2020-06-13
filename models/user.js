@@ -590,29 +590,23 @@ async function getProducts(input) {
           }
       },
       {
-          '$unwind': {
-            'path': '$productPrices',
-            'preserveNullAndEmptyArrays': true
-          }
-        },
-      {
           '$addFields': {
             'products.price': "$productPrices.price",
           }
         },
-        {
-          '$addFields': {
-            'products.type': "$type",
-          }
-        },
           {
-            '$group': {
-             '_id': '$products',
-             'subCategoryImage': {
-              '$first': '$avatar'
+            '$addFields': {
+              'products.type': "$type",
+            }
           },
-             }
-         },
+            {
+              '$group': {
+              '_id': '$products',
+              'subCategoryImage': {
+                '$first': '$avatar'
+            },
+              }
+          },
          {
           '$addFields': {
             'subCategoryImage': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$subCategoryImage"] },
@@ -627,16 +621,10 @@ async function getProducts(input) {
               '_id.available': 1,
               '_id.avatar': 1,
               '_id.type': 1,
-              '_id.price.initialPrice': 1,
-              '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
+              '_id.price': 1,
 
           }
          }, 
-         {
-          '$addFields': {
-            '_id.discountPrecentage': { "$multiply": [100,{"$divide": [ { "$subtract": ["$_id.price.initialPrice","$_id.price.reducedPrice"] }, '$_id.price.initialPrice' ]}]},
-          }
-        },
          {
           '$match': startId
         },
@@ -651,6 +639,17 @@ async function getProducts(input) {
          
     ];
      let getProducts = await User.aggregate(aggr);
+     getProducts.map(product=>{
+      product._id.price.map(price=>{
+        if(price.reducedPrice == undefined)
+        {
+          price.reducedPrice = price.initialPrice;
+        }
+       price.discountPrecentage = ((price.initialPrice-price.reducedPrice)/price.initialPrice)*100;
+        return price;
+      })
+      return product;
+     })
      if(getProducts.length == 0) return getProducts;
      else{
     getProducts = getProducts.map(product => {

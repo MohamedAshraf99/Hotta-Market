@@ -276,6 +276,31 @@ const validateUpdateForAdmin = (body) => {
           },
       ];
       let providerDetails = await orderShip.aggregate(aggr);
+      console.log(providerDetails[0].new);
+      if(providerDetails[0].new.length == 0 ){
+        providerDetails[0].new[0]= {newCount: 0};
+      }
+      if(providerDetails[0].totalOrderNew.length == 0 ){
+        providerDetails[0].totalOrderNew[0]= {totalOrderNew: 0};
+      }
+      if(providerDetails[0].completed.length == 0 ){
+        providerDetails[0].completed[0]= {completedCount: 0};
+      }
+      if(providerDetails[0].totalOrderCompleted.length == 0){
+        providerDetails[0].totalOrderCompleted[0]= {totalProfitValue: 0,totalOrderCompleted:0};
+      }
+      if(providerDetails[0].canceled.length == 0){
+        providerDetails[0].canceled[0]= {canceledCount: 0};
+      }
+      if(providerDetails[0].totalOrderCanceled.length == 0 ){
+        providerDetails[0].totalOrderCanceled[0]= {totalOrderCanceled: 0};
+      }
+      if(providerDetails[0].returned.length == 0 ){
+        providerDetails[0].returned[0]= {returnedCount: 0};
+      }
+      if(providerDetails[0].totalOrderReturned.length == 0){
+        providerDetails[0].totalOrderReturned[0]= {totalOrderReturned: 0};
+      }
         return providerDetails[0];
       
   }
