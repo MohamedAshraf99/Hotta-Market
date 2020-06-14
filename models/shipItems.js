@@ -125,6 +125,11 @@ async function getBestSelling(input) {
             }
           },
           {
+            '$match': {
+              'products.available': true,
+            }
+          },
+          {
             '$lookup': {
               'from': 'favouriteproducts', 
               'localField': 'products._id', 
@@ -187,6 +192,7 @@ async function getBestSelling(input) {
                 '_id.avatar': 1,
                 '_id.productPrices': 1,
                 '_id.nameAr': 1,
+                '_id.available': 1,
                 '_id.nameEn': 1,
                 '_id.price.initialPrice': 1,
                 '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
@@ -257,6 +263,11 @@ async function getBestSelling(input) {
             }
           },
           {
+            '$match': {
+              'products.available': true,
+            }
+          },
+          {
             '$lookup': {
               'from': 'favouriteproducts', 
               'localField': 'products._id', 
@@ -320,6 +331,7 @@ async function getBestSelling(input) {
                 '_id.productPrices': 1,
                 '_id.nameAr': 1,
                 '_id.nameEn': 1,
+                '_id.available': 1,
                 '_id.price.initialPrice': 1,
                 '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
                 '_id.favourite': 1,
@@ -390,6 +402,11 @@ async function getBestReviews(input) {
           }
         },
         {
+          '$match': {
+            'products.available': true,
+          }
+        },
+        {
           '$lookup': {
             'from': 'favouriteproducts', 
             'localField': 'products._id', 
@@ -455,6 +472,7 @@ async function getBestReviews(input) {
               '_id.productPrices': 1,
               '_id.nameAr': 1,
               '_id.nameEn': 1,
+              '_id.available': 1,
               '_id.price.initialPrice': 1,
               '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
               '_id.favourite': 1,

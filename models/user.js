@@ -593,6 +593,11 @@ async function getProducts(input) {
             'preserveNullAndEmptyArrays': true
           }
         },
+        {
+          '$match': {
+            'products.available': true,
+          }
+        },
           {
           '$lookup': {
             'from': 'productprices', 
@@ -735,6 +740,11 @@ async function getCart(input,res) {
           '$unwind': {
             'path': '$products',
             'preserveNullAndEmptyArrays': true
+          }
+        },
+        {
+          '$match': {
+            'products.available': true,
           }
         },
         {
