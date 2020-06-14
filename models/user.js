@@ -8,7 +8,7 @@ const {t2} = require("../services/langs")
 const { AppSettings } = require('./appSettings')
 const { ProviderSubscription } = require('./providerSubscription')
 const {getHashPassword, sendMessage, randomString} = require('../services/helper')
-
+const { Product } = require('./product')
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -330,10 +330,19 @@ const updateUser = async (input) => {
 
   const { error } = validateUpdate(body);
   if (error) return (error.details[0]);
+  if(body.providerStatus == true)
+  {
+    await Product.updateMany({provider:id}, { $set: { available: true }}, {new: true});
+  }
+  else if(body.providerStatus == false)
+  {
+    await Product.updateMany({provider:id}, { $set: { available: false }}, {new: true});
+  }
+
 
   let user = await User.findByIdAndUpdate(id, body, {new: true});
   if (!user) return t2(input.header('Accept-Language'),'Invalid Phone or password.');
- 
+  
     if (user._id) {
       if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
       else user.avatar = input.app.get('defaultAvatar')(input)
@@ -584,6 +593,11 @@ async function getProducts(input) {
             'preserveNullAndEmptyArrays': true
           }
         },
+        {
+          '$match': {
+            'products.available': true,
+          }
+        },
           {
           '$lookup': {
             'from': 'productprices', 
@@ -595,6 +609,7 @@ async function getProducts(input) {
       {
           '$addFields': {
             'products.price': "$productPrices.price",
+            'products.props': "$productPrices.props",
           }
         },
           {
@@ -625,6 +640,7 @@ async function getProducts(input) {
               '_id.avatar': 1,
               '_id.type': 1,
               '_id.price': 1,
+              '_id.props': 1,
 
           }
          }, 
@@ -642,23 +658,23 @@ async function getProducts(input) {
          
     ];
      let getProducts = await User.aggregate(aggr);
-     getProducts.map(product=>{
-      product._id.price.map(price=>{
-        if(price.reducedPrice == undefined)
-        {
-          price.reducedPrice = price.initialPrice;
-        }
-       price.discountPrecentage = ((price.initialPrice-price.reducedPrice)/price.initialPrice)*100;
-        return price;
+      getProducts.map(product=>{
+        product._id.price.map(price=>{
+          if(price.reducedPrice == undefined)
+          {
+            price.reducedPrice = price.initialPrice;
+          }
+        price.discountPrecentage = ((price.initialPrice-price.reducedPrice)/price.initialPrice)*100;
+          return price;
+        })
+        return product;
       })
-      return product;
-     })
-     if(getProducts.length == 0) return getProducts;
-     else{
-    getProducts = getProducts.map(product => {
-      product._id.avatar =  input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
-      return product;
-  })
+      if(getProducts.length == 0) return getProducts;
+      else{
+      getProducts = getProducts.map(product => {
+        product._id.avatar =  input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
+        return product;
+    })
     return (getProducts);
  }
 }
@@ -724,6 +740,11 @@ async function getCart(input,res) {
           '$unwind': {
             'path': '$products',
             'preserveNullAndEmptyArrays': true
+          }
+        },
+        {
+          '$match': {
+            'products.available': true,
           }
         },
         {
@@ -813,7 +834,7 @@ async function getCart(input,res) {
       }
     ];
       let getProducts = await User.aggregate(aggr);
-       if (getProducts.length == 0) return (getProducts);
+       if (getProducts.length == 0) return res.send(getProducts);
     else if(getProducts[0]._id.shipcard){
       let someFunction =(getProducts) =>{
     let Products = getProducts.map(async (product) => {

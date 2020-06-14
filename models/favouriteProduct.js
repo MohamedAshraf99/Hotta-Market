@@ -63,6 +63,11 @@ const getFavouriteProducts = async (input) => {
             }
           },
           {
+            '$match': {
+              'products.available': true,
+            }
+          },
+          {
             '$lookup': {
               'from': 'productprices', 
               'localField': 'products._id', 
