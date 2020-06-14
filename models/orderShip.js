@@ -115,6 +115,7 @@ const validateUpdateForAdmin = (body) => {
         state:Joi.string().optional(),
         shipmentStatus:Joi.string().optional(),
         isNeglected:Joi.bool().optional(),
+        delivery: Joi.string().optional(),
     };
   
     return Joi.validate(body, schema);
@@ -317,11 +318,14 @@ const validateUpdateForAdmin = (body) => {
         {id} = input.params
   
     let state = body.state || false
-  
+
+    let delivery = body.delivery != "0" ? {delivery: body.delivery}: {$unset: {delivery: 1 }}
+
   
       let updatedOrderShip = await orderShip.findByIdAndUpdate(id, {
           ...(state && { $push: { log: { state } } }),
-          ..._.omit(body, ['state'])
+          ..._.omit(body, ['state', 'delivery']),
+          ...(body.delivery != undefined && delivery)
       },
           { new: true })
 
