@@ -834,7 +834,7 @@ async function getCart(input,res) {
       }
     ];
       let getProducts = await User.aggregate(aggr);
-       if (getProducts.length == 0) return (getProducts);
+       if (getProducts.length == 0) return res.send(getProducts);
     else if(getProducts[0]._id.shipcard){
       let someFunction =(getProducts) =>{
     let Products = getProducts.map(async (product) => {
