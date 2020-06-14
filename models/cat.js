@@ -12,12 +12,12 @@ const catSchema = new mongoose.Schema({
     nameAr: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
     },
     nameEn: {
         type: String,
         required: true,
-        unique: true,
+        // uniq.ue: true,
     },
     desc: {
         type: String,

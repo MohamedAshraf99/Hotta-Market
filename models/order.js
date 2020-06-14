@@ -1262,7 +1262,27 @@ const getOrderDetailsForAdmin = async (input) => {
             '$orderShips.delivery', 0
           ]
         }
+      } 
+    }, {
+      '$lookup': {
+        'from': 'deliverypeople', 
+        'localField': 'orderShips.provider', 
+        'foreignField': 'provider', 
+        'as': 'orderShips.providerDeliveries'
       }
+    }, {
+      '$addFields': {
+        'orderShips.providerDeliveries': {
+          '$map': {
+            'input': '$orderShips.providerDeliveries', 
+            'as': 'o', 
+            'in': {
+              '_id': '$$o._id',
+              'name': '$$o.name',
+            }
+          }
+        }
+      } 
     }, {
       '$lookup': {
         'from': 'users', 
