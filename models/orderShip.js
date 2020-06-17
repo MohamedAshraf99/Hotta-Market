@@ -407,14 +407,14 @@ const validateUpdateForAdmin = (body) => {
 
        
     })
-    console.log(countnew,countCancel,countComplete);
+    console.log(countnew,countCancel,countComplete,countReturned);
     if(countnew >=1){
        st = "new";
     }
     else if(countCancel == status.length){
         st = "canceled";
     }
-    else if(countReturned == status.length){
+    else if(countReturned == status.length || countComplete == 0){
         st = "returned";
     }
      else{
