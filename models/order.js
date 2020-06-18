@@ -1285,6 +1285,45 @@ const getOrderDetailsForAdmin = async (input) => {
       } 
     }, {
       '$lookup': {
+        'from': 'deliverypeople', 
+        'pipeline': [
+          {
+            '$match': {
+              'type': 'admin'
+            }
+          }
+        ], 
+        'as': 'adminDeliveryPersons'
+      }
+    }, {
+      '$addFields': {
+        'orderShips.providerDeliveries': {
+          '$cond': [
+            {
+              '$eq': [
+                '$orderShips.deliveryMethod', 'admin'
+              ]
+            },
+            {
+              '$map': {
+                'input': '$adminDeliveryPersons', 
+                'as': 'a', 
+                'in': {
+                  '_id': '$$a._id',
+                  'name': '$$a.name',
+                }
+              }
+            },
+            '$orderShips.providerDeliveries'
+          ]
+        }
+      }
+    }, {
+      '$project': {
+        'adminDeliveryPersons': 0
+      }
+    },{
+      '$lookup': {
         'from': 'users', 
         'localField': 'orderShips.provider', 
         'foreignField': '_id', 
