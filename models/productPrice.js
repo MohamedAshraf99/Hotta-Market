@@ -54,11 +54,33 @@ const validateAdd = (body, beforeProduct) => {
     return Joi.validate(body, schema);
 }
 
+const validateUpdate = (body) => {
+    let schema = {
+        isNeglected: Joi.bool().optional(),
+        price: Joi.object().optional(),
+    };
+    return Joi.validate(body, schema);
+}
+
+const updateProductPrice = async (input) => {
+
+    let {id} = input.params;
+    let body = input.body;
+
+    const { error } = validateUpdate(body);
+    if (error) return (error.details[0]);
+
+    let updateProductPrice = await ProductPrice.findByIdAndUpdate(id, body, {new: true})
+
+    return updateProductPrice;
+}
+
 
 module.exports = {
     ProductPrice,
     productPriceSchema,
     validateAdd,
+    updateProductPrice
 }
 
 
