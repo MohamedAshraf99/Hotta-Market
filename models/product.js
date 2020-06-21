@@ -260,7 +260,8 @@ const getProductForAdmin = async (input) => {
                 'as': 'o', 
                 'in': {
                   '_id': '$$o._id', 
-                  'name': '$$o.name'
+                  'name': '$$o.name',
+                  'type': '$$o.type',
                 }
               }
             }, 0

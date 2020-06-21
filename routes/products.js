@@ -44,18 +44,19 @@ router.post('/add',
         res.send(newProduct);
 });
 
-router.put('/edit/:id', async (req, res) => {
-    let updatedProduct = await updateProducts(req);
+// router.put('/edit/:id', async (req, res) => {
+//     let updatedProduct = await updateProducts(req);
 
-    if(updatedProduct.message && updatedProduct.path && updatedProduct.type && updatedProduct.context)
-        return res.status(400).send(updatedProduct.message)
+//     if(updatedProduct.message && updatedProduct.path && updatedProduct.type && updatedProduct.context)
+//         return res.status(400).send(updatedProduct.message)
 
-    res.send(updatedProduct);
-});
+//     res.send(updatedProduct);
+// });
 
 router.put('/edit/:id', upload.single('avatar'), async (req, res) => {
 
         req.body = JSON.parse(req.body.data || {});
+console.log(req.file);
 
         if (req.file) req.body.avatar = `/uploads/${req.file.filename}`;
 
