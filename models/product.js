@@ -452,7 +452,7 @@ async function getProductDetails(input) {
     filter = {'_id': mongoose.Types.ObjectId(startId),
     'isNeglected': false,}
   }
-  if (type == "admin") {
+  if (type == "advertisement") {
     let aggr = [
       {
         '$match': filter
