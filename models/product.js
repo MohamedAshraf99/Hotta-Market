@@ -40,6 +40,10 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  advertisementCount: {
+    type: Number,
+    default: 0,
+  },
   avatar: {
     type: String,
     required: true,
@@ -115,6 +119,16 @@ const updateProducts = async (input) => {
   return updatedProduct;
 }
 
+const advertisementCount = async (input) => {
+
+  let {id} = input.params;
+
+  let count = await Product.findOne({ _id: id })
+  count.advertisementCount = count.advertisementCount+1;
+  await count.save();
+
+  return count;
+}
 
 
 
@@ -747,7 +761,8 @@ module.exports = {
   getProductDetails,
   getProductsForAdmin,
   getProductForAdmin,
-  updateProducts
+  updateProducts,
+  advertisementCount
 }
 
 
