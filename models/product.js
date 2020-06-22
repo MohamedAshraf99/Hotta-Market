@@ -341,13 +341,16 @@ return product
 
 const getProductsForAdmin = async (input) => {
 
-  let { startId = false, limit = 10, all = false } = input.query;
+  let { startId = false, limit = 10, all = false, sort=`{"_id":1}` } = input.query;
 
   startId = (!startId || startId == "false") ? false : startId
 
   startId = (all || !startId) ? {} : { '_id': { '$gt': mongoose.Types.ObjectId(startId) } };
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
+  sort = JSON.parse(sort)
+  let sortField = Object.keys(sort)[0],
+      sortValue = Object.values(sort)[0]
 
   let provider = {}
 
@@ -421,7 +424,7 @@ const getProductsForAdmin = async (input) => {
       }
     }, {
       '$sort': {
-          _id: 1
+          [sortField]: sortValue
       }
   },{
       '$limit': limit? limit: Infinity

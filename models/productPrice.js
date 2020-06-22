@@ -58,6 +58,7 @@ const validateUpdate = (body) => {
     let schema = {
         isNeglected: Joi.bool().optional(),
         price: Joi.object().optional(),
+        props: Joi.array().optional(),
     };
     return Joi.validate(body, schema);
 }
@@ -75,12 +76,26 @@ const updateProductPrice = async (input) => {
     return updateProductPrice;
 }
 
+const addProductPrice = async (input) => {
+
+    let body = input.body;
+
+    const { error } = validateAdd(body);
+    if (error) return (error.details[0]);
+
+    let newPP = await ProductPrice.create(body)
+
+    return newPP;
+}
+
+
 
 module.exports = {
     ProductPrice,
     productPriceSchema,
     validateAdd,
-    updateProductPrice
+    updateProductPrice,
+    addProductPrice
 }
 
 
