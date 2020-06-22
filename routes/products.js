@@ -1,6 +1,6 @@
 const {authnMW, authrMW,} = require('../RBAC_Auth/models/auth');
 const { Product, addProduct,getProductDetails, updateProduct,
-    getProductsForAdmin, getProductForAdmin,updateProducts} = require('../models/product');
+    getProductsForAdmin, getProductForAdmin,updateProducts,advertisementCount} = require('../models/product');
 const { upload } = require('../services/helper')
 const express = require('express');
 const router = express.Router();
@@ -66,6 +66,16 @@ console.log(req.file);
             return res.status(400).send(updatedProduct.message)
 
         res.send(updatedProduct);
+});
+
+
+router.put('/advertisementCount/:id', async (req, res) => {
+    let count = await advertisementCount(req);
+
+    if(count.message && count.path && count.type && count.context)
+        return res.status(400).send(count.message)
+
+    res.send(count);
 });
 
 router.get('/getProductDetails/:id', async (req, res) => {
