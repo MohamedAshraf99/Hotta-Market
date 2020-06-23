@@ -304,6 +304,10 @@ const getProductForAdmin = async (input) => {
         'newRoot': '$doc'
       }
     }, {
+      '$sort': {
+        'productPrices._id': 1
+      }
+    }, {
       '$group': {
         '_id': '$_id', 
         'doc': {
