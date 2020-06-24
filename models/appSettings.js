@@ -12,6 +12,14 @@ const appSettingsSchema = new mongoose.Schema({
         required: true,
         enum: ["cats", "provider"]
     },
+    maxLimit: {
+        type: Number
+    },
+    productMethod: {
+        type: String,
+        required: true,
+        enum: ["automatic", "manual"]
+    },
     isNeglected: {
         type: Boolean,
         default: false

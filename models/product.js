@@ -57,6 +57,18 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  bestSelling: {
+    type: Boolean,
+    default: false
+  },
+  trending: {
+    type: Boolean,
+    default: false
+  },
+  bestReviews: {
+    type: Boolean,
+    default: false
+  },
   dateCreate: {
     type: Date,
     default: Date.now
