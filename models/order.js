@@ -514,11 +514,6 @@ async function getOrders(input) {
                   'preserveNullAndEmptyArrays': true
                 }
               },
-              {
-                '$match': {
-                  'users.providerStatus': true
-                }
-              },
             {
                 '$addFields': {
                   'location.cityAr': "$cities.nameAr",
