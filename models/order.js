@@ -1229,7 +1229,8 @@ const getOrderDetailsForAdmin = async (input) => {
                 'as': 'o', 
                 'in': {
                   '_id': '$$o._id', 
-                  'name': '$$o.name'
+                  'name': '$$o.name',
+                  'phone': '$$o.phone'
                 }
               }
             }, 0
