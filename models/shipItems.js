@@ -278,6 +278,7 @@ async function getBestSelling(input) {
           {
             '$match': {
               'products.available': true,
+              'products.isNeglected': false,
             }
           },
           {
@@ -574,6 +575,7 @@ async function getBestSelling(input) {
           {
             '$match': {
               'products.available': true,
+              'products.isNeglected': false,
             }
           },
           {
@@ -866,6 +868,7 @@ async function getBestReviews(input) {
         {
           '$match': {
             'products.available': true,
+            'products.isNeglected': false,
           }
         },
         {
