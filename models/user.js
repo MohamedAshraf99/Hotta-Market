@@ -65,7 +65,7 @@ const userSchema = new mongoose.Schema({
   // }],
   type: {
     type: String,
-    enum: ['admin','client','vendor','productiveFamily'],
+    enum: ['admin','client','vendor','productiveFamily', 'advertisment'],
     required: true,
   },
   role: {
@@ -214,11 +214,11 @@ const validateSendActivationCode = (body) => {
 
 const getUsers = async (input) => {
 
-  let { startId = false, limit = 10, all = false, filter="{}", fields="{}", sort="{}"} = input.query;
+  let { startId = false, limit = 10, all = false, filter="{}", fields="{}", sort=`{"_id": -1}`} = input.query;
 
   startId = (!startId || startId == "false") ? false: startId
 
-  startId = (all || !startId) ? {} : { '_id': { '$gt': startId } };
+  startId = (all || !startId) ? {} : { '_id': { '$lt': startId } };
   limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
 
   sort = JSON.parse(sort)

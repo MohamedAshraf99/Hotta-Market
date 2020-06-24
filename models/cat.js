@@ -42,7 +42,7 @@ const catSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['admin', 'vendor', 'productiveFamily']
+        enum: ['advertisment', 'vendor', 'productiveFamily']
     },
     dateCreate: {
         type: Date,

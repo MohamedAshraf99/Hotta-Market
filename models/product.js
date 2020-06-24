@@ -32,7 +32,7 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   code: {
-    type: String,
+    type: Number,
     unique: true,
     required: true,
   },
@@ -74,7 +74,7 @@ const validateAdd = (body) => {
     cats: Joi.array().required(),
     nameAr: Joi.string().required(),
     nameEn: Joi.string().required(),
-    code: Joi.string().required(),
+    code: Joi.number().required(),
     tax: Joi.number().optional(),
     desc: Joi.string().optional(),
     avatar: Joi.string().required(),
@@ -93,7 +93,7 @@ const validateUpdate = (body) => {
     cats: Joi.array().optional(),
     nameAr: Joi.string().optional(),
     nameEn: Joi.string().optional(),
-    code: Joi.string().optional(),
+    code: Joi.number().optional(),
     tax: Joi.number().optional(),
     desc: Joi.string().optional(),
     avatar: Joi.string().optional(),
@@ -240,7 +240,8 @@ const getProductForAdmin = async (input) => {
       }
     }, {
       '$unwind': {
-        'path': '$productPrices.props'
+        'path': '$productPrices.props',
+        'preserveNullAndEmptyArrays': true
       }
     }, {
       '$lookup': {
