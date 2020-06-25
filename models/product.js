@@ -424,6 +424,7 @@ const getProductsForAdmin = async (input) => {
             'in': {
               'name': '$$p.name',
               'type': '$$p.type',
+              'isNeglected': '$$p.isNeglected',
               '_id': '$$p._id'
             }
           }
@@ -438,7 +439,10 @@ const getProductsForAdmin = async (input) => {
         }
       }
     }, {
-      '$match': { ...type }
+      '$match': {
+        ...type,
+        'provider.isNeglected': false
+      }
     }, {
       '$lookup': {
         'from': 'cats',
