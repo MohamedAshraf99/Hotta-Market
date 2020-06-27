@@ -1,14 +1,18 @@
-const config = require('config');
-const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
-const Joi = require('joi');
-const _ = require("lodash")
-const {t2} = require("../services/langs")
-const { AppSettings } = require('./appSettings')
-const { ProviderSubscription } = require('./providerSubscription')
-const {getHashPassword, sendMessage, randomString} = require('../services/helper')
-const { Product } = require('./product')
+const config = require("config");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const Joi = require("joi");
+const _ = require("lodash");
+const { t2 } = require("../services/langs");
+const { AppSettings } = require("./appSettings");
+const { ProviderSubscription } = require("./providerSubscription");
+const {
+  getHashPassword,
+  sendMessage,
+  randomString,
+} = require("../services/helper");
+const { Product } = require("./product");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -33,7 +37,7 @@ const userSchema = new mongoose.Schema({
   },
   deliveryMethod: {
     type: String,
-    enum: ['admin', 'provider']
+    enum: ["admin", "provider"],
   },
   commercialName: String,
   commercialNumber: {
@@ -46,15 +50,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  contacts: [{
-    contact: String,
-    name: String,
-    job: String,
-    default: {
-      type: Boolean,
-      default: false
-    }
-  }],
+  contacts: [
+    {
+      contact: String,
+      name: String,
+      job: String,
+      default: {
+        type: Boolean,
+        default: false,
+      },
+    },
+  ],
   email: {
     type: String,
     required: true,
@@ -65,7 +71,7 @@ const userSchema = new mongoose.Schema({
   // }],
   type: {
     type: String,
-    enum: ['admin','client','vendor','productiveFamily', 'advertisment'],
+    enum: ["admin", "client", "vendor", "productiveFamily", "advertisment"],
     required: true,
   },
   role: {
@@ -76,7 +82,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     minlength: 5,
-    maxlength: 1024
+    maxlength: 1024,
   },
   callsCount: Number,
   location: {
@@ -86,57 +92,60 @@ const userSchema = new mongoose.Schema({
     },
     desc: String,
     lng: Number,
-    lat: Number
+    lat: Number,
   },
   openingTime: String,
   closingTime: String,
   latestActivationCode: String,
   connectionId: {
     type: String,
-    default: null
+    default: null,
   },
-  deviceId: [{
-    type: String
-  }],
+  deviceId: [
+    {
+      type: String,
+    },
+  ],
+
   dateCreate: {
     type: Date,
     default: Date.now(),
-},
+  },
 });
 
-
-
 userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id, type: this.type }, config.get('jwtPrivateKey'));
+  const token = jwt.sign(
+    { _id: this._id, type: this.type },
+    config.get("jwtPrivateKey")
+  );
   return token;
-}
+};
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
- 
 const validateRegister = (body) => {
   let schema = {
-      name: Joi.string().min(5).required(),
-      isActivated: Joi.bool().optional(),
-      avatar: Joi.string().required(),
-      icon: Joi.string().optional(),
-      commercialName: Joi.string().optional(),
-      commercialNumber: Joi.number().optional(),
-      desc: Joi.string().optional(),
-      openingTime: Joi.string().optional(),
-      closingTime: Joi.string().optional(),
-      deliveryMethod: Joi.string().optional(),
-      phone: Joi.string().required(),
-      contacts: Joi.array().optional(),
-      email: Joi.string().required(),
-      type: Joi.string().required(),
-      password: Joi.string().min(5).required(),
-      location: Joi.object().optional(),
-      role: Joi.string().length(24).optional(),
+    name: Joi.string().min(5).required(),
+    isActivated: Joi.bool().optional(),
+    avatar: Joi.string().required(),
+    icon: Joi.string().optional(),
+    commercialName: Joi.string().optional(),
+    commercialNumber: Joi.number().optional(),
+    desc: Joi.string().optional(),
+    openingTime: Joi.string().optional(),
+    closingTime: Joi.string().optional(),
+    deliveryMethod: Joi.string().optional(),
+    phone: Joi.string().required(),
+    contacts: Joi.array().optional(),
+    email: Joi.string().required(),
+    type: Joi.string().required(),
+    password: Joi.string().min(5).required(),
+    location: Joi.object().optional(),
+    role: Joi.string().length(24).optional(),
   };
 
   return Joi.validate(body, schema);
-}
+};
 
 const validateUpdate = (body) => {
   let schema = {
@@ -162,729 +171,954 @@ const validateUpdate = (body) => {
   };
 
   return Joi.validate(body, schema);
-}
-
+};
 
 const validateLogin = (body) => {
   let schema = {
-      phone: Joi.string().required(),
-      password: Joi.string().min(5).required(),
+    phone: Joi.string().required(),
+    password: Joi.string().min(5).required(),
   };
 
   return Joi.validate(body, schema);
-}
-
+};
 
 const validateChangePassword = (body) => {
   let schema = {
-      phone: Joi.string().required(),
-      password: Joi.string().min(5).required(),
-      newPassword: Joi.string().min(5).required(),
+    phone: Joi.string().required(),
+    password: Joi.string().min(5).required(),
+    newPassword: Joi.string().min(5).required(),
   };
 
   return Joi.validate(body, schema);
-}
+};
 
 const validateResetPassword = (body) => {
   let schema = {
-      phone: Joi.string().required(),
-      password: Joi.string().min(5).required(),
+    phone: Joi.string().required(),
+    password: Joi.string().min(5).required(),
   };
 
   return Joi.validate(body, schema);
-}
+};
 
 const validateActivate = (body) => {
   let schema = {
-      phone: Joi.string().required(),
-      code: Joi.string().min(5).required(),
+    phone: Joi.string().required(),
+    code: Joi.string().min(5).required(),
   };
 
   return Joi.validate(body, schema);
-}
+};
 
 const validateSendActivationCode = (body) => {
   let schema = {
-      phone: Joi.string().required(),
+    phone: Joi.string().required(),
   };
 
   return Joi.validate(body, schema);
-}
-
+};
 
 const getUsers = async (input) => {
+  let {
+    startId = false,
+    limit = 10,
+    all = false,
+    filter = "{}",
+    fields = "{}",
+    sort = `{"_id": -1}`,
+  } = input.query;
 
-  let { startId = false, limit = 10, all = false, filter="{}", fields="{}", sort=`{"_id": -1}`} = input.query;
+  startId = !startId || startId == "false" ? false : startId;
 
-  startId = (!startId || startId == "false") ? false: startId
+  startId = all || !startId ? {} : { _id: { $lt: startId } };
+  limit = all ? null : !isNaN(limit) ? parseInt(limit) : 10;
 
-  startId = (all || !startId) ? {} : { '_id': { '$lt': startId } };
-  limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+  sort = JSON.parse(sort);
 
-  sort = JSON.parse(sort)
+  fields = JSON.parse(fields);
 
-  fields = JSON.parse(fields)
+  fields = Object.keys(fields).reduce(
+    (ac, f) => `${ac} ${fields[f] == "1" ? "" : "-"}${f}`,
+    ""
+  );
 
-  fields = Object.keys(fields)
-    .reduce((ac, f) => `${ac} ${fields[f] == "1" ? "" : "-"}${f}`, '')
-
-  let users = await User
-  .find({ ...startId, ...JSON.parse(filter) })
-  .sort(sort)
-  .select(fields)
-  .populate("role")
-  .limit(limit);
+  let users = await User.find({ ...startId, ...JSON.parse(filter) })
+    .sort(sort)
+    .select(fields)
+    .populate("role")
+    .limit(limit);
 
   if (users.length)
-    users = users.map(user => {
-      if(fields.avatar != 0){
-        if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
-        else user.avatar = input.app.get('defaultAvatar')(input)
+    users = users.map((user) => {
+      if (fields.avatar != 0) {
+        if (user.avatar)
+          user.avatar =
+            input.app.get("defaultAvatar")(input, "host") + user.avatar;
+        else user.avatar = input.app.get("defaultAvatar")(input);
       }
 
-      if (fields.icon != 0 && user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
+      if (fields.icon != 0 && user.icon)
+        user.icon = input.app.get("defaultAvatar")(input, "host") + user.icon;
 
-      return (
-        _.omit(user.toObject(),
-          ['password',
-            'latestActivationCode',
-            'connectionId',
-            'deviceId',
-            '__v'])
-      );
+      return _.omit(user.toObject(), [
+        "password",
+        "latestActivationCode",
+        "connectionId",
+        "deviceId",
+        "__v",
+      ]);
     });
 
-  return users
-}
+  return users;
+};
 
+const getInvoicesOnUsers = async (input) => {
+  let {
+    startId = false,
+    limit = 10,
+    all = false,
+    filter = "{}",
+    fields = "{}",
+    sort = "{}",
+  } = input.query;
+
+  startId = !startId || startId == "false" ? false : startId;
+
+  startId = all || !startId ? {} : { _id: { $gt: startId } };
+  limit = all ? null : !isNaN(limit) ? parseInt(limit) : 10;
+
+  sort = JSON.parse(sort);
+
+  fields = JSON.parse(fields);
+
+  fields = Object.keys(fields).reduce(
+    (ac, f) => `${ac} ${fields[f] == "1" ? "" : "-"}${f}`,
+    ""
+  );
+
+  await User.find({ ...startId, ...JSON.parse(filter) })
+    .sort(sort)
+    .select(fields)
+    .populate("Product")
+    .limit(limit);
+
+  let aggr = [
+    {
+      $match: {
+        ...JSON.parse(filter),
+        $or: [
+          { type: "admin" },
+          { type: "productiveFamily" },
+          { type: "advertisment" },
+        ],
+      },
+    },
+    // {
+    //   $lookup: {
+    //     from: "products",
+    //     localField: "_id",
+    //     foreignField: "provider",
+    //     as: "products",
+    //   },
+    // },
+
+    {
+      $lookup: {
+        from: "invoices",
+        localField: "_id",
+        foreignField: "client",
+        as: "invoices",
+      },
+    },
+    // {
+    //   $lookup: {
+    //     from: "productprices",
+    //     localField: "products._id",
+    //     foreignField: "product",
+    //     as: "productPrices",
+    //   },
+    // },
+
+    // {
+    //   $lookup: {
+    //     from: "shipItems",
+    //     localField: "productprices._id",
+    //     foreignField: "productPrice",
+    //     as: "shipItems",
+    //   },
+    // },
+    {
+      $lookup: {
+        from: "orderShips",
+        localField: "_id",
+        foreignField: "provider",
+        as: "orderShips",
+      },
+    },
+
+    {
+      $unwind: {
+        path: "$orderShips",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $unwind: {
+        path: "$invoices",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    // {
+    //   $addFields: {
+    //     orderShips: {
+    //       $filter: {
+    //         input: "$orderShips",
+    //         as: "order",
+    //         cond: {
+    //           $eq: ["$$order.shipmentStatus", "completed"],
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
+
+    {
+      $lookup: {
+        from: "shipItems",
+        localField: "orderShips._id",
+        foreignField: "orderShips",
+        as: "orderShips.shipItems",
+      },
+    },
+
+    {
+      $group: {
+        _id: "$_id",
+        name: { $first: "$name" },
+        orderShips: { $push: "$orderShips" },
+        invoices: { $push: "$invoices" },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        invoices: 1,
+        totalPaidInvoices: { $sum: "$invoices.quantity" },
+        orderShips: {
+          $filter: {
+            input: "$orderShips",
+            as: "order",
+            cond: { $eq: ["$$order.shipmentStatus", "completed"] },
+          },
+        },
+      },
+    },
+
+    // {
+    //   $project: {
+    //     name: 1,
+    //     totalPaidInvoices: { $sum: "$invoices.quantity" },
+    //     // totalInvoices: { $sum: "$shipItems.dtlsProfitValue" },
+
+    //     shipItems: 1,
+    //     // productPrices: 1,
+    //     orderShips: 1,
+    //   },
+    // },
+    // {
+    //   $group: { _id: "$orderShips._id", total: { $sum: "$invoices.quantity" } },
+    // },
+  ];
+  let users = await User.aggregate(aggr);
+  console.log("getInvoicesOnUsers -> getProducts", users);
+
+  // if (users.length)
+  //   users = users.map((user) => {
+  //     if (fields.avatar != 0) {
+  //       if (user.avatar)
+  //         user.avatar =
+  //           input.app.get("defaultAvatar")(input, "host") + user.avatar;
+  //       else user.avatar = input.app.get("defaultAvatar")(input);
+  //     }
+
+  //     if (fields.icon != 0 && user.icon)
+  //       user.icon = input.app.get("defaultAvatar")(input, "host") + user.icon;
+
+  //     return _.omit(user.toObject(), [
+  //       "password",
+  //       "latestActivationCode",
+  //       "connectionId",
+  //       "deviceId",
+  //       "__v",
+  //     ]);
+  //   });
+
+  return users;
+};
 
 const register = async (input) => {
-
   let body = input.body,
-      activationCode = randomString(4, "#");
+    activationCode = randomString(4, "#");
 
   const { error } = validateRegister(body);
-  if (error) return (error.details[0]);
-
+  if (error) return error.details[0];
 
   let checkUser = await User.findOne({
-    $or: [
-      { phone: body.phone },
-      { email: body.email },
-      { name: body.name },
-    ]
+    $or: [{ phone: body.phone }, { email: body.email }, { name: body.name }],
   });
-   if(checkUser){
-   if (checkUser.name == body.name) {return t2(input.header('Accept-Language'),'name already registered.');}
-   else if (checkUser.phone == body.phone) return t2(input.header('Accept-Language'),'Phone already registered.');
-   else if (checkUser.email == body.email) return t2(input.header('Accept-Language'),'Email already registered.');
-   }
-   
+  if (checkUser) {
+    if (checkUser.name == body.name) {
+      return t2(input.header("Accept-Language"), "name already registered.");
+    } else if (checkUser.phone == body.phone)
+      return t2(input.header("Accept-Language"), "Phone already registered.");
+    else if (checkUser.email == body.email)
+      return t2(input.header("Accept-Language"), "Email already registered.");
+  }
+
   if (!body.role) {
     let Role = mongoose.model("Role"),
-      userRole = await Role.findOne({ name: body.type })
+      userRole = await Role.findOne({ name: body.type });
 
     if (userRole._id) body.role = userRole._id;
   }
 
-  
   body.password = await getHashPassword(body.password);
-  body.isActivated = body.type == "admin" ? true: false;
+  body.isActivated = body.type == "admin" ? true : false;
   body.latestActivationCode = activationCode;
 
-  if (['productiveFamily', 'vendor'].includes(body.type))
+  if (["productiveFamily", "vendor"].includes(body.type))
     body.providerStatus = true;
 
-  let user = new User(body)
+  let user = new User(body);
   user = await user.save();
 
-   let code = body.type == "admin" ? "Send Successful" : await sendMessage(user.phone, activationCode);
- //if (true) {
-   code = code.replace(/^\s+|\s+$/g, '').trim();
-   if (user._id && (code == "Send Successful")) {
-      if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
-      else user.avatar = input.app.get('defaultAvatar')(input)
+  let code =
+    body.type == "admin"
+      ? "Send Successful"
+      : await sendMessage(user.phone, activationCode);
+  //if (true) {
+  code = code.replace(/^\s+|\s+$/g, "").trim();
+  if (user._id && code == "Send Successful") {
+    if (user.avatar)
+      user.avatar = input.app.get("defaultAvatar")(input, "host") + user.avatar;
+    else user.avatar = input.app.get("defaultAvatar")(input);
 
-      if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
-      
+    if (user.icon)
+      user.icon = input.app.get("defaultAvatar")(input, "host") + user.icon;
+
     // i will show activation code in the response for mahmoud for testing purpose don't forget to delete it from response after that
-    return (
-      _.omit(user.toObject(),
-        ['password',
-          //'latestActivationCode',
-          'connectionId',
-          'deviceId',
-          '__v'])
-    );
-
-  }
-  else return "cant create user"
-
-}
-
+    return _.omit(user.toObject(), [
+      "password",
+      //'latestActivationCode',
+      "connectionId",
+      "deviceId",
+      "__v",
+    ]);
+  } else return "cant create user";
+};
 
 const updateUser = async (input) => {
-
   let body = input.body,
-      {id} = input.params
+    { id } = input.params;
 
   const { error } = validateUpdate(body);
-  if (error) return (error.details[0]);
-  if(body.providerStatus == true)
-  {
-    await Product.updateMany({provider:id}, { $set: { available: true }}, {new: true});
-  }
-  else if(body.providerStatus == false)
-  {
-    await Product.updateMany({provider:id}, { $set: { available: false }}, {new: true});
-  }
-
-
-  let user = await User.findByIdAndUpdate(id, body, {new: true});
-  if (!user) return t2(input.header('Accept-Language'),'Invalid Phone or password.');
-  
-    if (user._id) {
-      if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
-      else user.avatar = input.app.get('defaultAvatar')(input)
-
-      if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
-    }
-  
-    return (
-      _.omit(user.toObject(),
-        ['password',
-          'latestActivationCode',
-          'connectionId',
-          'deviceId',
-          '__v'])
+  if (error) return error.details[0];
+  if (body.providerStatus == true) {
+    await Product.updateMany(
+      { provider: id },
+      { $set: { available: true } },
+      { new: true }
     );
-}
+  } else if (body.providerStatus == false) {
+    await Product.updateMany(
+      { provider: id },
+      { $set: { available: false } },
+      { new: true }
+    );
+  }
 
+  let user = await User.findByIdAndUpdate(id, body, { new: true });
+  if (!user)
+    return t2(input.header("Accept-Language"), "Invalid Phone or password.");
 
-async function login(input){
+  if (user._id) {
+    if (user.avatar)
+      user.avatar = input.app.get("defaultAvatar")(input, "host") + user.avatar;
+    else user.avatar = input.app.get("defaultAvatar")(input);
 
+    if (user.icon)
+      user.icon = input.app.get("defaultAvatar")(input, "host") + user.icon;
+  }
+
+  return _.omit(user.toObject(), [
+    "password",
+    "latestActivationCode",
+    "connectionId",
+    "deviceId",
+    "__v",
+  ]);
+};
+
+async function login(input) {
   const { error } = validateLogin(input.body);
-  if (error) return (error.details[0]);
+  if (error) return error.details[0];
 
-  let {phone, password} = input.body
+  let { phone, password } = input.body;
 
-    if (!phone || !password) return t2(input.header('Accept-Language'),'Invalid phone or password.');
-
-    let user = await User.findOne({ phone });
-
-    if (!user) return t2(input.header('Accept-Language'),'Invalid phone or password.');
-
-
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) return t2(input.header('Accept-Language'),'Invalid password.');
-  
-    const token = user.generateAuthToken();
-  
-    ret = {
-      ..._.omit(user.toObject(),
-        ['password',
-          'latestActivationCode',
-          'connectionId',
-          'deviceId',       
-          '__v'
-        ]),
-      ...{ token: token }
-    };
-
-    if (user._id) {
-      if (ret.avatar) ret.avatar = input.app.get('defaultAvatar')(input, 'host') + ret.avatar
-      else ret.avatar = input.app.get('defaultAvatar')(input)
-
-      if (ret.icon) ret.icon = input.app.get('defaultAvatar')(input, 'host') + ret.icon
-    }
-    
-    return ret;
-}
-
-async function changePassword(input){
-
-  const { error } = validateChangePassword(input.body);
-  if (error) return (error.details[0]);
-
-  let {phone, password, newPassword} = input.body
+  if (!phone || !password)
+    return t2(input.header("Accept-Language"), "Invalid phone or password.");
 
   let user = await User.findOne({ phone });
-  if (!user) return t2(input.header('Accept-Language'),'Invalid Phone or password.');
+
+  if (!user)
+    return t2(input.header("Accept-Language"), "Invalid phone or password.");
 
   const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) return t2(input.header('Accept-Language'),'Invalid  password.');
+  if (!validPassword)
+    return t2(input.header("Accept-Language"), "Invalid password.");
+
+  const token = user.generateAuthToken();
+
+  ret = {
+    ..._.omit(user.toObject(), [
+      "password",
+      "latestActivationCode",
+      "connectionId",
+      "deviceId",
+      "__v",
+    ]),
+    ...{ token: token },
+  };
+
+  if (user._id) {
+    if (ret.avatar)
+      ret.avatar = input.app.get("defaultAvatar")(input, "host") + ret.avatar;
+    else ret.avatar = input.app.get("defaultAvatar")(input);
+
+    if (ret.icon)
+      ret.icon = input.app.get("defaultAvatar")(input, "host") + ret.icon;
+  }
+
+  return ret;
+}
+
+async function changePassword(input) {
+  const { error } = validateChangePassword(input.body);
+  if (error) return error.details[0];
+
+  let { phone, password, newPassword } = input.body;
+
+  let user = await User.findOne({ phone });
+  if (!user)
+    return t2(input.header("Accept-Language"), "Invalid Phone or password.");
+
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword)
+    return t2(input.header("Accept-Language"), "Invalid  password.");
 
   user.password = await getHashPassword(newPassword);
   await user.save();
 
-  return (user._id? true: false);
+  return user._id ? true : false;
 }
 
-
-async function resetPassword(input){
-
+async function resetPassword(input) {
   const { error } = validateResetPassword(input.body);
-  if (error) return (error.details[0]);
+  if (error) return error.details[0];
 
-  let {phone, password} = input.body
+  let { phone, password } = input.body;
 
   let user = await User.findOne({ phone });
-  if (!user) return t2(input.header('Accept-Language'),'Invalid email or password.');
-
+  if (!user)
+    return t2(input.header("Accept-Language"), "Invalid email or password.");
 
   user.password = await getHashPassword(password);
   await user.save();
 
   const token = user.generateAuthToken();
 
-  if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
-  else user.avatar = input.app.get('defaultAvatar')(input)
+  if (user.avatar)
+    user.avatar = input.app.get("defaultAvatar")(input, "host") + user.avatar;
+  else user.avatar = input.app.get("defaultAvatar")(input);
 
-  if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
+  if (user.icon)
+    user.icon = input.app.get("defaultAvatar")(input, "host") + user.icon;
 
-  return ({
-    ..._.omit(user.toObject(),
-      ['password',
-        'latestActivationCode',
-        'connectionId',
-        'deviceId',
-        '__v'
-      ]),
+  return {
+    ..._.omit(user.toObject(), [
+      "password",
+      "latestActivationCode",
+      "connectionId",
+      "deviceId",
+      "__v",
+    ]),
 
-    ...{ token: token }
-  });
-
+    ...{ token: token },
+  };
 }
 
-async function activate(input){
-
+async function activate(input) {
   const { error } = validateActivate(input.body);
-  if (error) return (error.details[0]);
+  if (error) return error.details[0];
 
-  let {phone, code} = input.body
+  let { phone, code } = input.body;
 
   let user = await User.findOne({ phone });
 
-  if(user._id && user.latestActivationCode == code ){
-    user.isActivated = true
-    await user.save()
+  if (user._id && user.latestActivationCode == code) {
+    user.isActivated = true;
+    await user.save();
   }
 
   const token = user.generateAuthToken();
 
-  if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
-  else user.avatar = input.app.get('defaultAvatar')(input)
+  if (user.avatar)
+    user.avatar = input.app.get("defaultAvatar")(input, "host") + user.avatar;
+  else user.avatar = input.app.get("defaultAvatar")(input);
 
-  if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
+  if (user.icon)
+    user.icon = input.app.get("defaultAvatar")(input, "host") + user.icon;
 
-  return ({
-    ..._.omit(user.toObject(),
-      ['password',
-        'latestActivationCode',
-        'connectionId',
-        'deviceId',
-        '__v'
-      ]),
+  return {
+    ..._.omit(user.toObject(), [
+      "password",
+      "latestActivationCode",
+      "connectionId",
+      "deviceId",
+      "__v",
+    ]),
 
-    ...{ token: token }
-  });
-
+    ...{ token: token },
+  };
 }
 
-async function sendActivationCode(input){
-
+async function sendActivationCode(input) {
   const { error } = validateSendActivationCode(input.params);
-  if (error) return (error.details[0]);
+  if (error) return error.details[0];
 
-  let {phone} = input.params,
-  latestActivationCode = randomString(4, "#");
+  let { phone } = input.params,
+    latestActivationCode = randomString(4, "#");
   let user = await User.findOne({ phone });
-  if(!user){
+  if (!user) {
     return "user not registered";
-  }     
-else{
-      
-  let code = await sendMessage(user.phone, latestActivationCode);
-  code = code.replace(/^\s+|\s+$/g, '').trim();
-  
- //if (true) {
-  if (user._id && (code == "Send Successful")) {
+  } else {
+    let code = await sendMessage(user.phone, latestActivationCode);
+    code = code.replace(/^\s+|\s+$/g, "").trim();
 
-  let user = await User.findOneAndUpdate({ phone }, {latestActivationCode}, {new: true});
+    //if (true) {
+    if (user._id && code == "Send Successful") {
+      let user = await User.findOneAndUpdate(
+        { phone },
+        { latestActivationCode },
+        { new: true }
+      );
 
-      if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
-      else user.avatar = input.app.get('defaultAvatar')(input)
+      if (user.avatar)
+        user.avatar =
+          input.app.get("defaultAvatar")(input, "host") + user.avatar;
+      else user.avatar = input.app.get("defaultAvatar")(input);
 
-      if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
+      if (user.icon)
+        user.icon = input.app.get("defaultAvatar")(input, "host") + user.icon;
 
-  const token = user.generateAuthToken();
+      const token = user.generateAuthToken();
 
-   return ({
-     ..._.omit(user.toObject(),
-       ['connectionId',
-         'deviceId',
-         '__v']),
-     ...{ token: token }
-   });
-
+      return {
+        ..._.omit(user.toObject(), ["connectionId", "deviceId", "__v"]),
+        ...{ token: token },
+      };
+    }
   }
 }
-}
-
 
 async function getUser(input) {
-  let {id} = input.params
-  let user = await User
-  .findById(id)
-  .populate('role')
-  .populate({
-    path: "location.area",
-    populate: {
-      path: 'city',
+  let { id } = input.params;
+  let user = await User.findById(id)
+    .populate("role")
+    .populate({
+      path: "location.area",
       populate: {
-        path: 'country',
-      } 
-    }
-  });
+        path: "city",
+        populate: {
+          path: "country",
+        },
+      },
+    });
 
   if (user._id) {
-    if (user.avatar) user.avatar = input.app.get('defaultAvatar')(input, 'host') + user.avatar
-    else user.avatar = input.app.get('defaultAvatar')(input)
+    if (user.avatar)
+      user.avatar = input.app.get("defaultAvatar")(input, "host") + user.avatar;
+    else user.avatar = input.app.get("defaultAvatar")(input);
 
-    if (user.icon) user.icon = input.app.get('defaultAvatar')(input, 'host') + user.icon
+    if (user.icon)
+      user.icon = input.app.get("defaultAvatar")(input, "host") + user.icon;
   }
 
-  return ({
-    ..._.omit(user.toObject(),
-      ['password',
-        '__v'
-      ]),
-  });
+  return {
+    ..._.omit(user.toObject(), ["password", "__v"]),
+  };
 }
 
 async function getProducts(input) {
   let userId = input.params.id;
   let { startId = false, limit = 10, all = false } = input.query;
 
-  startId = (!startId || startId == "false") ? false : startId
+  startId = !startId || startId == "false" ? false : startId;
 
-  startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
-  limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+  startId =
+    all || !startId
+      ? {}
+      : { "_id._id": { $gt: mongoose.Types.ObjectId(startId) } };
+  limit = all ? null : !isNaN(limit) ? parseInt(limit) : 10;
 
   let aggr = [
-      {
-        '$match': {
-          '_id': mongoose.Types.ObjectId(userId),
-          'isNeglected': false
-
-        }
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(userId),
+        isNeglected: false,
       },
-      {
-          '$lookup': {
-            'from': 'products', 
-            'localField': '_id', 
-            'foreignField': 'provider', 
-            'as': 'products'
-          }
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "_id",
+        foreignField: "provider",
+        as: "products",
       },
-      {
-          '$unwind': {
-            'path': '$products',
-            'preserveNullAndEmptyArrays': true
-          }
-        },
-        {
-          '$match': {
-            'products.available': true,
-          }
-        },
-          {
-          '$lookup': {
-            'from': 'productprices', 
-            'localField': 'products._id', 
-            'foreignField': 'product', 
-            'as': 'productPrices'
-          }
+    },
+    {
+      $unwind: {
+        path: "$products",
+        preserveNullAndEmptyArrays: true,
       },
-      {
-          '$addFields': {
-            'products.price': "$productPrices.price",
-            'products.props': "$productPrices.props",
-          }
-        },
-          {
-            '$addFields': {
-              'products.type': "$type",
-            }
-          },
-            {
-              '$group': {
-              '_id': '$products',
-              'subCategoryImage': {
-                '$first': '$avatar'
-            },
-              }
-          },
-         {
-          '$addFields': {
-            'subCategoryImage': { $concat: [input.app.get('defaultAvatar')(input, 'host'), "$subCategoryImage"] },
-          }
-        },
-         {
-          '$project': {
-              'subCategoryImage': 1,
-              '_id._id': 1,
-              '_id.nameAr': 1,
-              '_id.nameEn': 1,
-              '_id.available': 1,
-              '_id.avatar': 1,
-              '_id.type': 1,
-              '_id.price': 1,
-              '_id.props': 1,
-
-          }
-         }, 
-         {
-          '$match': startId
-        },
-         {
-          '$sort': {
-              '_id._id': 1
-          }
+    },
+    {
+      $match: {
+        "products.available": true,
       },
-      {
-          '$limit': limit? limit: Infinity
+    },
+    {
+      $lookup: {
+        from: "productprices",
+        localField: "products._id",
+        foreignField: "product",
+        as: "productPrices",
+      },
+    },
+    {
+      $addFields: {
+        "products.price": "$productPrices.price",
+        "products.props": "$productPrices.props",
+      },
+    },
+    {
+      $addFields: {
+        "products.type": "$type",
+      },
+    },
+    {
+      $group: {
+        _id: "$products",
+        subCategoryImage: {
+          $first: "$avatar",
+        },
+      },
+    },
+    {
+      $addFields: {
+        subCategoryImage: {
+          $concat: [
+            input.app.get("defaultAvatar")(input, "host"),
+            "$subCategoryImage",
+          ],
+        },
+      },
+    },
+    {
+      $project: {
+        subCategoryImage: 1,
+        "_id._id": 1,
+        "_id.nameAr": 1,
+        "_id.nameEn": 1,
+        "_id.available": 1,
+        "_id.avatar": 1,
+        "_id.type": 1,
+        "_id.price": 1,
+        "_id.props": 1,
+      },
+    },
+    {
+      $match: startId,
+    },
+    {
+      $sort: {
+        "_id._id": 1,
+      },
+    },
+    {
+      $limit: limit ? limit : Infinity,
+    },
+  ];
+  let getProducts = await User.aggregate(aggr);
+  getProducts.map((product) => {
+    product._id.price.map((price) => {
+      if (price.reducedPrice == undefined) {
+        price.reducedPrice = price.initialPrice;
       }
-         
-    ];
-     let getProducts = await User.aggregate(aggr);
-      getProducts.map(product=>{
-        product._id.price.map(price=>{
-          if(price.reducedPrice == undefined)
-          {
-            price.reducedPrice = price.initialPrice;
-          }
-        price.discountPrecentage = ((price.initialPrice-price.reducedPrice)/price.initialPrice)*100;
-          return price;
-        })
-        return product;
-      })
-      if(getProducts.length == 0) return getProducts;
-      else{
-      getProducts = getProducts.map(product => {
-        product._id.avatar =  input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
-        return product;
-    })
-    return (getProducts);
- }
+      price.discountPrecentage =
+        ((price.initialPrice - price.reducedPrice) / price.initialPrice) * 100;
+      return price;
+    });
+    return product;
+  });
+  if (getProducts.length == 0) return getProducts;
+  else {
+    getProducts = getProducts.map((product) => {
+      product._id.avatar =
+        input.app.get("defaultAvatar")(input, "host") + product._id.avatar;
+      return product;
+    });
+    return getProducts;
+  }
 }
 
-
-
-async function getCart(input,res) {
+async function getCart(input, res) {
   let userId = input.params.id;
   let appSettings = await AppSettings.findOne();
   let generalTax = appSettings.generalTax;
   let ProfitCalcMethod = appSettings.profitCalcMethod;
   let { startId = false, limit = 10, all = false } = input.query;
 
-  startId = (!startId || startId == "false") ? false : startId
+  startId = !startId || startId == "false" ? false : startId;
 
-  startId = (all || !startId) ? {} : { '_id._id': { '$gt': mongoose.Types.ObjectId(startId) } };
-  limit = (all) ? null : (!isNaN(limit) ? parseInt(limit) : 10);
+  startId =
+    all || !startId
+      ? {}
+      : { "_id._id": { $gt: mongoose.Types.ObjectId(startId) } };
+  limit = all ? null : !isNaN(limit) ? parseInt(limit) : 10;
 
   let aggr = [
-      {
-        '$match': {
-          '_id': mongoose.Types.ObjectId(userId),
-          'isNeglected': false
-        }
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(userId),
+        isNeglected: false,
       },
-        {
-          '$lookup': {
-            'from': 'shipcards', 
-            'localField': '_id', 
-            'foreignField': 'client', 
-            'as': 'shipcards'
-          }
+    },
+    {
+      $lookup: {
+        from: "shipcards",
+        localField: "_id",
+        foreignField: "client",
+        as: "shipcards",
       },
-      {
-          '$unwind': {
-            'path': '$shipcards',
-            'preserveNullAndEmptyArrays': true
-          }
-        },
-        {
-          '$lookup': {
-            'from': 'productprices', 
-            'localField': 'shipcards.productPrice', 
-            'foreignField': '_id', 
-            'as': 'productPrices'
-          }
+    },
+    {
+      $unwind: {
+        path: "$shipcards",
+        preserveNullAndEmptyArrays: true,
       },
-      {
-          '$unwind': {
-            'path': '$productPrices',
-            'preserveNullAndEmptyArrays': true
-          }
-        },
-      {
-          '$lookup': {
-            'from': 'products', 
-            'localField': 'productPrices.product', 
-            'foreignField': '_id', 
-            'as': 'products'
-          }
+    },
+    {
+      $lookup: {
+        from: "productprices",
+        localField: "shipcards.productPrice",
+        foreignField: "_id",
+        as: "productPrices",
       },
-      {
-          '$unwind': {
-            'path': '$products',
-            'preserveNullAndEmptyArrays': true
-          }
-        },
-        {
-          '$match': {
-            'products.available': true,
-          }
-        },
-        {
-          '$lookup': {
-            'from': 'users', 
-            'localField': 'products.provider', 
-            'foreignField': '_id', 
-            'as': 'provider'
-          }
+    },
+    {
+      $unwind: {
+        path: "$productPrices",
+        preserveNullAndEmptyArrays: true,
       },
-      {
-          '$unwind': {
-            'path': '$provider',
-            'preserveNullAndEmptyArrays': true
-          }
-        },
-        {
-          '$lookup': {
-            'from': 'cats', 
-            'localField': 'products.cats', 
-            'foreignField': '_id', 
-            'as': 'cats'
-          }
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "productPrices.product",
+        foreignField: "_id",
+        as: "products",
       },
-      {
-          '$unwind': {
-            'path': '$cats',
-            'preserveNullAndEmptyArrays': true
-          }
-        },
-      {
-          '$addFields': {
-            'products.price': "$productPrices.price",
-            'products.quantity': "$shipcards.quantity",
-            'products.generalTax': generalTax,
-            'products.shipcard': "$shipcards._id",
-            'products.providerId': "$products.provider",
-            'products.type': "$cats.type",
-            'products.productPrices': "$productPrices._id",
-            'products.provider': "$productPrices._id",
-            'products.openingTime': "$provider.openingTime",
-            'products.closingTime': "$provider.closingTime",
-          }
-        },
-          {
-            '$group': {
-             '_id': '$products',
-             
-             }
-         },
-         {
-          '$project': {
-              '_id._id': 1,
-              '_id.nameAr': 1,
-              '_id.nameEn': 1,
-              '_id.prepaireDurationType': 1,
-              '_id.prepaireDurationValue': 1,
-              '_id.openingTime': 1,
-              '_id.closingTime': 1,
-              '_id.avatar': 1,
-              '_id.tax': 1,
-              '_id.generalTax':1,
-              '_id.quantity': 1,
-              '_id.shipcard': 1,
-              '_id.type': 1,
-              '_id.productPrices': 1,
-              '_id.providerId': 1,
-              '_id.price.initialPrice': 1,
-              '_id.price.reducedPrice': { "$ifNull": [ "$_id.price.reducedPrice", "$_id.price.initialPrice" ] },
-          }
-         },
-         {
-          '$addFields': {
-            '_id.discountPrecentage': { "$multiply": [100,{"$divide": [ { "$subtract": ["$_id.price.initialPrice","$_id.price.reducedPrice"] }, '$_id.price.initialPrice' ]}]},
-          }
-        },
-         {
-          '$match': startId
-        },
-         {
-          '$sort': {
-              '_id._id': 1
-          }
+    },
+    {
+      $unwind: {
+        path: "$products",
+        preserveNullAndEmptyArrays: true,
       },
-      {
-          '$limit': limit? limit: Infinity
-      }
-    ];
-      let getProducts = await User.aggregate(aggr);
-       if (getProducts.length == 0) return res.send(getProducts);
-    else if(getProducts[0]._id.shipcard){
-      let someFunction =(getProducts) =>{
-    let Products = getProducts.map(async (product) => {
-      if(ProfitCalcMethod == "provider"){
-        let providerSubscription = await ProviderSubscription.find({provider: product._id.providerId});
-        let vendor = await User.find({_id: product._id.providerId});
-        if(providerSubscription[providerSubscription.length-1].percentage == undefined){
-        providerSubscription[providerSubscription.length-1].percentage = 0;
-      }
-        product._id.deliveryMethod = vendor[0].deliveryMethod;
-        product._id.profitCalcMethod = ProfitCalcMethod;
-        product._id.dtlsProfitPercentage = (providerSubscription[providerSubscription.length-1].percentage);
-        product._id.profitPercentage = (product._id.dtlsProfitPercentage);
-        product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
-        return product;
-      }
-      else{
-      product._id.avatar = input.app.get('defaultAvatar')(input, 'host') + product._id.avatar;
-      
-       return product;
-      }
-  });
-  return Promise.all(Products);
-}
-someFunction(getProducts).then((data) => {
-  let sum = 0;
-  let totalPrice = data.map((product)=>{
-    sum+=product._id.price.reducedPrice;return sum ;
-  })
-  data[0]._id.totalPrice = totalPrice[totalPrice.length-1];
-  return res.send(data);
+    },
+    {
+      $match: {
+        "products.available": true,
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "products.provider",
+        foreignField: "_id",
+        as: "provider",
+      },
+    },
+    {
+      $unwind: {
+        path: "$provider",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: "cats",
+        localField: "products.cats",
+        foreignField: "_id",
+        as: "cats",
+      },
+    },
+    {
+      $unwind: {
+        path: "$cats",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $addFields: {
+        "products.price": "$productPrices.price",
+        "products.quantity": "$shipcards.quantity",
+        "products.generalTax": generalTax,
+        "products.shipcard": "$shipcards._id",
+        "products.providerId": "$products.provider",
+        "products.type": "$cats.type",
+        "products.productPrices": "$productPrices._id",
+        "products.provider": "$productPrices._id",
+        "products.openingTime": "$provider.openingTime",
+        "products.closingTime": "$provider.closingTime",
+      },
+    },
+    {
+      $group: {
+        _id: "$products",
+      },
+    },
+    {
+      $project: {
+        "_id._id": 1,
+        "_id.nameAr": 1,
+        "_id.nameEn": 1,
+        "_id.prepaireDurationType": 1,
+        "_id.prepaireDurationValue": 1,
+        "_id.openingTime": 1,
+        "_id.closingTime": 1,
+        "_id.avatar": 1,
+        "_id.tax": 1,
+        "_id.generalTax": 1,
+        "_id.quantity": 1,
+        "_id.shipcard": 1,
+        "_id.type": 1,
+        "_id.productPrices": 1,
+        "_id.providerId": 1,
+        "_id.price.initialPrice": 1,
+        "_id.price.reducedPrice": {
+          $ifNull: ["$_id.price.reducedPrice", "$_id.price.initialPrice"],
+        },
+      },
+    },
+    {
+      $addFields: {
+        "_id.discountPrecentage": {
+          $multiply: [
+            100,
+            {
+              $divide: [
+                {
+                  $subtract: [
+                    "$_id.price.initialPrice",
+                    "$_id.price.reducedPrice",
+                  ],
+                },
+                "$_id.price.initialPrice",
+              ],
+            },
+          ],
+        },
+      },
+    },
+    {
+      $match: startId,
+    },
+    {
+      $sort: {
+        "_id._id": 1,
+      },
+    },
+    {
+      $limit: limit ? limit : Infinity,
+    },
+  ];
+  let getProducts = await User.aggregate(aggr);
+  if (getProducts.length == 0) return res.send(getProducts);
+  else if (getProducts[0]._id.shipcard) {
+    let someFunction = (getProducts) => {
+      let Products = getProducts.map(async (product) => {
+        if (ProfitCalcMethod == "provider") {
+          let providerSubscription = await ProviderSubscription.find({
+            provider: product._id.providerId,
+          });
+          let vendor = await User.find({ _id: product._id.providerId });
+          if (
+            providerSubscription[providerSubscription.length - 1].percentage ==
+            undefined
+          ) {
+            providerSubscription[
+              providerSubscription.length - 1
+            ].percentage = 0;
+          }
+          product._id.deliveryMethod = vendor[0].deliveryMethod;
+          product._id.profitCalcMethod = ProfitCalcMethod;
+          product._id.dtlsProfitPercentage =
+            providerSubscription[providerSubscription.length - 1].percentage;
+          product._id.profitPercentage = product._id.dtlsProfitPercentage;
+          product._id.avatar =
+            input.app.get("defaultAvatar")(input, "host") + product._id.avatar;
+          return product;
+        } else {
+          product._id.avatar =
+            input.app.get("defaultAvatar")(input, "host") + product._id.avatar;
 
-}).catch((error)=>{ return res.status(400).send(error)})
-   }
-  else {
+          return product;
+        }
+      });
+      return Promise.all(Products);
+    };
+    someFunction(getProducts)
+      .then((data) => {
+        let sum = 0;
+        let totalPrice = data.map((product) => {
+          sum += product._id.price.reducedPrice;
+          return sum;
+        });
+        data[0]._id.totalPrice = totalPrice[totalPrice.length - 1];
+        return res.send(data);
+      })
+      .catch((error) => {
+        return res.status(400).send(error);
+      });
+  } else {
     getProducts = [];
-     return res.send(getProducts);
-   }
+    return res.send(getProducts);
+  }
 }
 module.exports = {
   User,
   register,
   login,
   changePassword,
-  updateUser,    
-  resetPassword,  
+  updateUser,
+  resetPassword,
   getUser,
   getUsers,
   activate,
   sendActivationCode,
   getProducts,
-  getCart
-}
+  getCart,
+  getInvoicesOnUsers,
+};
