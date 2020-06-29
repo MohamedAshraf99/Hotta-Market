@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "env-cmd -f ./prod.env node index.js",
-    "server": "env-cmd -f ./dev.env nodemon index.js "
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
@@ -30,9 +29,5 @@
     "socket.io": "^2.3.0",
     "winston": "^2.4.0",
     "winston-mongodb": "^5.0.1"
-  },
-  "devDependencies": {
-    "env-cmd": "^10.1.0",
-    "nodemon": "^2.0.4"
   }
 }

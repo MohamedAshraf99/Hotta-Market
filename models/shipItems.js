@@ -95,7 +95,7 @@ async function getBestSelling(input) {
         $match: {
           isNeglected: false,
           available: true,
-          bestReviews: true,
+          bestSelling: true,
         },
       },
       {
@@ -196,8 +196,8 @@ async function getBestSelling(input) {
           productPrices: {
             $first: "$productPrices",
           },
-          bestReviews: {
-            $first: "$bestReviews",
+          bestSelling: {
+            $first: "$bestSelling",
           },
           available: {
             $first: "$available",
@@ -220,7 +220,7 @@ async function getBestSelling(input) {
           productPrices: 1,
           nameAr: 1,
           nameEn: 1,
-          bestReviews: 1,
+          bestSelling: 1,
           available: 1,
           "price.initialPrice": 1,
           "price.reducedPrice": {
@@ -433,7 +433,7 @@ async function getTrending(input) {
         $match: {
           isNeglected: false,
           available: true,
-          bestReviews: true,
+          trending: true,
         },
       },
       {
@@ -492,12 +492,12 @@ async function getTrending(input) {
           preserveNullAndEmptyArrays: true,
         },
       },
-      {
-        $match: {
-          "shipitems.isNeglected": false,
-          "shipitems.dateCreate": { $gte: lastMonth, $lte: currentDate },
-        },
-      },
+      // {
+      //   $match: {
+      //     "shipitems.isNeglected": false,
+      //     "shipitems.dateCreate": { $gte: lastMonth, $lte: currentDate },
+      //   },
+      // },
       {
         $addFields: {
           favourite: {
@@ -540,8 +540,8 @@ async function getTrending(input) {
           productPrices: {
             $first: "$productPrices",
           },
-          bestReviews: {
-            $first: "$bestReviews",
+          trending: {
+            $first: "$trending",
           },
           available: {
             $first: "$available",
@@ -564,7 +564,7 @@ async function getTrending(input) {
           productPrices: 1,
           nameAr: 1,
           nameEn: 1,
-          bestReviews: 1,
+          trending: 1,
           available: 1,
           "price.initialPrice": 1,
           "price.reducedPrice": {

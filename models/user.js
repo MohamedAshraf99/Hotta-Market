@@ -31,7 +31,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  providerStatus: Boolean,
+  providerStatus: {
+    type: Boolean,
+    default: true,
+  },
   avatar: {
     type: String,
     required: true,
@@ -72,7 +75,7 @@ const userSchema = new mongoose.Schema({
   // }],
   type: {
     type: String,
-    enum: ["admin", "client", "vendor", "productiveFamily", "advertisment"],
+    enum: ["admin", "client", "vendor", "productiveFamily", "advertisement"],
     required: true,
   },
   role: {
@@ -313,7 +316,7 @@ const getInvoicesOnUsers = async (input) => {
         $or: [
           { type: "vendor" },
           { type: "productiveFamily" },
-          { type: "advertisment" },
+          { type: "advertisement" },
         ],
       },
     },

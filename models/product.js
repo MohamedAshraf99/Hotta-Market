@@ -777,6 +777,13 @@ async function getProductDetails(input) {
     if (getProducts.length != 0) {
       getProducts[0].totalRates = getProducts[0].totalRates.length;
       getProducts[0].avatar = input.app.get('defaultAvatar')(input, 'host') + getProducts[0].avatar;
+      getProducts[0].productPrices.map(product=>{
+        if(!product.price.reducedPrice) {
+          product.price.reducedPrice = product.price.initialPrice;
+        }
+        product.price.discountPrecentage = ((product.price.initialPrice - product.price.reducedPrice)/product.price.initialPrice)*100;
+        return product;
+      })
     }
     return (getProducts);
   }

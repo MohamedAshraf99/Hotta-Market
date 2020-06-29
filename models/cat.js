@@ -42,7 +42,7 @@ const catSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['advertisment', 'vendor', 'productiveFamily']
+        enum: ['advertisement', 'vendor', 'productiveFamily']
     },
     dateCreate: {
         type: Date,
@@ -553,10 +553,10 @@ async function getsubCategories(input) {
                {
                 '$project': {
                     '_id._id': 1,
-                    '_id.commercialName': 1,
+                    '_id.commercialName': { "$ifNull": [ "$_id.commercialName", "$_id.name" ] },
                     'product': 1,
                     '_id.avatar': 1,
-                    '_id.desc': 1,
+                    '_id.desc': { "$ifNull": [ "$_id.desc", "$_id.name" ] },
                 }
                }, 
                {

@@ -138,7 +138,7 @@ async function seedNonEditableNamedRolesAndAdminRoleAndAdminUser(constRoles) {
     }
 
 }
-seedNonEditableNamedRolesAndAdminRoleAndAdminUser(['admin', 'client', 'vendor', 'productiveFamily', 'advertisment']);
+seedNonEditableNamedRolesAndAdminRoleAndAdminUser(['admin', 'client', 'vendor', 'productiveFamily', 'advertisement']);
 
 
 
