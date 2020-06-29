@@ -277,28 +277,13 @@ const getUsers = async (input) => {
 };
 
 const getInvoicesOnUsers = async (input) => {
-  let {
-    startId = false,
-    limit = 10,
-    all = false,
-    filter = "{}",
-    fields = "{}",
-    sort = "{}",
-  } = input.query;
+  let { startId = false, limit = 10, all = false, filter = "{}" } = input.query;
 
   startId = !startId || startId == "false" ? false : startId;
 
-  startId = all || !startId ? {} : { _id: { $gt: startId } };
+  startId =
+    all || !startId ? {} : { _id: { $gt: mongoose.Types.ObjectId(startId) } };
   limit = all ? null : !isNaN(limit) ? parseInt(limit) : 10;
-
-  sort = JSON.parse(sort);
-
-  fields = JSON.parse(fields);
-
-  fields = Object.keys(fields).reduce(
-    (ac, f) => `${ac} ${fields[f] == "1" ? "" : "-"}${f}`,
-    ""
-  );
 
   // await User.find({ ...startId, ...JSON.parse(filter) })
   //   .sort(sort)
@@ -309,40 +294,16 @@ const getInvoicesOnUsers = async (input) => {
   let aggr = [
     {
       $match: {
+        ...startId,
         ...JSON.parse(filter),
-        $or: [
-          { type: "vendor" },
-          { type: "productiveFamily" },
-          { type: "advertisment" },
-        ],
+        // $or: [
+        //   { type: "vendor" },
+        //   { type: "productiveFamily" },
+        //   { type: "advertisment" },
+        // ],
       },
     },
-    // {
-    //   $lookup: {
-    //     from: "products",
-    //     localField: "_id",
-    //     foreignField: "provider",
-    //     as: "products",
-    //   },
-    // },
 
-    // {
-    //   $lookup: {
-    //     from: "productprices",
-    //     localField: "products._id",
-    //     foreignField: "product",
-    //     as: "productPrices",
-    //   },
-    // },
-
-    // {
-    //   $lookup: {
-    //     from: "shipItems",
-    //     localField: "productprices._id",
-    //     foreignField: "productPrice",
-    //     as: "shipItems",
-    //   },
-    // },
     {
       $lookup: {
         from: "orderships",
@@ -368,37 +329,13 @@ const getInvoicesOnUsers = async (input) => {
         as: "orderships",
       },
     },
-    // {
-    //   $lookup: {
-    //     from: "orderships",
-    //     let: { id: "$_id.provider" },
-    //     pipeline: [
-    //       { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
-    //       { $project: { log: 1 } },
-    //     ],
-    //     as: "orderships",
-    //   },
-    // },
+
     {
       $unwind: {
         path: "$orderships",
         preserveNullAndEmptyArrays: true,
       },
     },
-
-    // {
-    //   $addFields: {
-    //     orderships: {
-    //       $filter: {
-    //         input: "$orderships",
-    //         as: "order",
-    //         cond: {
-    //           $eq: ["$$order.shipmentStatus", "completed"],
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
 
     {
       $lookup: {
@@ -460,6 +397,15 @@ const getInvoicesOnUsers = async (input) => {
     },
 
     {
+      $sort: {
+        _id: 1,
+      },
+    },
+    {
+      $limit: limit ? limit : Infinity,
+    },
+
+    {
       $project: {
         _id: 1,
         name: 1,
@@ -476,64 +422,6 @@ const getInvoicesOnUsers = async (input) => {
         totalPaidInvoices: { $sum: "$invoices.quantity" },
       },
     },
-    // db.party.aggregate([
-    //   {
-    //     $lookup: {
-    //       from: "address",
-    //       localField: "_id",
-    //       foreignField: "party_id",
-    //       as: "address",
-    //     },
-    //   },
-    //   {
-    //     $unwind: {
-    //       path: "$address",
-    //       preserveNullAndEmptyArrays: true,
-    //     },
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: "addressComment",
-    //       localField: "address._id",
-    //       foreignField: "address_id",
-    //       as: "address.addressComment",
-    //     },
-    //   },
-    //   {
-    //     $group: {
-    //       _id: "$_id",
-    //       name: { $first: "$name" },
-    //       address: { $push: "$address" },
-    //     },
-    //   },
-    //   {
-    //     $project: {
-    //       _id: 1,
-    //       name: 1,
-    //       address: {
-    //         $filter: {
-    //           input: "$address",
-    //           as: "a",
-    //           cond: { $ifNull: ["$$a._id", false] },
-    //         },
-    //       },
-    //     },
-    //   },
-    // ]),
-    // {
-    //   $project: {
-    //     name: 1,
-    //     totalPaidInvoices: { $sum: "$invoices.quantity" },
-    //     // totalInvoices: { $sum: "$shipItems.dtlsProfitValue" },
-
-    //     shipItems: 1,
-    //     // productPrices: 1,
-    //     orderships: 1,
-    //   },
-    // },
-    // {
-    //   $group: { _id: "$orderships._id", total: { $sum: "$invoices.quantity" } },
-    // },
   ];
   let users = await User.aggregate(aggr);
 
@@ -558,6 +446,7 @@ const getInvoicesOnUsers = async (input) => {
   //     ]);
   //   });
   // await shipItems.find().populate("orderShips");
+  console.log("getInvoicesOnUsers -> users", users);
   return users;
 };
 
