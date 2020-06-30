@@ -758,6 +758,7 @@ async function getUser(input) {
 
 async function getProducts(input) {
   let userId = input.params.id;
+  let catId = input.query.catId;
   let { startId = false, limit = 10, all = false } = input.query;
 
   startId = !startId || startId == "false" ? false : startId;
@@ -792,6 +793,7 @@ async function getProducts(input) {
     {
       $match: {
         "products.available": true,
+        "products.cats":mongoose.Types.ObjectId(catId)
       },
     },
     {
