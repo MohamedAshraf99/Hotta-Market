@@ -83,6 +83,12 @@ const productSchema = new mongoose.Schema({
 const Product = mongoose.model("Product", productSchema);
 
 const validateAdd = (body) => {
+  let productPrice = Joi.object().keys({
+    props: Joi.array().required(),
+    avatars: Joi.array().required(),
+    price: Joi.object().required(),
+  });
+
   let schema = {
     provider: Joi.string().length(24).required(),
     cats: Joi.array().required(),
@@ -96,9 +102,14 @@ const validateAdd = (body) => {
     bestSelling: Joi.bool().optional(),
     trending: Joi.bool().optional(),
     bestReviews: Joi.bool().optional(),
+
     prepaireDurationType: Joi.string().optional(),
     prepaireDurationValue: Joi.number().optional(),
-    productPrices: Joi.array().required(),
+    productPrices: Joi.array()
+      .items(productPrice)
+      .min(1)
+
+      .required(),
   };
 
   return Joi.validate(body, schema);

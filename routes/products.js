@@ -44,7 +44,6 @@ router.post(
     req.body.productPrices = productPrices;
 
     let newProduct = await addProduct(req);
-    console.log("newProduct", newProduct);
 
     if (
       newProduct.message &&
@@ -69,8 +68,6 @@ router.post(
 
 router.put("/edit/:id", upload.single("avatar"), async (req, res) => {
   req.body = JSON.parse(req.body.data || {});
-  console.log(req.file);
-
   if (req.file) req.body.avatar = `/uploads/${req.file.filename}`;
 
   let updatedProduct = await updateProduct(req);
