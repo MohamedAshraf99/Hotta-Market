@@ -16,17 +16,18 @@ router.put(
 
     let productPrice = req.body || [];
 
-    let avatarsLength = req.files.avatars.length,
-      avatars = [];
+    if (req.files && req.files.avatars && req.files.avatars.length) {
+      let avatarsLength = req.files.avatars.length,
+        avatars = [];
 
-    for (let i = 0; i < avatarsLength && req.files.avatars.length; i++) {
-      let filename = req.files.avatars.shift().filename,
-        avatarPath = `/uploads/${filename}`;
-      avatars.push(avatarPath);
+      for (let i = 0; i < avatarsLength && req.files.avatars.length; i++) {
+        let filename = req.files.avatars.shift().filename,
+          avatarPath = `/uploads/${filename}`;
+        avatars.push(avatarPath);
+      }
+
+      req.body = { ...productPrice, avatars };
     }
-
-    req.body = { ...productPrice, avatars };
-
     let updated = await updateProductPrice(req);
 
     if (updated.message && updated.path && updated.type && updated.context)

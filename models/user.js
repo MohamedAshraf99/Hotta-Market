@@ -449,7 +449,6 @@ const getInvoicesOnUsers = async (input) => {
   //     ]);
   //   });
   // await shipItems.find().populate("orderShips");
-  console.log("getInvoicesOnUsers -> users", users);
   return users;
 };
 
@@ -565,7 +564,7 @@ async function login(input) {
   if (!phone || !password)
     return t2(input.header("Accept-Language"), "Invalid phone or password.");
 
-  let user = await User.findOne({ phone });
+  let user = await User.findOne({ phone }).populate("role", "name");
 
   if (!user)
     return t2(input.header("Accept-Language"), "Invalid phone or password.");
@@ -793,7 +792,7 @@ async function getProducts(input) {
     {
       $match: {
         "products.available": true,
-        "products.cats":mongoose.Types.ObjectId(catId)
+        "products.cats": mongoose.Types.ObjectId(catId),
       },
     },
     {
