@@ -59,6 +59,7 @@ const validateUpdate = (body) => {
     isNeglected: Joi.bool().optional(),
     price: Joi.object().optional(),
     props: Joi.array().optional(),
+    avatars: Joi.array().optional(),
   };
   return Joi.validate(body, schema);
 };
