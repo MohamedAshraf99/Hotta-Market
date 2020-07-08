@@ -557,6 +557,8 @@ const updateUser = async (input) => {
 };
 
 async function login(input) {
+  let pushToken = input.query.pushToken;
+  let count = 0;
   const { error } = validateLogin(input.body);
   if (error) return error.details[0];
 
@@ -575,7 +577,18 @@ async function login(input) {
     return t2(input.header("Accept-Language"), "Invalid password.");
 
   const token = user.generateAuthToken();
-
+  user.deviceId.map(token=>{
+    if(token == pushToken)
+    {
+      count++;
+    }
+  })
+  if(user.deviceId.length == 0 || count == 0)
+  {
+  await User.findByIdAndUpdate(user._id, {
+    $push: { deviceId: pushToken },
+  });
+ }
   ret = {
     ..._.omit(user.toObject(), [
       "password",
