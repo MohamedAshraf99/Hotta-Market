@@ -12,8 +12,8 @@ async function sendNotification(arg) {
       method: 'POST',
       headers: { 
       'Content-Type': 'application/json', 
-      'Authorization': 'key=AAAAkNMMP9I:APA91bF85pNwFnB6R2DZjtBqZb7Ub4YwDn4apT4x5IhJS1n0jmFdVblfdVE-jEjZdOylJfN5VtxCZVWQIrjCA7WlPlDUeioF3r0zYjWtwH7jAHwCPJxmqhbiTmesoA0usFNweAjk6BOM',
-      'project_id': 'sacoapp2020-d6be7' },
+      'Authorization': 'key=AAAAb962VmA:APA91bG2F1SCLr4VS87EQoFdm735Wk7sI2jgkB1GTneyixs-ns6JkUopy6N_kup5ik6-iTvy2kzgzY28FtjIVkJF0bF_sXRGW_L5F1Fnzj6N4TK_dT1CfQFaFD87F15v3_yZ6mthIrvj',
+      'project_id': 'hotta-app' },
       body: JSON.stringify({
          to: pushToken,
          notification: { title, message },
