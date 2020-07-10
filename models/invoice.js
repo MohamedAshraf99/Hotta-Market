@@ -135,11 +135,11 @@ const getInvoicesForAdmin = async (input) => {
   //   //   $filter: {
   //   //     ...startId,
   //   //     // ...JSON.parse(filter),
-  //   //     "client.type": "advertisment",
+  //   //     "client.type": "advertisement",
   //   //     // $or: [
   //   //     //   { type: "vendor" },
   //   //     //   { type: "productiveFamily" },
-  //   //     //   { type: "advertisment" },
+  //   //     //   { type: "advertisement" },
   //   //     // ],
   //   //   },
   //   // },

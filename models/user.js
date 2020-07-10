@@ -302,7 +302,7 @@ const getInvoicesOnUsers = async (input) => {
         // $or: [
         //   { type: "vendor" },
         //   { type: "productiveFamily" },
-        //   { type: "advertisment" },
+        //   { type: "advertisement" },
         // ],
       },
     },
@@ -576,18 +576,16 @@ async function login(input) {
     return t2(input.header("Accept-Language"), "Invalid password.");
 
   const token = user.generateAuthToken();
-  user.deviceId.map(token=>{
-    if(token == pushToken)
-    {
+  user.deviceId.map((token) => {
+    if (token == pushToken) {
       count++;
     }
-  })
-  if(user.deviceId.length == 0 || count == 0)
-  {
-  await User.findByIdAndUpdate(user._id, {
-    $push: { deviceId: pushToken },
   });
- }
+  if (user.deviceId.length == 0 || count == 0) {
+    await User.findByIdAndUpdate(user._id, {
+      $push: { deviceId: pushToken },
+    });
+  }
   ret = {
     ..._.omit(user.toObject(), [
       "password",
