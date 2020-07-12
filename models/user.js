@@ -532,6 +532,7 @@ const updateUser = async (input) => {
       { new: true }
     );
   }
+  if (body.password) body.password = await getHashPassword(body.password);
 
   let user = await User.findByIdAndUpdate(id, body, { new: true });
   if (!user)
