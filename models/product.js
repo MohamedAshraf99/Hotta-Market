@@ -845,6 +845,11 @@ async function getProductDetails(input) {
       getProducts[0].avatar =
         input.app.get("defaultAvatar")(input, "host") + getProducts[0].avatar;
       getProducts[0].productPrices.map((product) => {
+        product.avatars = product.avatars.map(avatar=>{
+          
+           avatar = input.app.get("defaultAvatar")(input, "host") + avatar;
+           return avatar;
+        })
         if (!product.price.reducedPrice) {
           product.price.reducedPrice = product.price.initialPrice;
         }
