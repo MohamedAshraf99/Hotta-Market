@@ -323,15 +323,17 @@ const updateOrderShipForAdmin = async (input) => {
       ? { delivery: body.delivery }
       : { $unset: { delivery: 1 } };
 
-  let updatedOrderShip = await orderShip.findByIdAndUpdate(
-    id,
-    {
-      ...(state && { $push: { log: { state } } }),
-      ..._.omit(body, ["state", "delivery"]),
-      ...(body.delivery != undefined && delivery),
-    },
-    { new: true }
-  );
+  let updatedOrderShip = await orderShip
+    .findByIdAndUpdate(
+      id,
+      {
+        ...(state && { $push: { log: { state } } }),
+        ..._.omit(body, ["state", "delivery"]),
+        ...(body.delivery != undefined && delivery),
+      },
+      { new: true }
+    )
+    .populate("delivery");
 
   if (updatedOrderShip._id) {
     let allShipsStatus = await orderShip.find(
