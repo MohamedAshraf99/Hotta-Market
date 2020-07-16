@@ -171,7 +171,19 @@ async function getProviderDetails(input) {
       },
     },
     {
+      $lookup: {
+        from: "invoices",
+        localField: "provider",
+        foreignField: "client",
+        as: "invoices",
+      },
+    },  
+  
+    {
       $facet: {
+        invoices:[  {
+         $sortByCount: "$invoices" 
+          }],
         new: [
           {
             $match: {
@@ -276,11 +288,18 @@ async function getProviderDetails(input) {
         ],
       },
     },
+    
   ];
   let providerDetails = await orderShip.aggregate(aggr);
   console.log(providerDetails[0].new);
   if (providerDetails[0].new.length == 0) {
     providerDetails[0].new[0] = { newCount: 0 };
+  }
+  if (providerDetails[0].invoices[0]._id.length == 0) {
+    providerDetails[0].invoices = [];
+  }
+  if (providerDetails[0].invoices[0]._id.length != 0) {
+    providerDetails[0].invoices = providerDetails[0].invoices[0]._id;
   }
   if (providerDetails[0].totalOrderNew.length == 0) {
     providerDetails[0].totalOrderNew[0] = { totalOrderNew: 0 };
