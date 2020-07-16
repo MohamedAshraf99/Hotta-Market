@@ -170,6 +170,7 @@ async function getProviderDetails(input) {
         preserveNullAndEmptyArrays: true,
       },
     },
+    
     {
       $lookup: {
         from: "invoices",
@@ -178,12 +179,8 @@ async function getProviderDetails(input) {
         as: "invoices",
       },
     },  
-  
     {
       $facet: {
-        invoices:[  {
-         $sortByCount: "$invoices" 
-          }],
         new: [
           {
             $match: {
@@ -288,18 +285,48 @@ async function getProviderDetails(input) {
         ],
       },
     },
-    
+  ];
+  let aggr1 = [
+    {
+      $match: {
+        provider: mongoose.Types.ObjectId(providerId),
+        isNeglected: false,
+        shipmentStatus: "completed"
+      },
+    },
+    {
+      $lookup: {
+        from: "shipitems",
+        localField: "_id",
+        foreignField: "orderShips",
+        as: "shipitems",
+      },
+    },
+    {
+      $lookup: {
+        from: "invoices",
+        localField: "provider",
+        foreignField: "client",
+        as: "invoices",
+      },
+    },  
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        deliveryMethod: 1,
+        shipmentStatus:1,
+        taxPercentage:1,
+        provider:1,
+        shipitems: 1,
+        totalPaidInvoices: { $sum: "$invoices.quantity" },
+      },
+    },
   ];
   let providerDetails = await orderShip.aggregate(aggr);
-  console.log(providerDetails[0].new);
+  let orderShips = await orderShip.aggregate(aggr1);
   if (providerDetails[0].new.length == 0) {
     providerDetails[0].new[0] = { newCount: 0 };
-  }
-  if (providerDetails[0].invoices[0]._id.length == 0) {
-    providerDetails[0].invoices = [];
-  }
-  if (providerDetails[0].invoices[0]._id.length != 0) {
-    providerDetails[0].invoices = providerDetails[0].invoices[0]._id;
   }
   if (providerDetails[0].totalOrderNew.length == 0) {
     providerDetails[0].totalOrderNew[0] = { totalOrderNew: 0 };
@@ -325,6 +352,8 @@ async function getProviderDetails(input) {
   if (providerDetails[0].totalOrderReturned.length == 0) {
     providerDetails[0].totalOrderReturned[0] = { totalOrderReturned: 0 };
   }
+  providerDetails[0].orderShips = orderShips;
+  providerDetails[0].totalPaidInvoices = orderShips[0].totalPaidInvoices;
   return providerDetails[0];
 }
 
