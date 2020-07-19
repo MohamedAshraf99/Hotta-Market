@@ -144,7 +144,7 @@ const addOrder = async (input) => {
             user: user._id,
             title: "طلب",
             description: 'تم انشاء طلب جديد',
-            issueDate: new Date(),
+            issueDate: Date.now(),
             action: "new order"
           });
           let parameter = {

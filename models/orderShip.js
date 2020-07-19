@@ -2,7 +2,9 @@ const Joi = require("joi");
 const mongoose = require("mongoose");
 const { Order } = require("./order");
 const _ = require("lodash");
-
+const {User} = require('./user');
+const { sendNotification } = require("../services/notificationService");
+const { saveNotification } = require("../routes/notifications");
 const orderShipSchema = new mongoose.Schema({
   order: {
     type: mongoose.Schema.Types.ObjectId,
@@ -410,10 +412,12 @@ const updateOrderShipForAdmin = async (input) => {
 const updateOrderShip = async (input) => {
   const { Order } = require("./order");
   let { id } = input.params;
-  console.log(typeof id);
+  let orderId = input.query.orderId;
   let body = input.body;
   let shipState = "";
   const { error } = validateUpdate(body);
+  let order = await Order.find({ _id: orderId });
+  let user = await User.find({ _id: order.client });
   if (error) return error.details[0];
   if (
     body.state == "new" ||
@@ -436,7 +440,20 @@ const updateOrderShip = async (input) => {
     },
     { new: true }
   );
-
+  let parameter = {
+    deviceIds: user.deviceId,
+    message: `${shipState}تم تغيير حالة الشحنة الى `,
+    title: 'حالة الشحنة',
+  };
+  notifications.push({
+    user: user._id,
+    title: "حالة الشحنة",
+    description: `${shipState}تم تغيير حالة الشحنة الى `,
+    issueDate: Date.now(),
+    action: "orderShip Status"
+  });
+  await sendNotification(parameter);
+  await saveNotification(notifications);
   let allOrderShips = await orderShip.find({ order: updatedOrder.order });
   let status = [];
   allOrderShips.map((orderShip) => {
@@ -474,6 +491,20 @@ const updateOrderShip = async (input) => {
     { $addToSet: { log: { state: st, date: Date.now() } } },
     { new: true }
   );
+  let parameter = {
+    deviceIds: user.deviceId,
+    message: `${st} تم تغيير حالة الطلب الى `,
+    title: 'حالةالطلب',
+  };
+  notifications.push({
+    user: user._id,
+    title: "حالة الطلب",
+    description: `${st}تم تغيير حالة الطلب الى `,
+    issueDate: Date.now(),
+    action: "order status"
+  });
+  await saveNotification(notifications);
+  await sendNotification(parameter);
   return updatedOrder;
 };
 
