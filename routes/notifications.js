@@ -23,7 +23,7 @@ router.post('/add', async (req, res) => {
 	res.send(docs);
 });
 
-router.post('/getUserNotifcaions/:id', async (req, res) => {
+router.get('/getUserNotifcaions/:id', async (req, res) => {
 	let docs = await Notification.find({ user: req.params.id }).sort({ _id: -1 });
 
 	res.send(docs);
