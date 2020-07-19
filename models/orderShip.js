@@ -450,7 +450,6 @@ const updateOrderShip = async (input) => {
     user: user._id,
     title: "حالة الشحنة",
     description: `${shipState}تم تغيير حالة الشحنة الى `,
-    issueDate: Date.now(),
     action: "orderShip Status"
   });
   await sendNotification(parameter);
@@ -500,7 +499,6 @@ const updateOrderShip = async (input) => {
     user: user._id,
     title: "حالة الطلب",
     description: `${st}تم تغيير حالة الطلب الى `,
-    issueDate: Date.now(),
     action: "order status"
   });
   await sendNotification(param);

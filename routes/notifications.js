@@ -62,7 +62,6 @@ router.post('/send', async (req, res) => {
 				user: user._id,
 				title: req.body.tit,
 				description: req.body.desc,
-				issueDate: new Date(),
 				action: t('accepted'),
 			});
 			deviceIds.push(user.deviceId);

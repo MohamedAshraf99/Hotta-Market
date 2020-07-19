@@ -17,8 +17,8 @@ const notificationSchema = new mongoose.Schema({
         ref: 'User'
     },
     issueDate: {
-        type: String,
-        required: true
+        type: Date,
+        default: Date.now
     },action:{
         type:String
     }
