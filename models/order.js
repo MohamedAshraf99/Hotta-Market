@@ -4,6 +4,8 @@ const {orderShip,validateAddOrderShip} = require('./orderShip');
 const {shipItems,validateAddShipItems} = require('./shipItems');
 const {ShipCard} = require('./shipCard');
 const { AppSettings } = require('./appSettings')
+const { sendNotification } = require("../services/notificationService");
+const { saveNotification } = require("../routes/notifications");
 const {PaymentTransaction,validateAddPaymentTransaction} = require('./paymentTransaction');
 const {User} = require('./user');
 const _ = require("lodash")
@@ -113,10 +115,12 @@ const addOrder = async (input) => {
         let paymentTransaction = new PaymentTransaction({method:method,price:price,order:orderId});
 
         paymentTransaction = await paymentTransaction.save();
+    let providerIds = [];
     orderShips = orderShips.map(pp=>({...pp, order: orderId,log:[{}]}))
     for (let i = 0; i < orderShips.length; i++) {
         const { error } = validateAddOrderShip(orderShips[i]);
         if (error) return (error.details[0]);
+        providerIds.push(orderShips[i].provider);
         orderShips[i].number = `${orderBody.number}-${i+1}`;
       }
       orderShips = await orderShip.create(orderShips);
@@ -132,8 +136,26 @@ const addOrder = async (input) => {
             }
         }
         ship = await shipItems.create(ship);
-
-
+        let users = await User.find({ _id: { $in:providerIds} })
+        let notifications = []
+        await Promise.all(
+        users.map(async user=>{
+          notifications.push({
+            user: user._id,
+            title: "طلب",
+            description: 'تم انشاء طلب جديد',
+            issueDate: new Date(),
+            action: "new order"
+          });
+          let parameter = {
+            deviceIds: user.deviceId,
+            message: 'يوجد طلب جديد',
+            title: 'طلب جديد',
+          };
+          await sendNotification(parameter);
+        })
+        )
+        await saveNotification(notifications);
         return {
             paymentTransaction,
             test,
