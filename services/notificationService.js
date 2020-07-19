@@ -16,7 +16,7 @@ async function sendNotification(arg) {
       'project_id': 'hotta-app' },
       body: JSON.stringify({
          to: pushToken,
-         notification: { title, message },
+         notification: { title, message,"sound" : "default" },
          }),
         });
       const fcmResponseJSON = await fcmResponse.json();
