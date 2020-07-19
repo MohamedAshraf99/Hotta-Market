@@ -416,8 +416,9 @@ const updateOrderShip = async (input) => {
   let body = input.body;
   let shipState = "";
   const { error } = validateUpdate(body);
-  let order = await Order.find({ _id: orderId });
-  let user = await User.find({ _id: order.client });
+  let clientOrder = await Order.find({ _id: orderId });
+  let user = await User.find({ _id: clientOrder.client });
+  let notifications = [];
   if (error) return error.details[0];
   if (
     body.state == "new" ||
@@ -453,7 +454,6 @@ const updateOrderShip = async (input) => {
     action: "orderShip Status"
   });
   await sendNotification(parameter);
-  await saveNotification(notifications);
   let allOrderShips = await orderShip.find({ order: updatedOrder.order });
   let status = [];
   allOrderShips.map((orderShip) => {
@@ -491,7 +491,7 @@ const updateOrderShip = async (input) => {
     { $addToSet: { log: { state: st, date: Date.now() } } },
     { new: true }
   );
-  let parameter = {
+  let param = {
     deviceIds: user.deviceId,
     message: `${st} تم تغيير حالة الطلب الى `,
     title: 'حالةالطلب',
@@ -503,8 +503,8 @@ const updateOrderShip = async (input) => {
     issueDate: Date.now(),
     action: "order status"
   });
+  await sendNotification(param);
   await saveNotification(notifications);
-  await sendNotification(parameter);
   return updatedOrder;
 };
 
