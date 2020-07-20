@@ -144,7 +144,8 @@ const addOrder = async (input) => {
             user: user._id,
             title: "طلب",
             description: 'تم انشاء طلب جديد',
-            action: "new order"
+            action: "new order",
+            order :newOrder._id
           });
           let parameter = {
             deviceIds: user.deviceId,

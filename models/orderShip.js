@@ -453,7 +453,8 @@ const updateOrderShip = async (input) => {
     user: user._id,
     title: "حالة الشحنة",
     description: `${shipState} تم تغيير حالة الشحنة الى `,
-    action: "orderShip Status"
+    action: "orderShip Status",
+    order :orderId
   });
   await sendNotification(parameter);
   let allOrderShips = await orderShip.find({ order: updatedOrder.order });
@@ -503,7 +504,8 @@ const updateOrderShip = async (input) => {
     user: user._id,
     title: "حالة الطلب",
     description: `${st} تم تغيير حالة الطلب الى `,
-    action: "order status"
+    action: "order status",
+    order :orderId
   });
   await sendNotification(param);
   await saveNotification(notifications);
