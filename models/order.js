@@ -137,7 +137,7 @@ const addOrder = async (input) => {
         }
         ship = await shipItems.create(ship);
         let users = await User.find({ _id: { $in:providerIds} })
-        let notifications = []
+        let notifications = [];
         await Promise.all(
         users.map(async user=>{
           notifications.push({

@@ -417,7 +417,8 @@ const updateOrderShip = async (input) => {
   let shipState = "";
   const { error } = validateUpdate(body);
   let clientOrder = await Order.find({ _id: orderId });
-  let user = await User.find({ _id: clientOrder.client });
+  let user = await User.find({ _id: clientOrder[0].client });
+  user = user[0];
   let notifications = [];
   if (error) return error.details[0];
   if (
@@ -443,13 +444,14 @@ const updateOrderShip = async (input) => {
   );
   let parameter = {
     deviceIds: user.deviceId,
-    message: `${shipState}تم تغيير حالة الشحنة الى `,
+    message: `${shipState} تم تغيير حالة الشحنة الى `,
     title: 'حالة الشحنة',
   };
+
   notifications.push({
     user: user._id,
     title: "حالة الشحنة",
-    description: `${shipState}تم تغيير حالة الشحنة الى `,
+    description: `${shipState} تم تغيير حالة الشحنة الى `,
     action: "orderShip Status"
   });
   await sendNotification(parameter);
@@ -498,7 +500,7 @@ const updateOrderShip = async (input) => {
   notifications.push({
     user: user._id,
     title: "حالة الطلب",
-    description: `${st}تم تغيير حالة الطلب الى `,
+    description: `${st} تم تغيير حالة الطلب الى `,
     action: "order status"
   });
   await sendNotification(param);

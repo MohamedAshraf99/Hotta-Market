@@ -4,8 +4,6 @@ const fetch = require('node-fetch');
 async function sendNotification(arg) {
 
   const { deviceIds, message, title } = arg;
-
-  let notifications = [];
   let result =[];
   for (let pushToken of deviceIds) {  
     const fcmResponse = await fetch('https://fcm.googleapis.com/fcm/send', { 
@@ -22,7 +20,8 @@ async function sendNotification(arg) {
       const fcmResponseJSON = await fcmResponse.json();
       result.push(fcmResponseJSON);
   }
-  console.log({error: false, data: result}); 
+  //console.log({error: false, data: result}); 
+  console.log(result); 
   // for (let pushToken of deviceIds) {
     
   //   if (!Expo.isExpoPushToken(pushToken)) {
