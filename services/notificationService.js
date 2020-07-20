@@ -2,8 +2,9 @@ const fetch = require('node-fetch');
 
 
 async function sendNotification(arg) {
-
-  const { deviceIds, message, title } = arg;
+  
+  const { deviceIds, message, title,data } = arg;
+  console.log(message)
   let result =[];
   for (let pushToken of deviceIds) {  
     const fcmResponse = await fetch('https://fcm.googleapis.com/fcm/send', { 
@@ -13,15 +14,16 @@ async function sendNotification(arg) {
       'Authorization': 'key=AAAAb962VmA:APA91bG2F1SCLr4VS87EQoFdm735Wk7sI2jgkB1GTneyixs-ns6JkUopy6N_kup5ik6-iTvy2kzgzY28FtjIVkJF0bF_sXRGW_L5F1Fnzj6N4TK_dT1CfQFaFD87F15v3_yZ6mthIrvj',
       'project_id': 'hotta-app' },
       body: JSON.stringify({
+         data: data,
          to: pushToken,
-         notification: { title, message,"sound" : "default" },
+         notification: { title: title,
+          body: message,"sound" : "default" },
          }),
         });
       const fcmResponseJSON = await fcmResponse.json();
       result.push(fcmResponseJSON);
   }
-  //console.log({error: false, data: result}); 
-  console.log(result); 
+  console.log({error: false, data: result}); 
   // for (let pushToken of deviceIds) {
     
   //   if (!Expo.isExpoPushToken(pushToken)) {

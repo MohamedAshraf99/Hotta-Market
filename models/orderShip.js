@@ -446,6 +446,7 @@ const updateOrderShip = async (input) => {
     deviceIds: user.deviceId,
     message: `${shipState} تم تغيير حالة الشحنة الى `,
     title: 'حالة الشحنة',
+    data: {orderShipId :id,orderId :orderId , action:"orderShip"}
   };
 
   notifications.push({
@@ -496,6 +497,7 @@ const updateOrderShip = async (input) => {
     deviceIds: user.deviceId,
     message: `${st} تم تغيير حالة الطلب الى `,
     title: 'حالةالطلب',
+    data: {orderShipId :id,orderId :orderId , action:"order"}
   };
   notifications.push({
     user: user._id,

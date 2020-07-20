@@ -150,6 +150,7 @@ const addOrder = async (input) => {
             deviceIds: user.deviceId,
             message: 'يوجد طلب جديد',
             title: 'طلب جديد',
+            data: {orderId :newOrder._id, action:"order"}
           };
           await sendNotification(parameter);
         })
