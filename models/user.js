@@ -803,9 +803,8 @@ async function logOut(input) {
 
 async function getProducts(input) {
   let userId = input.params.id;
-  let catId = input.query.catId;
+  let catId = input.query.catId == undefined?{}:{"products.cats": mongoose.Types.ObjectId(input.query.catId)};
   let { startId = false, limit = 10, all = false } = input.query;
-
   startId = !startId || startId == "false" ? false : startId;
 
   startId =
@@ -838,8 +837,10 @@ async function getProducts(input) {
     {
       $match: {
         "products.available": true,
-        "products.cats": mongoose.Types.ObjectId(catId),
       },
+    },
+    {
+      $match: catId
     },
     {
       $lookup: {
