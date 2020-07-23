@@ -23,8 +23,8 @@ router.post('/add', async (req, res) => {
 	res.send(docs);
 });
 
-router.post('/getUserNotifcaions', async (req, res) => {
-	let docs = await Notification.find({ user: req.body._id }).sort({ _id: -1 });
+router.get('/getUserNotifcaions/:id', async (req, res) => {
+	let docs = await Notification.find({ user: req.params.id }).sort({ _id: -1 });
 
 	res.send(docs);
 });
@@ -62,7 +62,6 @@ router.post('/send', async (req, res) => {
 				user: user._id,
 				title: req.body.tit,
 				description: req.body.desc,
-				issueDate: new Date(),
 				action: t('accepted'),
 			});
 			deviceIds.push(user.deviceId);

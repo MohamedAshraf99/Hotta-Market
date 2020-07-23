@@ -766,12 +766,45 @@ async function getUser(input) {
     ..._.omit(user.toObject(), ["password", "__v"]),
   };
 }
+async function logOut(input) {
+  let id = input.query.userId;
+  let pushToken = input.query.pushToken;
+  let user = await User.findById(id)
+    .populate("role")
+    .populate({
+      path: "location.area",
+      populate: {
+        path: "city",
+        populate: {
+          path: "country",
+        },
+      },
+    });
+    for (let i = 0; i < user.deviceId.length ; i++) {
+      if(user.deviceId[i] == pushToken)
+      {
+      user.deviceId.splice(i, 1);
+      }
+    }
+    user = await user.save();
+  if (user._id) {
+    if (user.avatar)
+      user.avatar = input.app.get("defaultAvatar")(input, "host") + user.avatar;
+    else user.avatar = input.app.get("defaultAvatar")(input);
+
+    if (user.icon)
+      user.icon = input.app.get("defaultAvatar")(input, "host") + user.icon;
+  }
+
+  return {
+    ..._.omit(user.toObject(), ["password", "__v"]),
+  };
+}
 
 async function getProducts(input) {
   let userId = input.params.id;
-  let catId = input.query.catId;
+  let catId = input.query.catId == undefined?{}:{"products.cats": mongoose.Types.ObjectId(input.query.catId)};
   let { startId = false, limit = 10, all = false } = input.query;
-
   startId = !startId || startId == "false" ? false : startId;
 
   startId =
@@ -804,8 +837,10 @@ async function getProducts(input) {
     {
       $match: {
         "products.available": true,
-        "products.cats": mongoose.Types.ObjectId(catId),
       },
+    },
+    {
+      $match: catId
     },
     {
       $lookup: {
@@ -1134,4 +1169,5 @@ module.exports = {
   getProducts,
   getCart,
   getInvoicesOnUsers,
+  logOut
 };

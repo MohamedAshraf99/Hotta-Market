@@ -13,6 +13,7 @@ const {
   getProducts,
   getCart,
   getInvoicesOnUsers,
+  logOut
 } = require("../models/user");
 const express = require("express");
 const router = express.Router();
@@ -147,4 +148,12 @@ router.get("/getCartProducts/:id", async (req, res) => {
   await getCart(req, res);
 });
 
+router.get("/logOut", async (req, res) => {
+  let users = await logOut(req);
+
+  if (users.message && users.path && users.type && users.context)
+    return res.status(400).send(users.message);
+
+  res.send(users);
+});
 module.exports = router;

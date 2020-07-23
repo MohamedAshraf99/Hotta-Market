@@ -17,10 +17,15 @@ const notificationSchema = new mongoose.Schema({
         ref: 'User'
     },
     issueDate: {
-        type: String,
-        required: true
-    },action:{
+        type: Date,
+        default: Date.now
+    },
+    action:{
         type:String
+    },
+    order:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'order'
     }
 });
 

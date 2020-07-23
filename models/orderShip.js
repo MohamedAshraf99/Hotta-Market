@@ -2,7 +2,9 @@ const Joi = require("joi");
 const mongoose = require("mongoose");
 const { Order } = require("./order");
 const _ = require("lodash");
-
+const {User} = require('./user');
+const { sendNotification } = require("../services/notificationService");
+const { saveNotification } = require("../routes/notifications");
 const orderShipSchema = new mongoose.Schema({
   order: {
     type: mongoose.Schema.Types.ObjectId,
@@ -170,6 +172,15 @@ async function getProviderDetails(input) {
         preserveNullAndEmptyArrays: true,
       },
     },
+    
+    {
+      $lookup: {
+        from: "invoices",
+        localField: "provider",
+        foreignField: "client",
+        as: "invoices",
+      },
+    },  
     {
       $facet: {
         new: [
@@ -277,8 +288,45 @@ async function getProviderDetails(input) {
       },
     },
   ];
+  let aggr1 = [
+    {
+      $match: {
+        provider: mongoose.Types.ObjectId(providerId),
+        isNeglected: false,
+        shipmentStatus: "completed"
+      },
+    },
+    {
+      $lookup: {
+        from: "shipitems",
+        localField: "_id",
+        foreignField: "orderShips",
+        as: "shipitems",
+      },
+    },
+    {
+      $lookup: {
+        from: "invoices",
+        localField: "provider",
+        foreignField: "client",
+        as: "invoices",
+      },
+    },  
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        deliveryMethod: 1,
+        shipmentStatus:1,
+        taxPercentage:1,
+        provider:1,
+        shipitems: 1,
+        totalPaidInvoices: { $sum: "$invoices.quantity" },
+      },
+    },
+  ];
   let providerDetails = await orderShip.aggregate(aggr);
-  console.log(providerDetails[0].new);
+  let orderShips = await orderShip.aggregate(aggr1);
   if (providerDetails[0].new.length == 0) {
     providerDetails[0].new[0] = { newCount: 0 };
   }
@@ -306,6 +354,8 @@ async function getProviderDetails(input) {
   if (providerDetails[0].totalOrderReturned.length == 0) {
     providerDetails[0].totalOrderReturned[0] = { totalOrderReturned: 0 };
   }
+  providerDetails[0].orderShips = orderShips;
+  providerDetails[0].totalPaidInvoices = orderShips[0].totalPaidInvoices;
   return providerDetails[0];
 }
 
@@ -362,10 +412,14 @@ const updateOrderShipForAdmin = async (input) => {
 const updateOrderShip = async (input) => {
   const { Order } = require("./order");
   let { id } = input.params;
-  console.log(typeof id);
+  let orderId = input.query.orderId;
   let body = input.body;
   let shipState = "";
   const { error } = validateUpdate(body);
+  let clientOrder = await Order.find({ _id: orderId });
+  let user = await User.find({ _id: clientOrder[0].client });
+  user = user[0];
+  let notifications = [];
   if (error) return error.details[0];
   if (
     body.state == "new" ||
@@ -388,7 +442,21 @@ const updateOrderShip = async (input) => {
     },
     { new: true }
   );
+  let parameter = {
+    deviceIds: user.deviceId,
+    message: `${body.state} تم تغيير حالة الشحنة الى `,
+    title: 'حالة الشحنة',
+    data: {orderShipId :id,orderId :orderId , action:"orderShip"}
+  };
 
+  notifications.push({
+    user: user._id,
+    title: "حالة الشحنة",
+    description: `${body.state} تم تغيير حالة الشحنة الى `,
+    action: "orderShip Status",
+    order :orderId
+  });
+  await sendNotification(parameter);
   let allOrderShips = await orderShip.find({ order: updatedOrder.order });
   let status = [];
   allOrderShips.map((orderShip) => {
@@ -426,6 +494,21 @@ const updateOrderShip = async (input) => {
     { $addToSet: { log: { state: st, date: Date.now() } } },
     { new: true }
   );
+  let param = {
+    deviceIds: user.deviceId,
+    message: `${st} تم تغيير حالة الطلب الى `,
+    title: 'حالةالطلب',
+    data: {orderShipId :id,orderId :orderId , action:"orderStatus"}
+  };
+  notifications.push({
+    user: user._id,
+    title: "حالة الطلب",
+    description: `${st} تم تغيير حالة الطلب الى `,
+    action: "order status",
+    order :orderId
+  });
+  await sendNotification(param);
+  await saveNotification(notifications);
   return updatedOrder;
 };
 

@@ -34,7 +34,7 @@ const cards = require("../routes/cards");
 const users = require("../routes/users");
 const deliveryPersons = require("../routes/deliveryPersons");
 const appSettings = require("../routes/appSettings");
-
+const notifications = require('../routes/notifications')
 const cors = require("cors");
 
 const bodyParser = require("body-parser");
@@ -110,6 +110,6 @@ module.exports = function (app, io) {
   app.use("/api/users", users);
   app.use("/api/deliveryPersons", deliveryPersons);
   app.use("/api/appSettings", appSettings);
-
+  app.use('/api/notifications', notifications);
   app.use(error);
 };
