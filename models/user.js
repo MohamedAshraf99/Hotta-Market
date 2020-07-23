@@ -1012,6 +1012,7 @@ async function getCart(input, res) {
       $project: {
         "_id._id": 1,
         "_id.nameAr": 1,
+        "_id.dtlsProfitPercentage": 1,
         "_id.nameEn": 1,
         "_id.prepaireDurationType": 1,
         "_id.prepaireDurationValue": 1,
@@ -1083,9 +1084,12 @@ async function getCart(input, res) {
           }
           product._id.deliveryMethod = vendor[0].deliveryMethod;
           product._id.profitCalcMethod = ProfitCalcMethod;
-          product._id.dtlsProfitPercentage =
+          // product._id.dtlsProfitPercentage =
+          //   providerSubscription[providerSubscription.length - 1].percentage;
+          // product._id.profitPercentage = product._id.dtlsProfitPercentage;
+
+          product._id.profitPercentage =
             providerSubscription[providerSubscription.length - 1].percentage;
-          product._id.profitPercentage = product._id.dtlsProfitPercentage;
           product._id.avatar =
             input.app.get("defaultAvatar")(input, "host") + product._id.avatar;
           return product;

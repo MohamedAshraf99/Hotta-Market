@@ -45,6 +45,12 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+
+  dtlsProfitPercentage: {
+    type: Number,
+    default: 0,
+  },
+
   advertisementCount: {
     type: Number,
     default: 0,
@@ -94,7 +100,7 @@ const validateAdd = (body) => {
     cats: Joi.array().required(),
     nameAr: Joi.string().required(),
     nameEn: Joi.string().required(),
-    // code: Joi.number().required(),
+    dtlsProfitPercentage: Joi.number().required(),
     tax: Joi.number().optional(),
     desc: Joi.string().optional(),
     avatar: Joi.string().required(),
@@ -845,11 +851,10 @@ async function getProductDetails(input) {
       getProducts[0].avatar =
         input.app.get("defaultAvatar")(input, "host") + getProducts[0].avatar;
       getProducts[0].productPrices.map((product) => {
-        product.avatars = product.avatars.map(avatar=>{
-          
-           avatar = input.app.get("defaultAvatar")(input, "host") + avatar;
-           return avatar;
-        })
+        product.avatars = product.avatars.map((avatar) => {
+          avatar = input.app.get("defaultAvatar")(input, "host") + avatar;
+          return avatar;
+        });
         if (!product.price.reducedPrice) {
           product.price.reducedPrice = product.price.initialPrice;
         }
